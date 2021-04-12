@@ -17,6 +17,8 @@ assignees: ''
 
 ### Definition of Done
 
+*Als een zin niet van toepassing is kun je hem gewoon aanvinken.*
+
 - [ ] Alle functionele documentatie betreffende het item is geschreven
 - [ ] Alle technische documentatie betreffende het item is geschreven
 - [ ] Na aanvraag van een review, wordt dit gedaan door een ander teamlid
