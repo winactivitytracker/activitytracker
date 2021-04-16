@@ -3,7 +3,7 @@
  * Auto generated Run-Time-Environment Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'workshop3' 
+ * Project: 'ActivityTracker' 
  * Target:  'ActivityTrackerF4' 
  */
 
