@@ -1,6 +1,0 @@
-#ifndef EXTERNAL_MODULE_H
-#define EXTERNAL_MODULE_H
-
-
-
-#endif /* EXTERNAL_MODULE_H */
