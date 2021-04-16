@@ -3,32 +3,66 @@
 #include <xtimer.h>
 #include <thread.h>
 
-static char stack[THREAD_STACKSIZE_MAIN];
-
 int main()
 {
 	board_init();
 	
-	kernel_pid_t pid;
-	pid = thread_create(stack,		/* stack array pointer */
-		sizeof(stack),			/* stack size */
-		THREAD_PRIORITY_MAIN - 1,	/* thread priority*/
-		flag,				/* thread configuration flag, usually*/
-		thread_handler,			/* thread handler function */
-		NULL,				/* argument of thread_handler function*/
-		"thread name"
-	);
+	/*
+	gpio_init(GPIO_PIN(PORT_A, 2), GPIO_OUT);
+	gpio_init(GPIO_PIN(PORT_B, 2), GPIO_OUT);
 	
-	LED0_ON;
-	LED1_OFF;
+	gpio_set(GPIO_PIN(PORT_A, 2));
+	gpio_set(GPIO_PIN(PORT_B, 2));
 	
 	while(1)
 	{
-		LED0_TOGGLE;
-		LED1_TOGGLE;
+		gpio_toggle(GPIO_PIN(PORT_A, 2));
+		gpio_toggle(GPIO_PIN(PORT_B, 2));
+			
 		xtimer_sleep(1);
 	}
+	*/
 	
+	// GPIOA Periph clock enable
+	RCC->AHBENR |= RCC_AHBENR_GPIOAEN; 
+	
+	// GPIOB Periph clock enable
+	RCC->AHBENR |= RCC_AHBENR_GPIOBEN; 
+
+	// A2 and B2 in output mode
+	GPIOA->MODER |= (GPIO_MODER_MODER2_0);
+	GPIOB->MODER |= (GPIO_MODER_MODER2_0);
+
+	// Push pull mode selected
+	GPIOA->OTYPER &= ~(GPIO_OTYPER_OT_2);
+	GPIOB->OTYPER &= ~(GPIO_OTYPER_OT_2);
+	
+	// Maximum speed setting
+	GPIOA->OSPEEDR |= (GPIO_OSPEEDER_OSPEEDR2);
+	GPIOB->OSPEEDR |= (GPIO_OSPEEDER_OSPEEDR2);
+
+	// Pull-up and pull-down resistors disabled
+	GPIOA->PUPDR &= ~(GPIO_PUPDR_PUPDR2);
+	GPIOB->PUPDR &= ~(GPIO_PUPDR_PUPDR2);
+
+	while(1)
+	{
+		// Set PC9
+		GPIOA->BSRR = GPIO_BSRR_BS_2;
+		// Reset PC8
+		GPIOB->BSRR = GPIO_BSRR_BR_2;
+		
+		// Delay ~ 1 sec.
+		xtimer_sleep(1);	
+		
+		// Reset PC9
+		GPIOA->BSRR = GPIO_BSRR_BR_2;
+		// Set PC8
+		GPIOB->BSRR = GPIO_BSRR_BS_2;
+		
+		// Delay ~ 1 sec.
+		xtimer_sleep(1);
+	}
 	
 	return 0;
 }
