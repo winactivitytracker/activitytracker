@@ -5,6 +5,6 @@ APPLICATION = activity-tracker
 BOARD ?= stm32f0discovery
 
 # This has to be the absolute path to the RIOT base directory:
-RIOTBASE ?= riot
+RIOTBASE ?= $(CURDIR)/riot
 
 include $(RIOTBASE)/Makefile.include
