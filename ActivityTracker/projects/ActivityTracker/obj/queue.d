@@ -1,0 +1,17 @@
+.\obj\queue.o: C:\Users\toonh\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\Source\queue.c
+.\obj\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\obj\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\obj\queue.o: C:\Users\toonh\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\Source\include\FreeRTOS.h
+.\obj\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\obj\queue.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\obj\queue.o: .\RTE\RTOS\FreeRTOSConfig.h
+.\obj\queue.o: C:\Users\toonh\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\CMSIS\RTOS2\FreeRTOS\Include\freertos_evr.h
+.\obj\queue.o: .\RTE\_ActivityTrackerF0\RTE_Components.h
+.\obj\queue.o: C:\Users\toonh\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\Source\include\projdefs.h
+.\obj\queue.o: C:\Users\toonh\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\Source\include\portable.h
+.\obj\queue.o: C:\Users\toonh\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\Source\include\deprecated_definitions.h
+.\obj\queue.o: C:\Users\toonh\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\Source\portable\RVDS\ARM_CM0\portmacro.h
+.\obj\queue.o: C:\Users\toonh\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\Source\include\mpu_wrappers.h
+.\obj\queue.o: C:\Users\toonh\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\Source\include\task.h
+.\obj\queue.o: C:\Users\toonh\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\Source\include\list.h
+.\obj\queue.o: C:\Users\toonh\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\Source\include\queue.h
