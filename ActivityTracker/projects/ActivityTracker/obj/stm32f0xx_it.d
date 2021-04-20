@@ -29,4 +29,3 @@
 .\obj\stm32f0xx_it.o: ..\..\libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_usart.h
 .\obj\stm32f0xx_it.o: ..\..\libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h
 .\obj\stm32f0xx_it.o: ..\..\libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h
-.\obj\stm32f0xx_it.o: ..\..\utilities\STM32F0-Discovery\STM32F0_discovery.h

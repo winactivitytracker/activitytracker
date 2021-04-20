@@ -1,9 +1,23 @@
 #include "stm32f0xx.h"
+#include "stdbool.h"
 #include "stm32f0xx_i2c.h"
 #include <FreeRTOS.h>
 #include <task.h>
 
+#define ONE_TENTHOUSEND_SECOND  		(SystemCoreClock/8/10000)
+#define ONE_THOUSEND_SECOND  				(SystemCoreClock/8/1000)
+#define ONE_HUNDERDTH_SECOND  			(SystemCoreClock/8/100)
+#define ONE_FIFTYTH_SECOND  				(SystemCoreClock/8/50)
+#define ONE_TENTH_SECOND  					(SystemCoreClock/8/10)
+#define HALF_SECOND   							(SystemCoreClock/8/5)
+#define ONE_SECOND         					(SystemCoreClock/8)
+
 #define MPU_ADDRESS 0xD0 //0x68
+
+uint8_t readGyro[6];
+uint16_t gyroXRAW, gZ;
+
+bool enable_MPU(void);
 
 void I2C_Setup(void);
 void MPU6050_WriteData(uint16_t addr, uint8_t data);
@@ -19,15 +33,10 @@ void vPeriodicTask(void *pvParameters)
   for (;;) {
     // Block until the next release time.
     vTaskDelayUntil(&xLastWakeTime, xDelay);
-		if(MPU6050_ReadData(0x75) == 0x68)
-		{
-			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_RESET); //RED
-			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_SET); //GREEN
-		} else
-		{
-			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_SET); //RED
-			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_RESET); //GREEN
-		}
+		readGyro[0] = MPU6050_ReadData(0x43);
+		readGyro[1] = MPU6050_ReadData(0x44);
+		gyroXRAW = (int16_t)(readGyro[0] << 8 | readGyro [1]);
+		gZ = gyroXRAW/16384.0;
 		
   }
 }
@@ -71,6 +80,16 @@ int main()
     GPIO_Init(GPIOB, &gpioB);
 		
 		I2C_Setup();
+		
+		if(enable_MPU())
+		{
+			MPU6050_WriteData(0x6B, 0x00);
+			MPU6050_WriteData(0x19, 0x07);
+			MPU6050_WriteData(0x1B, 0x00);
+			MPU6050_WriteData(0x1C, 0x00);
+		}
+		
+		
 	
   xTaskCreate(vPeriodicTask, "My Task", 256, NULL, 1, NULL);
   //xTaskCreate(vPeriodicTask2, "My Task2", 256, NULL, 2, NULL);
@@ -85,10 +104,26 @@ int main()
 	}
 }
 
+bool enable_MPU(void)
+{
+	if(MPU6050_ReadData(0x75) == 0x68)
+		{
+			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_RESET); //RED
+			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_SET); //GREEN
+			return true;
+		} else
+		{
+			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_SET); //RED
+			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_RESET); //GREEN
+			return false;
+		}
+}
+
 void I2C_Setup(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
   I2C_InitTypeDef  I2C_InitStructure;
+	NVIC_InitTypeDef        NVIC_InitStructure;
   
   // Set I2C1 clock to SYSCLK (see system_stm32f0.c)
   RCC_I2CCLKConfig(RCC_I2C1CLK_SYSCLK);
@@ -150,6 +185,15 @@ void I2C_Setup(void)
 
   //(#) Enable the NVIC and the corresponding interrupt using the function
   //    I2C_ITConfig() if you need to use interrupt mode.
+ 
+  //Enable the I2C global Interrupt
+  //NVIC_InitStructure.NVIC_IRQChannel         = I2C1_IRQn;
+  //NVIC_InitStructure.NVIC_IRQChannelPriority = 0;
+  //NVIC_InitStructure.NVIC_IRQChannelCmd      = ENABLE;
+  //NVIC_Init(&NVIC_InitStructure);
+  
+  //(#) Enable the corresponding interrupt 
+  //I2C_ITConfig(I2C1, I2C1_IRQn, ENABLE);
   
   //(#) When using the DMA mode 
   //   (++) Configure the DMA using DMA_Init() function.
@@ -166,26 +210,26 @@ void MPU6050_WriteData(uint16_t addr, uint8_t data)
 {
   // Wait while I2C peripheral is not ready
   //SE_WaitForI2CFlag( I2C_ISR_BUSY );
-	delay(48000000/8/100);
+	delay(ONE_THOUSEND_SECOND);
 
   // Start I2C write transfer for 3 bytes
-  I2C_TransferHandling( I2C1, MPU_ADDRESS, 3, I2C_AutoEnd_Mode, I2C_Generate_Start_Write );
+  I2C_TransferHandling( I2C1, MPU_ADDRESS, 2, I2C_AutoEnd_Mode, I2C_Generate_Start_Write );
   //SE_WaitForI2CFlag( I2C_ISR_TXIS );
-	delay(48000000/8/100);
-
+	delay(ONE_THOUSEND_SECOND);
+	/*
   // Write eeprom address
   I2C_SendData(I2C1, addr >> 8);       // Address High byte
   //SE_WaitForI2CFlag(I2C_ISR_TXIS);
-	delay(48000000/8/100);
+	delay(ONE_THOUSEND_SECOND);
   I2C_SendData(I2C1, addr & 0x00FF);   // Address Low byte
   //SE_WaitForI2CFlag(I2C_ISR_TXIS);
-	delay(48000000/8/100);
-
+	delay(ONE_THOUSEND_SECOND);
+	*/
   // Write data
   I2C_SendData(I2C1, data);
     
   // Wait for- and clear stop condition
-	delay(48000000/8/100);
+	delay(ONE_THOUSEND_SECOND);
   //SE_WaitForI2CFlag(I2C_ISR_STOPF);
   I2C_ClearFlag(I2C1, I2C_ICR_STOPCF);
 }
@@ -196,27 +240,27 @@ uint16_t MPU6050_ReadData(uint16_t addr)
 	
   // Wait while I2C peripheral is not ready
   //SE_WaitForI2CFlag(I2C_ISR_BUSY);
-	delay(SystemCoreClock/8/100);
+	delay(ONE_THOUSEND_SECOND);
 
   // Start I2C write transfer for 2 bytes, do not end transfer (SoftEnd_Mode)
   I2C_TransferHandling(I2C1, MPU_ADDRESS, 1, I2C_SoftEnd_Mode, I2C_Generate_Start_Write);
   //SE_WaitForI2CFlag(I2C_ISR_TXIS);
-	delay(SystemCoreClock/8/100);
+	delay(ONE_THOUSEND_SECOND);
 
   // Write eeprom address
   I2C_SendData(I2C1, addr);       // Address High byte
-	delay(SystemCoreClock/8/100);
+	delay(ONE_THOUSEND_SECOND);
   // Repeated start I2C read transfer for 1 byte
-  I2C_TransferHandling(I2C1, MPU_ADDRESS, 1, I2C_AutoEnd_Mode, I2C_Generate_Start_Read);
+  I2C_TransferHandling(I2C1, MPU_ADDRESS, 2, I2C_AutoEnd_Mode, I2C_Generate_Start_Read);
   //SE_WaitForI2CFlag(I2C_ISR_RXNE);
-	delay(SystemCoreClock/8/100);
+	delay(ONE_THOUSEND_SECOND);
   
   // Read data
   data = I2C_ReceiveData(I2C1);
     
   // Wait for- and clear stop condition
   //SE_WaitForI2CFlag(I2C_ISR_STOPF);
-	delay(SystemCoreClock/8/100);
+	delay(ONE_THOUSEND_SECOND);
   I2C1->ICR = I2C_ICR_STOPCF;
   
   return( data );

@@ -29,11 +29,13 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_it.h"
-#include "STM32F0_discovery.h"
+//#include "STM32F0_discovery.h"
 
 // ----------------------------------------------------------------------------
 // Global variables
 // ----------------------------------------------------------------------------
+
+int LEDState = 0;
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -119,8 +121,21 @@ void TIM3_IRQHandler(void)
   if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
   {
     TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
-    STM_EVAL_LEDToggle(LED4);
   }
+}
+
+void I2C1_IRQnHandler(void)
+{
+	if(LEDState)
+	{
+		GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_RESET); //RED
+		LEDState = 0;
+	} else 
+	{
+		GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_SET); //RED
+		LEDState = 1;
+	}
+	
 }
 
 /**
