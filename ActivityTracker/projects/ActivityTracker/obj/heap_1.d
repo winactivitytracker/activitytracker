@@ -6,7 +6,7 @@
 .\obj\heap_1.o: .\RTE\RTOS\FreeRTOSConfig.h
 .\obj\heap_1.o: C:\Users\toonh\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\CMSIS\RTOS2\FreeRTOS\Include\freertos_evr.h
 .\obj\heap_1.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\obj\heap_1.o: .\RTE\_ActivityTrackerF0\RTE_Components.h
+.\obj\heap_1.o: .\RTE\_ActivityTrackerF4\RTE_Components.h
 .\obj\heap_1.o: C:\Users\toonh\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\Source\include\projdefs.h
 .\obj\heap_1.o: C:\Users\toonh\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\Source\include\portable.h
 .\obj\heap_1.o: C:\Users\toonh\AppData\Local\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\Source\include\deprecated_definitions.h

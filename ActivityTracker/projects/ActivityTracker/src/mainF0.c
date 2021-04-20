@@ -4,6 +4,7 @@
 #include <task.h>
 
 void delay(const int d);
+void initGpio(void);
 
 void vPeriodicTask(void *pvParameters)
 {
@@ -34,27 +35,7 @@ void vPeriodicTask2(void *pvParameters)
 
 int main()
 {
-  GPIO_InitTypeDef gpioA;
-    GPIO_InitTypeDef gpioB;
-    
-    GPIO_StructInit(&gpioA);
-    GPIO_StructInit(&gpioB);
-
-    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
-    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
-    
-    gpioA.GPIO_Pin        = GPIO_Pin_2;
-    gpioA.GPIO_PuPd        = GPIO_PuPd_NOPULL;
-    gpioA.GPIO_Speed    = GPIO_Speed_Level_2;
-    gpioA.GPIO_Mode        = GPIO_Mode_OUT;
-    
-    gpioB.GPIO_Pin        = GPIO_Pin_2;
-    gpioB.GPIO_PuPd        = GPIO_PuPd_NOPULL;
-    gpioB.GPIO_Speed    = GPIO_Speed_Level_2;
-    gpioB.GPIO_Mode        = GPIO_Mode_OUT;
-
-    GPIO_Init(GPIOA, &gpioA);
-    GPIO_Init(GPIOB, &gpioB);
+	initGpio();
 	
   xTaskCreate(vPeriodicTask, "My Task", 256, NULL, 1, NULL);
   xTaskCreate(vPeriodicTask2, "My Task2", 256, NULL, 2, NULL);
@@ -67,4 +48,28 @@ int main()
   for (;;){
 		
 	}
+}
+
+void initGpio(void){
+		GPIO_InitTypeDef gpioA;
+    GPIO_InitTypeDef gpioB;
+    
+    GPIO_StructInit(&gpioA);
+    GPIO_StructInit(&gpioB);
+
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+    
+    gpioA.GPIO_Pin        = GPIO_Pin_2;
+    gpioA.GPIO_PuPd       = GPIO_PuPd_NOPULL;
+    gpioA.GPIO_Speed    	= GPIO_Speed_Level_2;
+    gpioA.GPIO_Mode       = GPIO_Mode_OUT;
+    
+    gpioB.GPIO_Pin        = GPIO_Pin_2;
+    gpioB.GPIO_PuPd       = GPIO_PuPd_NOPULL;
+    gpioB.GPIO_Speed    	= GPIO_Speed_Level_2;
+    gpioB.GPIO_Mode       = GPIO_Mode_OUT;
+
+    GPIO_Init(GPIOA, &gpioA);
+    GPIO_Init(GPIOB, &gpioB);
 }

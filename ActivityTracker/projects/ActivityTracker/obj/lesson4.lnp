@@ -1,6 +1,6 @@
 --cpu Cortex-M0
-".\obj\mainf0.o"
 ".\obj\stm32f0xx_it.o"
+".\obj\mainf4.o"
 ".\obj\stm32f0_discovery.o"
 ".\obj\stm32f0xx_exti.o"
 ".\obj\stm32f0xx_gpio.o"

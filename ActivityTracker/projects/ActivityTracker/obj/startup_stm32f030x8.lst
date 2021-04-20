@@ -346,7 +346,7 @@ ARM Macro Assembler    Page 6
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M0 --apcs=interw
 ork --depend=.\obj\startup_stm32f030x8.d -o.\obj\startup_stm32f030x8.o -I.\RTE\
-RTOS -I.\RTE\_ActivityTrackerF0 -IC:\Users\toonh\AppData\Local\Arm\Packs\ARM\CM
+RTOS -I.\RTE\_ActivityTrackerF4 -IC:\Users\toonh\AppData\Local\Arm\Packs\ARM\CM
 SIS-FreeRTOS\10.3.0\CMSIS\RTOS2\FreeRTOS\Include -IC:\Users\toonh\AppData\Local
 \Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\Source\include -IC:\Users\toonh\AppData\Lo
 cal\Arm\Packs\ARM\CMSIS-FreeRTOS\10.3.0\Source\portable\RVDS\ARM_CM0 -IC:\Users
