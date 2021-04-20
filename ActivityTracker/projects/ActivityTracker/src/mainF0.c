@@ -13,6 +13,12 @@
 #define ONE_SECOND         					(SystemCoreClock/8)
 
 #define MPU_ADDRESS 0xD0 //0x68
+#define MPU_6050_TIMEOUT            ((uint32_t)(0x00001000))
+
+#define MPU_6050_COMM_OK            (0x0)
+#define MPU_6050_COMM_ERROR         (0x1)
+
+uint32_t MPU_6050_CommStatus = MPU_6050_COMM_OK;
 
 uint8_t readGyro[6];
 uint16_t gyroXRAW, gZ;
@@ -23,7 +29,7 @@ void I2C_Setup(void);
 void MPU6050_WriteData(uint16_t addr, uint8_t data);
 uint16_t MPU6050_ReadData(uint16_t addr);
 void delay(const int d);
-//void SE_WaitForI2CFlag(uint32_t flag);
+void MPU_WaitForI2CFlag(uint32_t flag);
 
 void vPeriodicTask(void *pvParameters)
 {
@@ -37,6 +43,15 @@ void vPeriodicTask(void *pvParameters)
 		readGyro[1] = MPU6050_ReadData(0x44);
 		gyroXRAW = (int16_t)(readGyro[0] << 8 | readGyro [1]);
 		gZ = gyroXRAW/16384.0;
+		if(MPU_6050_CommStatus == MPU_6050_COMM_OK)
+		{
+			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_RESET); //RED
+			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_SET); //GREEN
+		} else
+		{
+			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_SET); //RED
+			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_RESET); //GREEN
+		}
 		
   }
 }
@@ -88,7 +103,8 @@ int main()
 			MPU6050_WriteData(0x1B, 0x00);
 			MPU6050_WriteData(0x1C, 0x00);
 		}
-		
+		delay(HALF_SECOND);
+		GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_RESET); //GREEN
 		
 	
   xTaskCreate(vPeriodicTask, "My Task", 256, NULL, 1, NULL);
@@ -209,28 +225,28 @@ void I2C_Setup(void)
 void MPU6050_WriteData(uint16_t addr, uint8_t data)
 {
   // Wait while I2C peripheral is not ready
-  //SE_WaitForI2CFlag( I2C_ISR_BUSY );
-	delay(ONE_THOUSEND_SECOND);
+  MPU_WaitForI2CFlag( I2C_ISR_BUSY );
+	//delay(ONE_THOUSEND_SECOND);
 
   // Start I2C write transfer for 3 bytes
   I2C_TransferHandling( I2C1, MPU_ADDRESS, 2, I2C_AutoEnd_Mode, I2C_Generate_Start_Write );
-  //SE_WaitForI2CFlag( I2C_ISR_TXIS );
-	delay(ONE_THOUSEND_SECOND);
-	/*
+  MPU_WaitForI2CFlag( I2C_ISR_TXIS );
+	//delay(ONE_THOUSEND_SECOND);
+	
   // Write eeprom address
   I2C_SendData(I2C1, addr >> 8);       // Address High byte
-  //SE_WaitForI2CFlag(I2C_ISR_TXIS);
-	delay(ONE_THOUSEND_SECOND);
+  MPU_WaitForI2CFlag(I2C_ISR_TXIS);
+	//delay(ONE_THOUSEND_SECOND);
   I2C_SendData(I2C1, addr & 0x00FF);   // Address Low byte
-  //SE_WaitForI2CFlag(I2C_ISR_TXIS);
-	delay(ONE_THOUSEND_SECOND);
-	*/
+  MPU_WaitForI2CFlag(I2C_ISR_TXIS);
+	//delay(ONE_THOUSEND_SECOND);
+	
   // Write data
   I2C_SendData(I2C1, data);
     
   // Wait for- and clear stop condition
-	delay(ONE_THOUSEND_SECOND);
-  //SE_WaitForI2CFlag(I2C_ISR_STOPF);
+	//delay(ONE_THOUSEND_SECOND);
+  MPU_WaitForI2CFlag(I2C_ISR_STOPF);
   I2C_ClearFlag(I2C1, I2C_ICR_STOPCF);
 }
 
@@ -239,31 +255,59 @@ uint16_t MPU6050_ReadData(uint16_t addr)
   uint8_t data = 0x00;
 	
   // Wait while I2C peripheral is not ready
-  //SE_WaitForI2CFlag(I2C_ISR_BUSY);
-	delay(ONE_THOUSEND_SECOND);
+  MPU_WaitForI2CFlag(I2C_ISR_BUSY);
+	//delay(ONE_THOUSEND_SECOND);
 
   // Start I2C write transfer for 2 bytes, do not end transfer (SoftEnd_Mode)
   I2C_TransferHandling(I2C1, MPU_ADDRESS, 1, I2C_SoftEnd_Mode, I2C_Generate_Start_Write);
-  //SE_WaitForI2CFlag(I2C_ISR_TXIS);
-	delay(ONE_THOUSEND_SECOND);
+  MPU_WaitForI2CFlag(I2C_ISR_TXIS);
+	//delay(ONE_THOUSEND_SECOND);
 
   // Write eeprom address
   I2C_SendData(I2C1, addr);       // Address High byte
-	delay(ONE_THOUSEND_SECOND);
+	//delay(ONE_THOUSEND_SECOND);
   // Repeated start I2C read transfer for 1 byte
   I2C_TransferHandling(I2C1, MPU_ADDRESS, 2, I2C_AutoEnd_Mode, I2C_Generate_Start_Read);
-  //SE_WaitForI2CFlag(I2C_ISR_RXNE);
-	delay(ONE_THOUSEND_SECOND);
+  MPU_WaitForI2CFlag(I2C_ISR_RXNE);
+	//delay(ONE_THOUSEND_SECOND);
   
   // Read data
   data = I2C_ReceiveData(I2C1);
     
   // Wait for- and clear stop condition
-  //SE_WaitForI2CFlag(I2C_ISR_STOPF);
-	delay(ONE_THOUSEND_SECOND);
+  MPU_WaitForI2CFlag(I2C_ISR_STOPF);
+	//delay(ONE_THOUSEND_SECOND);
   I2C1->ICR = I2C_ICR_STOPCF;
   
   return( data );
+}
+
+void MPU_WaitForI2CFlag(uint32_t flag)
+{
+  uint32_t timeout = MPU_6050_TIMEOUT;
+  
+  if(flag == I2C_ISR_BUSY)
+  {
+    while(I2C_GetFlagStatus(I2C1, flag) != RESET)
+    {
+      if(timeout-- == 0)
+      {
+        MPU_6050_CommStatus = MPU_6050_COMM_ERROR;
+        return;
+      }
+    }
+  }
+  else
+  {
+    while(I2C_GetFlagStatus(I2C1, flag) == RESET)
+    {
+      if(timeout-- == 0)
+      {
+        MPU_6050_CommStatus = MPU_6050_COMM_ERROR;
+        return;
+      }
+    }
+  }
 }
 
 #pragma push
