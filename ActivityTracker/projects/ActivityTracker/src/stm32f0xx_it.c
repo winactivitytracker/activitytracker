@@ -29,6 +29,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_it.h"
+#include "main.h"
 //#include "STM32F0_discovery.h"
 
 // ----------------------------------------------------------------------------
@@ -36,6 +37,7 @@
 // ----------------------------------------------------------------------------
 
 int LEDState = 0;
+extern uint32_t MPU_6050_CommStatus;
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -126,6 +128,18 @@ void TIM3_IRQHandler(void)
 
 void I2C1_IRQnHandler(void)
 {
+	if(I2C_GetITStatus(I2C1, I2C_IT_TXIS) != RESET)
+	{
+		I2C_ClearITPendingBit(I2C1, I2C_IT_TXIS);
+	}
+	if(I2C_GetITStatus(I2C1, I2C_IT_RXNE) != RESET)
+	{
+		I2C_ClearITPendingBit(I2C1, I2C_IT_RXNE);
+	}
+	if(I2C_GetITStatus(I2C1, I2C_IT_TIMEOUT) != RESET)
+	{
+		I2C_ClearITPendingBit(I2C1, I2C_IT_TIMEOUT);
+	}
 	if(LEDState)
 	{
 		GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_RESET); //RED

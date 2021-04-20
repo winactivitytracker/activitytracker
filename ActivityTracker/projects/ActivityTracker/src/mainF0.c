@@ -1,22 +1,10 @@
 #include "stm32f0xx.h"
+#include "stm32f0xx_it.h"
+#include "main.h"
 #include "stdbool.h"
 #include "stm32f0xx_i2c.h"
 #include <FreeRTOS.h>
 #include <task.h>
-
-#define ONE_TENTHOUSEND_SECOND  		(SystemCoreClock/8/10000)
-#define ONE_THOUSEND_SECOND  				(SystemCoreClock/8/1000)
-#define ONE_HUNDERDTH_SECOND  			(SystemCoreClock/8/100)
-#define ONE_FIFTYTH_SECOND  				(SystemCoreClock/8/50)
-#define ONE_TENTH_SECOND  					(SystemCoreClock/8/10)
-#define HALF_SECOND   							(SystemCoreClock/8/5)
-#define ONE_SECOND         					(SystemCoreClock/8)
-
-#define MPU_ADDRESS 0xD0 //0x68
-#define MPU_6050_TIMEOUT            ((uint32_t)(0x00001000))
-
-#define MPU_6050_COMM_OK            (0x0)
-#define MPU_6050_COMM_ERROR         (0x1)
 
 uint32_t MPU_6050_CommStatus = MPU_6050_COMM_OK;
 
@@ -30,11 +18,12 @@ void MPU6050_WriteData(uint16_t addr, uint8_t data);
 uint16_t MPU6050_ReadData(uint16_t addr);
 void delay(const int d);
 void MPU_WaitForI2CFlag(uint32_t flag);
+uint8_t check_comm();
 
 void vPeriodicTask(void *pvParameters)
 {
   // Establish the task's period.
-  const TickType_t xDelay = pdMS_TO_TICKS(1000);
+  const TickType_t xDelay = pdMS_TO_TICKS(50);
   TickType_t xLastWakeTime = xTaskGetTickCount();
   for (;;) {
     // Block until the next release time.
@@ -43,16 +32,7 @@ void vPeriodicTask(void *pvParameters)
 		readGyro[1] = MPU6050_ReadData(0x44);
 		gyroXRAW = (int16_t)(readGyro[0] << 8 | readGyro [1]);
 		gZ = gyroXRAW/16384.0;
-		if(MPU_6050_CommStatus == MPU_6050_COMM_OK)
-		{
-			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_RESET); //RED
-			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_SET); //GREEN
-		} else
-		{
-			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_SET); //RED
-			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_RESET); //GREEN
-		}
-		
+	  check_comm();
   }
 }
 /*
@@ -99,9 +79,17 @@ int main()
 		if(enable_MPU())
 		{
 			MPU6050_WriteData(0x6B, 0x00);
+			delay(ONE_THOUSEND_SECOND);
+			check_comm();
 			MPU6050_WriteData(0x19, 0x07);
+			delay(ONE_THOUSEND_SECOND);
+			check_comm();
 			MPU6050_WriteData(0x1B, 0x00);
+			delay(ONE_THOUSEND_SECOND);
+			check_comm();
 			MPU6050_WriteData(0x1C, 0x00);
+			delay(ONE_THOUSEND_SECOND);
+			check_comm();
 		}
 		delay(HALF_SECOND);
 		GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_RESET); //GREEN
@@ -118,6 +106,21 @@ int main()
   for (;;){
 		
 	}
+}
+
+uint8_t check_comm()
+{
+	if(MPU_6050_CommStatus == MPU_6050_COMM_OK)
+		{
+			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_RESET); //RED
+			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_SET); //GREEN
+			return 0;
+		} else
+		{
+			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_SET); //RED
+			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_RESET); //GREEN
+			return 1;
+		}
 }
 
 bool enable_MPU(void)
@@ -139,7 +142,7 @@ void I2C_Setup(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
   I2C_InitTypeDef  I2C_InitStructure;
-	NVIC_InitTypeDef        NVIC_InitStructure;
+  NVIC_InitTypeDef        NVIC_InitStructure;
   
   // Set I2C1 clock to SYSCLK (see system_stm32f0.c)
   RCC_I2CCLKConfig(RCC_I2C1CLK_SYSCLK);
@@ -234,11 +237,13 @@ void MPU6050_WriteData(uint16_t addr, uint8_t data)
 	//delay(ONE_THOUSEND_SECOND);
 	
   // Write eeprom address
-  I2C_SendData(I2C1, addr >> 8);       // Address High byte
+  I2C_SendData(I2C1, addr);       // Address High byte
   MPU_WaitForI2CFlag(I2C_ISR_TXIS);
+	//I2C_TransferHandling(I2C1, MPU_ADDRESS, 2, I2C_AutoEnd_Mode, I2C_Generate_Start_Read);
+	//MPU_WaitForI2CFlag(I2C_ISR_TXIS);
 	//delay(ONE_THOUSEND_SECOND);
-  I2C_SendData(I2C1, addr & 0x00FF);   // Address Low byte
-  MPU_WaitForI2CFlag(I2C_ISR_TXIS);
+  //I2C_SendData(I2C1, addr & 0x00FF);   // Address Low byte
+  //MPU_WaitForI2CFlag(I2C_ISR_TXIS);
 	//delay(ONE_THOUSEND_SECOND);
 	
   // Write data
@@ -247,7 +252,7 @@ void MPU6050_WriteData(uint16_t addr, uint8_t data)
   // Wait for- and clear stop condition
 	//delay(ONE_THOUSEND_SECOND);
   MPU_WaitForI2CFlag(I2C_ISR_STOPF);
-  I2C_ClearFlag(I2C1, I2C_ICR_STOPCF);
+  I2C1->ICR = I2C_ICR_STOPCF;
 }
 
 uint16_t MPU6050_ReadData(uint16_t addr)
@@ -267,7 +272,7 @@ uint16_t MPU6050_ReadData(uint16_t addr)
   I2C_SendData(I2C1, addr);       // Address High byte
 	//delay(ONE_THOUSEND_SECOND);
   // Repeated start I2C read transfer for 1 byte
-  I2C_TransferHandling(I2C1, MPU_ADDRESS, 2, I2C_AutoEnd_Mode, I2C_Generate_Start_Read);
+  I2C_TransferHandling(I2C1, MPU_ADDRESS, 1, I2C_AutoEnd_Mode, I2C_Generate_Start_Read);
   MPU_WaitForI2CFlag(I2C_ISR_RXNE);
 	//delay(ONE_THOUSEND_SECOND);
   
