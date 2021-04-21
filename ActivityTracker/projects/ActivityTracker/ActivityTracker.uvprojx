@@ -503,6 +503,16 @@
               <FileType>5</FileType>
               <FilePath>.\inc\main.h</FilePath>
             </File>
+            <File>
+              <FileName>I2C_main.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\inc\I2C_main.h</FilePath>
+            </File>
+            <File>
+              <FileName>I2C_main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\I2C_main.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1072,6 +1082,16 @@
               <FileName>main.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\inc\main.h</FilePath>
+            </File>
+            <File>
+              <FileName>I2C_main.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\inc\I2C_main.h</FilePath>
+            </File>
+            <File>
+              <FileName>I2C_main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\I2C_main.c</FilePath>
             </File>
           </Files>
         </Group>

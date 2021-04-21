@@ -30,6 +30,7 @@
 .\obj\mainf0.o: ..\..\libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h
 .\obj\mainf0.o: .\inc\stm32f0xx_it.h
 .\obj\mainf0.o: .\inc\main.h
+.\obj\mainf0.o: .\inc\I2C_main.h
 .\obj\mainf0.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\obj\mainf0.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS-FreeRTOS\10.3.1\Source\include\FreeRTOS.h
 .\obj\mainf0.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
