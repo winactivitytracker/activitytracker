@@ -9,6 +9,4 @@
 #define HALF_SECOND   							(SystemCoreClock/8/5)
 #define ONE_SECOND         					(SystemCoreClock/8)
 
-#define MPU_ADDRESS 0xD0 //0x68
-
 #endif //__main_h
