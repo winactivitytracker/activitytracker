@@ -1,19 +1,15 @@
 #include "stm32f0xx.h"
 #include "stm32f0xx_it.h"
 #include "main.h"
-#include "stm32f0xx_i2c.h"
-#include "I2C_main.h"
-#include "MPU_6050_main.h"
-#include "USART_main.h"
-#include "stdbool.h"
 #include <FreeRTOS.h>
 #include <task.h>
 
 extern uint32_t I2C_CommStatus;
 
 void delay(const int d);
-uint8_t check_comm(void);
 void init_LED(void);
+
+char UartBuffer[32];
 
 uint16_t aX, aY, aZ, gX, gY, gZ, lastRead;
 
@@ -25,28 +21,6 @@ void vPeriodicTask(void *pvParameters)
     for (;;) {
         // Block until the next release time.
         vTaskDelayUntil(&xLastWakeTime, xDelay);
-		MPU_wakeup();
-		MPU_read_all(&aX, &aY, &aZ, &gX, &gY, &gZ);
-		MPU_sleep();
-		/*
-		if(lastRead == aX)
-		{
-			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_SET); //RED
-			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_RESET); //GREEN
-		} else
-		{
-			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_RESET); //RED
-			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_SET); //GREEN
-		}
-		*/
-		USART_print_number(aX, "\naX RAW: ");
-		USART_print_number(aY, "\naY RAW: ");
-		USART_print_number(aZ, "\naZ RAW: ");
-		USART_print_number(gX, "\ngX RAW: ");
-		USART_print_number(gY, "\ngY RAW: ");
-		USART_print_number(gZ, "\ngZ RAW: ");
-		lastRead = aX;
-	    //check_comm();
   }
 }
 /*
@@ -67,24 +41,12 @@ void vPeriodicTask2(void *pvParameters)
 int main()
 {
 	init_LED();
-	lastRead = 0;	
 	USART_Setup();
 	USART_Clearscreen();
 	I2C_Setup(false);
-	/*
-	if(!init_MPU())
-	{
-		GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_SET); //RED
-		GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_RESET); //GREEN
-	}
-	*/
-	init_MPU();
-	MPU_read_all(&aX, &aY, &aZ, &gX, &gY, &gZ);
-	MPU_sleep();
-	lastRead = aX;
-	GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_RESET); //RED
-	GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_RESET); //GREEN
-		
+	
+	max30102_init();
+	//USART_print_number(I2C_ReadData(0xae, 1, 0x09), "\nMAX Number: ");
 	
     xTaskCreate(vPeriodicTask, "My Task", 256, NULL, 1, NULL);
     //xTaskCreate(vPeriodicTask2, "My Task2", 256, NULL, 2, NULL);
@@ -122,21 +84,6 @@ void init_LED(void)
 
     GPIO_Init(GPIOA, &gpioA);
     GPIO_Init(GPIOB, &gpioB);
-}
-
-uint8_t check_comm(void)
-{
-	if(I2C_CommStatus == I2C_COMM_OK)
-		{
-			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_RESET); //RED
-			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_SET); //GREEN
-			return 0;
-		} else
-		{
-			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_SET); //RED
-			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_RESET); //GREEN
-			return 1;
-		}
 }
 
 #pragma push

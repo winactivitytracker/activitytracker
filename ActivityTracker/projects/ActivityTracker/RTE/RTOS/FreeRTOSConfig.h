@@ -105,11 +105,11 @@ extern uint32_t SystemCoreClock;
   #define configPRIO_BITS                     __NVIC_PRIO_BITS
 #else
   /* 7 priority levels */
-  #define configPRIO_BITS                     3
+  #define configPRIO_BITS                     4
 #endif
 
 /* The lowest interrupt priority that can be used in a call to a "set priority" function. */
-#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY       0x07
+#define configLIBRARY_LOWEST_INTERRUPT_PRIORITY       0x0F
 
 /* The highest interrupt priority that can be used by any interrupt service
  * routine that makes calls to interrupt safe FreeRTOS API functions.  DO NOT

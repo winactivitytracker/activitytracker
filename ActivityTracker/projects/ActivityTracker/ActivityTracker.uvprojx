@@ -533,6 +533,16 @@
               <FileType>5</FileType>
               <FilePath>.\inc\USART_main.h</FilePath>
             </File>
+            <File>
+              <FileName>MAX30102_main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\MAX30102_main.c</FilePath>
+            </File>
+            <File>
+              <FileName>MAX30102_main.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\inc\MAX30102_main.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -734,11 +744,11 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4100</DriverSelection>
+            <DriverSelection>4101</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
-          <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash2>STLink\ST-LINKIII-KEIL_SWO.dll</Flash2>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -1133,6 +1143,16 @@
               <FileType>5</FileType>
               <FilePath>.\inc\USART_main.h</FilePath>
             </File>
+            <File>
+              <FileName>MAX30102_main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\MAX30102_main.c</FilePath>
+            </File>
+            <File>
+              <FileName>MAX30102_main.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\inc\MAX30102_main.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1225,7 +1245,7 @@
           <targetInfo name="ActivityTrackerF4"/>
         </targetInfos>
       </component>
-      <component Cbundle="FreeRTOS" Cclass="RTOS" Cgroup="Heap" Cvariant="Heap_1" Cvendor="ARM" Cversion="10.3.1" condition="FreeRTOS Heap">
+      <component Cbundle="FreeRTOS" Cclass="RTOS" Cgroup="Heap" Cvariant="Heap_4" Cvendor="ARM" Cversion="10.3.1" condition="FreeRTOS Heap">
         <package license="License/license.txt" name="CMSIS-FreeRTOS" schemaVersion="1.4" url="http://www.keil.com/pack/" vendor="ARM" version="10.3.1"/>
         <targetInfos>
           <targetInfo name="ActivityTrackerF0"/>

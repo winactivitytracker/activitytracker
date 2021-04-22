@@ -157,3 +157,18 @@ void I2C_WaitForI2CFlag(uint32_t flag)
     }
   }
 }
+
+uint8_t check_comm(void)
+{
+	if(I2C_CommStatus == I2C_COMM_OK)
+		{
+			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_RESET); //RED
+			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_SET); //GREEN
+			return 0;
+		} else
+		{
+			GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_SET); //RED
+			GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_RESET); //GREEN
+			return 1;
+		}
+}

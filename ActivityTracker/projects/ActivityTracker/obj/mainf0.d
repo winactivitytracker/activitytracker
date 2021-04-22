@@ -36,6 +36,7 @@
 .\obj\mainf0.o: .\inc\USART_main.h
 .\obj\mainf0.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\obj\mainf0.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\obj\mainf0.o: .\inc\MAX30102_main.h
 .\obj\mainf0.o: C:\Keil_v5\ARM\PACK\ARM\CMSIS-FreeRTOS\10.3.1\Source\include\FreeRTOS.h
 .\obj\mainf0.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 .\obj\mainf0.o: .\RTE\RTOS\FreeRTOSConfig.h

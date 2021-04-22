@@ -30,3 +30,10 @@
 .\obj\stm32f0xx_it.o: ..\..\libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_wwdg.h
 .\obj\stm32f0xx_it.o: ..\..\libraries\STM32F0xx_StdPeriph_Driver\inc\stm32f0xx_misc.h
 .\obj\stm32f0xx_it.o: .\inc\main.h
+.\obj\stm32f0xx_it.o: .\inc\I2C_main.h
+.\obj\stm32f0xx_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\obj\stm32f0xx_it.o: .\inc\MPU_6050_main.h
+.\obj\stm32f0xx_it.o: .\inc\USART_main.h
+.\obj\stm32f0xx_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\obj\stm32f0xx_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\obj\stm32f0xx_it.o: .\inc\MAX30102_main.h
