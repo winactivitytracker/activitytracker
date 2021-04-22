@@ -3,6 +3,7 @@
 ".\obj\stm32f0xx_it.o"
 ".\obj\i2c_main.o"
 ".\obj\mpu_6050_main.o"
+".\obj\usart_main.o"
 ".\obj\stm32f0_discovery.o"
 ".\obj\stm32f0xx_exti.o"
 ".\obj\stm32f0xx_gpio.o"

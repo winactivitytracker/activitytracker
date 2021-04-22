@@ -5,10 +5,10 @@ bool init_MPU(void)
 {
 	if(MPU_available())
 	{
-		I2C_WriteData(MPU_ADDRESS, 2, 0x6B, 0x00);
-		I2C_WriteData(MPU_ADDRESS ,2, 0x19, 0x07);
-		I2C_WriteData(MPU_ADDRESS, 2, 0x1B, 0x00);
-		I2C_WriteData(MPU_ADDRESS, 2, 0x1C, 0x00);
+		MPU_wakeup();								//wake up
+		I2C_WriteData(MPU_ADDRESS ,2, 0x19, 0x07);	//set speed at 1Khz
+		MPU_set_accel(2);							//standard setup, Accel at 2G
+		MPU_set_gyro(2);							//standard setup, Gyro at 250 D/S
 		return true;
 	} else
 	{
@@ -39,7 +39,6 @@ uint16_t MPU_read_data(uint16_t addr)
 void MPU_read_accel(uint16_t *AXRAW, uint16_t *AYRAW, uint16_t *AZRAW)
 {
 	uint8_t registerArray[6];
-	//uint16_t tempData;
 	registerArray[0] = MPU_read_data(0x3B);
 	registerArray[1] = MPU_read_data(0x3C);
 	registerArray[2] = MPU_read_data(0x3D);
@@ -54,7 +53,6 @@ void MPU_read_accel(uint16_t *AXRAW, uint16_t *AYRAW, uint16_t *AZRAW)
 void MPU_read_gyro(uint16_t *GXRAW, uint16_t *GYRAW, uint16_t *GZRAW)
 {
 	uint8_t registerArray[6];
-	//uint16_t tempData;
 	registerArray[0] = MPU_read_data(0x43);
 	registerArray[1] = MPU_read_data(0x44);
 	registerArray[2] = MPU_read_data(0x45);
@@ -70,4 +68,48 @@ void MPU_read_all(uint16_t *AXRAW, uint16_t *AYRAW, uint16_t *AZRAW, uint16_t *G
 {
 	MPU_read_accel(AXRAW, AYRAW, AZRAW);
 	MPU_read_gyro(GXRAW, GYRAW, GZRAW);
+}
+
+void MPU_set_accel(uint8_t acceleration)
+{
+	if(acceleration == 2)
+	{
+		I2C_WriteData(MPU_ADDRESS, 2, 0x1B, MPU_A2G);
+	} else if(acceleration == 4)
+	{
+		I2C_WriteData(MPU_ADDRESS, 2, 0x1B, MPU_A4G);
+	} else if(acceleration == 8)
+	{
+		I2C_WriteData(MPU_ADDRESS, 2, 0x1B, MPU_A8G);
+	} else if(acceleration == 16)
+	{
+		I2C_WriteData(MPU_ADDRESS, 2, 0x1B, MPU_A16G);
+	}
+}
+
+void MPU_set_gyro(uint8_t gyroSpeed)
+{
+	if(gyroSpeed == 2)
+	{
+		I2C_WriteData(MPU_ADDRESS, 2, 0x1C, MPU_G250G);
+	} else if(gyroSpeed == 5)
+	{
+		I2C_WriteData(MPU_ADDRESS, 2, 0x1C, MPU_G500G);
+	} else if(gyroSpeed == 10)
+	{
+		I2C_WriteData(MPU_ADDRESS, 2, 0x1C, MPU_G1000G);
+	} else if(gyroSpeed == 20)
+	{
+		I2C_WriteData(MPU_ADDRESS, 2, 0x1C, MPU_G2000G);
+	}
+}
+
+void MPU_sleep(void)
+{
+	I2C_WriteData(MPU_ADDRESS, 2, 0x6B, 0x40);
+}
+
+void MPU_wakeup(void)
+{
+	I2C_WriteData(MPU_ADDRESS, 2, 0x6B, 0x00);
 }
