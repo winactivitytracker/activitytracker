@@ -28,13 +28,13 @@ void vPeriodicTask(void *pvParameters)
         vTaskDelayUntil(&xLastWakeTime, xDelay);
 		//sprintf(UartBuffer, "%i", max30102_getHeartRate());
 		//max30102_ON();
-		//max30102_cal();
-		//heartRate = max30102_getHeartRate();
-		//Spo2 = max30102_getSpO2();
-		//Spo2 = Spo2 % 10;
-		//heartRate = heartRate % 10;
-		//USART_print_number(heartRate, "\nHeartRate: ");
-		//USART_print_number(Spo2, "\nOxy: ");
+		max30102_cal();
+		heartRate = max30102_getHeartRate();
+		Spo2 = max30102_getSpO2();
+		Spo2 = Spo2 % 10;
+		heartRate = heartRate % 10;
+		USART_print_number(heartRate, "\nHeartRate: ");
+		USART_print_number(Spo2, "\nOxy: ");
 		//max30102_OFF();
 		
 		
@@ -64,7 +64,7 @@ int main()
 	initTimer14();
 	initTimer14Interrupt();
 	
-	//max30102_init();
+	max30102_init();
 	//USART_print_number(I2C_ReadData(0xae, 1, 0x09), "\nMAX Number: ");
 	
     xTaskCreate(vPeriodicTask, "My Task", 256, NULL, 1, NULL);
