@@ -12,6 +12,7 @@ void I2C_Setup(bool intSetup);
 void I2C_int_setup(void);
 void I2C_WriteData(uint16_t hardwareaddr, uint8_t amountOfBytes, uint16_t addr, uint8_t data);
 uint16_t I2C_ReadData(uint16_t hardwareaddr, uint8_t amountOfBytes, uint16_t addr);
+void I2C_readData_array(uint16_t hardwareaddr, uint8_t *dataArray, uint8_t amountOfBytes, uint16_t addr);
 void I2C_WaitForI2CFlag(uint32_t flag);
 uint8_t check_comm(void);
 

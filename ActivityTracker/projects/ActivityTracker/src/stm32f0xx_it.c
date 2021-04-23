@@ -152,6 +152,24 @@ void I2C1_IRQnHandler(void)
 	
 }
 
+void TIM14_IRQHandler(void)
+{
+	static bool outputOn = false;
+	if(TIM_GetITStatus(TIM14, TIM_IT_Update) != RESET)
+	{
+		TIM_ClearITPendingBit(TIM14, TIM_IT_Update);
+		if(outputOn)
+		{
+			GPIO_WriteBit(GPIOB, GPIO_Pin_3, Bit_RESET);
+			outputOn = false;
+		} else
+		{
+			GPIO_WriteBit(GPIOB, GPIO_Pin_3, Bit_SET);
+			outputOn = true;
+		}
+	}
+}
+
 /**
   * @}
   */

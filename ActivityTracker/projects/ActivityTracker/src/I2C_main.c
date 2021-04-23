@@ -130,6 +130,31 @@ uint16_t I2C_ReadData(uint16_t hardwareaddr, uint8_t amountOfBytes, uint16_t add
   return( data );
 }
 
+void I2C_readData_array(uint16_t hardwareaddr, uint8_t *dataArray, uint8_t amountOfBytes, uint16_t addr)
+{
+	uint8_t i;
+	// Wait while I2C peripheral is not ready
+    I2C_WaitForI2CFlag(I2C_ISR_BUSY);
+	
+    // Start I2C write transfer for 1 byte(hardware address), do not end transfer (SoftEnd_Mode)
+    I2C_TransferHandling(I2C1, hardwareaddr, 1, I2C_SoftEnd_Mode, I2C_Generate_Start_Write);
+    I2C_WaitForI2CFlag(I2C_ISR_TXIS);
+	
+    // Write I2C device address
+    I2C_SendData(I2C1, addr);
+	for(i = 0; i < amountOfBytes; i++)
+	{
+		// Repeated start I2C read transfer for 1 byte
+		I2C_TransferHandling(I2C1, hardwareaddr, 1, I2C_AutoEnd_Mode, I2C_Generate_Start_Read);
+		I2C_WaitForI2CFlag(I2C_ISR_RXNE);
+		dataArray[i] = I2C_ReceiveData(I2C1);
+	}
+	// Wait for- and clear stop condition
+    I2C_WaitForI2CFlag(I2C_ISR_STOPF);
+	
+    I2C1->ICR = I2C_ICR_STOPCF;
+}
+
 void I2C_WaitForI2CFlag(uint32_t flag)
 {
   uint32_t timeout = I2C_TIMEOUT;

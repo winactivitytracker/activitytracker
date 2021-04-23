@@ -36,6 +36,9 @@
 #define RES_REVISION_ID 0xfe
 #define RES_PART_ID 0xff
 
+#define BUFF_SIZE 50
+#define FILTER_LEVEL 8
+
 typedef struct samplestruct
 {
     uint32_t red;
