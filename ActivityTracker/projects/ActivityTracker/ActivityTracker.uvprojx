@@ -311,7 +311,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
@@ -326,8 +326,8 @@
             <uC99>0</uC99>
             <uGnu>0</uGnu>
             <useXO>0</useXO>
-            <v6Lang>1</v6Lang>
-            <v6LangP>1</v6LangP>
+            <v6Lang>3</v6Lang>
+            <v6LangP>3</v6LangP>
             <vShortEn>1</vShortEn>
             <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
@@ -504,34 +504,19 @@
               <FilePath>.\inc\main.h</FilePath>
             </File>
             <File>
-              <FileName>I2C_main.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\I2C_main.h</FilePath>
-            </File>
-            <File>
-              <FileName>I2C_main.c</FileName>
+              <FileName>i2c.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\I2C_main.c</FilePath>
+              <FilePath>.\src\i2c.c</FilePath>
             </File>
             <File>
-              <FileName>MPU_6050_main.c</FileName>
+              <FileName>mpu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\MPU_6050_main.c</FilePath>
+              <FilePath>.\src\mpu.c</FilePath>
             </File>
             <File>
-              <FileName>MPU_6050_main.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\MPU_6050_main.h</FilePath>
-            </File>
-            <File>
-              <FileName>USART_main.c</FileName>
+              <FileName>usart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\USART_main.c</FilePath>
-            </File>
-            <File>
-              <FileName>USART_main.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\USART_main.h</FilePath>
+              <FilePath>.\src\usart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1104,34 +1089,19 @@
               <FilePath>.\inc\main.h</FilePath>
             </File>
             <File>
-              <FileName>I2C_main.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\I2C_main.h</FilePath>
-            </File>
-            <File>
-              <FileName>I2C_main.c</FileName>
+              <FileName>i2c.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\I2C_main.c</FilePath>
+              <FilePath>.\src\i2c.c</FilePath>
             </File>
             <File>
-              <FileName>MPU_6050_main.c</FileName>
+              <FileName>mpu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\MPU_6050_main.c</FilePath>
+              <FilePath>.\src\mpu.c</FilePath>
             </File>
             <File>
-              <FileName>MPU_6050_main.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\MPU_6050_main.h</FilePath>
-            </File>
-            <File>
-              <FileName>USART_main.c</FileName>
+              <FileName>usart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\USART_main.c</FilePath>
-            </File>
-            <File>
-              <FileName>USART_main.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\USART_main.h</FilePath>
+              <FilePath>.\src\usart.c</FilePath>
             </File>
           </Files>
         </Group>

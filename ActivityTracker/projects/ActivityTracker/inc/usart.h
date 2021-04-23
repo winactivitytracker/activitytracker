@@ -1,20 +1,16 @@
-/******************************************************************************
- * File           : USART driver header file
-******************************************************************************/
-#ifndef _USART_H_
-#define _USART_H_
+#ifndef USART_MAIN_H
+#define USART_MAIN_H
 
-#include "stdint.h"
+#include "stm32f0xx.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-/******************************************************************************
-  Function prototypes
-******************************************************************************/
-void USART_init(void);
-void USART_putc(char c);
-char USART_getc(void);
-void USART_putstr(char *str);
-void USART_putint(int16_t v);
-void USART_getstr(char *str);
-void USART_clearscreen(void);
+void USARTSetup(void);
+void USARTIntSetup(void);
+void USARTPutChar(char c);
+void USARTPutStr(char *str);
+void USARTClearScreen(void);
+char *USARTIntToAscii(int16_t i, char *p);
+void USARTPrintNumber(int16_t number, char *str);
 
-#endif // _USART_H_
+#endif //USART_MAIN_H
