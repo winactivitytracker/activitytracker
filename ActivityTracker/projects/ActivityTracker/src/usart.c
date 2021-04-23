@@ -140,3 +140,16 @@ void USARTPrintNumber(int16_t number, char *str)
 		x++;
 	}
 }
+
+void USARTPrintNumberFloat(float number, char *str)
+{
+	char numbers[255];
+	uint16_t x = 0;
+	USARTPutStr(str);
+	sprintf(numbers, "%f", number);
+	while(numbers[x] != '\0')
+	{
+		USARTPutChar(numbers[x]);
+		x++;
+	}
+}

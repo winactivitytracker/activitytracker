@@ -49,9 +49,9 @@ void MPUReadAccel(uint16_t *aXRaw, uint16_t *aYRaw, uint16_t *aZRaw)
 	registerArray[4] = MPUReadData(0x3F);
 	registerArray[5] = MPUReadData(0x40);
 	
-	*aXRaw = registerArray[0] << 8 | registerArray[1];
-	*aYRaw = registerArray[2] << 8 | registerArray[3];
-	*aZRaw = registerArray[4] << 8 | registerArray[5];
+	*aXRaw = registerArray[1] << 8 | registerArray[0];
+	*aYRaw = registerArray[3] << 8 | registerArray[2];
+	*aZRaw = registerArray[5] << 8 | registerArray[4];
 }
 
 void MPUReadGyro(uint16_t *gXRaw, uint16_t *gYRaw, uint16_t *gZRaw)
@@ -65,9 +65,9 @@ void MPUReadGyro(uint16_t *gXRaw, uint16_t *gYRaw, uint16_t *gZRaw)
 	registerArray[4] = MPUReadData(0x47);
 	registerArray[5] = MPUReadData(0x48);
 	
-	*gXRaw = registerArray[0] << 8 | registerArray[1];
-	*gYRaw = registerArray[2] << 8 | registerArray[3];
-	*gZRaw = registerArray[4] << 8 | registerArray[5];
+	*gXRaw = registerArray[1] << 8 | registerArray[0];
+	*gYRaw = registerArray[3] << 8 | registerArray[2];
+	*gZRaw = registerArray[5] << 8 | registerArray[4];
 }
 
 void MPUReadAll(uint16_t *aXRaw, uint16_t *aYRaw, uint16_t *aZRaw, uint16_t *gXRaw, uint16_t *gYRaw, uint16_t *gZRaw)

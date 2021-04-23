@@ -18,21 +18,22 @@ void delay(const int d);
 uint8_t checkComm(void);
 void LEDInit(void);
 
-uint16_t aX, aY, aZ, gX, gY, gZ, lastRead;
+uint16_t aX, aY, aZ, gX, gY, gZ;
+float aXF, aYF, aZF, gXF, gYF, gZF; 
 
 void vPeriodicTask(void *pvParameters)
 {
 	// Establish the task's period.
-	const TickType_t xDelay = pdMS_TO_TICKS(1000);
+	const TickType_t xDelay = pdMS_TO_TICKS(5);
 	TickType_t xLastWakeTime = xTaskGetTickCount();
 	
 	for (;;)
 	{
 		// Block until the next release time.
 		vTaskDelayUntil(&xLastWakeTime, xDelay);
-		MPUWakeup();
+		//MPUWakeup();
 		MPUReadAll(&aX, &aY, &aZ, &gX, &gY, &gZ);
-		MPUSleep();
+		//MPUSleep();
 		
 		/*
 		if(lastRead == aX)
@@ -52,7 +53,23 @@ void vPeriodicTask(void *pvParameters)
 		USARTPrintNumber(gX, "\ngX RAW: ");
 		USARTPrintNumber(gY, "\ngY RAW: ");
 		USARTPrintNumber(gZ, "\ngZ RAW: ");
-		lastRead = aX;
+		aXF = aX/16384.0;  // get the float g
+		aYF = aY/16384.0;
+		aZF = aZ/16384.0;
+		
+		gXF = gX/131.0;
+		gYF = gY/131.0;
+		gZF = gZ/131.0;
+		
+		USARTPutStr("\n");
+		
+		USARTPrintNumberFloat(aXF, "\naX normal: ");
+		USARTPrintNumberFloat(aYF, "\naY normal: ");
+		USARTPrintNumberFloat(aZF, "\naZ normal: ");
+		USARTPrintNumberFloat(gXF, "\ngX normal: ");
+		USARTPrintNumberFloat(gYF, "\ngY normal: ");
+		USARTPrintNumberFloat(gZF, "\ngZ normal: ");
+		
 		//check_comm();
 	}
 }
@@ -76,7 +93,6 @@ void vPeriodicTask2(void *pvParameters)
 int main()
 {
 	LEDInit();
-	lastRead = 0;
 	USARTSetup();
 	USARTClearScreen();
 	I2CSetup(false);
@@ -89,9 +105,10 @@ int main()
 	}
 	*/
 	MPUInit();
+	MPUSetAccel(2);
+	MPUSetGyro(2);
 	MPUReadAll(&aX, &aY, &aZ, &gX, &gY, &gZ);
-	MPUSleep();
-	lastRead = aX;
+	//MPUSleep();
 	GPIO_WriteBit(GPIOA, GPIO_Pin_2, Bit_RESET); //RED
 	GPIO_WriteBit(GPIOB, GPIO_Pin_2, Bit_RESET); //GREEN
 	

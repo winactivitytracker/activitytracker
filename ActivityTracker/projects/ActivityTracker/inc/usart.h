@@ -12,5 +12,6 @@ void USARTPutStr(char *str);
 void USARTClearScreen(void);
 char *USARTIntToAscii(int16_t i, char *p);
 void USARTPrintNumber(int16_t number, char *str);
+void USARTPrintNumberFloat(float number, char *str);
 
 #endif //USART_MAIN_H
