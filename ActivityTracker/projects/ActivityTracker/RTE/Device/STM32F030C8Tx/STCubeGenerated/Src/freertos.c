@@ -23,9 +23,14 @@
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
+#include "max30102.h"
+#include "mpu.h"
+#include "usart.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+SAMPLE fifoData;
 
 /* USER CODE END Includes */
 
@@ -59,14 +64,14 @@ const osThreadAttr_t defaultTask_attributes = {
 osThreadId_t LEDOnHandle;
 const osThreadAttr_t LEDOn_attributes = {
   .name = "LEDOn",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 2,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for LEDOff */
 osThreadId_t LEDOffHandle;
 const osThreadAttr_t LEDOff_attributes = {
   .name = "LEDOff",
-  .stack_size = 128 * 4,
+  .stack_size = 128 * 2,
   .priority = (osPriority_t) osPriorityLow,
 };
 
@@ -158,7 +163,16 @@ void StartTask02(void *argument)
   /* Infinite loop */
   for(;;)
   {
+	  //max30102_cal();
+      //uint8_t spo2 = max30102_getSpO2();
+      //uint8_t heartReat = max30102_getHeartRate();
+	  //USARTPrintNumberFloat(heartReat, "HeartRate: ");
+	  //USARTPrintNumberFloat(spo2, "Oxygen: ");
+	  max30102_getFIFO(&fifoData, max30102_getUnreadSampleCount());
+	  USARTPrintNumber(fifoData.iRed, "iRed: ");
+	  //USARTPrintNumber(fifoData.red, "Red: ");
 	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, GPIO_PIN_SET);
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_SET);
     osDelay(500);
   }
   /* USER CODE END StartTask02 */
@@ -178,6 +192,7 @@ void StartTask03(void *argument)
   for(;;)
   {
 	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
     osDelay(700);
   }
   /* USER CODE END StartTask03 */

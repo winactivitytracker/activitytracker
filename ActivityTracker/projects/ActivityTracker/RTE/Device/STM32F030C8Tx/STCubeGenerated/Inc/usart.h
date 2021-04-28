@@ -38,6 +38,8 @@ extern UART_HandleTypeDef huart1;
 /* USER CODE END Private defines */
 
 void MX_USART1_UART_Init(void);
+void USARTPrintNumber(int16_t number, char *str);
+void USARTPrintNumberFloat(float number, char *str);
 
 /* USER CODE BEGIN Prototypes */
 

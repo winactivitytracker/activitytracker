@@ -19,6 +19,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
+#include "stdio.h"
 
 /* USER CODE BEGIN 0 */
 
@@ -112,6 +113,51 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 }
 
 /* USER CODE BEGIN 1 */
+
+void USARTPrintNumber(int16_t number, char *str)
+{
+	
+	char numbers[100];
+	uint8_t x = 0;
+	while(str[x] != '\0')
+	{
+		x++;
+	}
+	char sizeOfArray[x];
+	x = 0;
+	HAL_UART_Transmit(&huart1,(uint8_t*)"\r\n", sizeof("\r\n"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1,(uint8_t*)str, sizeof(sizeOfArray), HAL_MAX_DELAY);
+	//HAL_UART_Transmit(&huart1, str, sizeof(str), HAL_MAX_DELAY);
+	//USARTPutStr(str);
+	sprintf(numbers, "%d", number);
+	while(numbers[x] != '\0')
+	{
+		uint8_t sendData = numbers[x];
+		HAL_UART_Transmit(&huart1, &sendData, sizeof(sendData), HAL_MAX_DELAY);
+		x++;
+	}
+}
+
+void USARTPrintNumberFloat(float number, char *str)
+{
+	char numbers[100];
+	uint8_t x = 0;
+	while(str[x] != '\0')
+	{
+		x++;
+	}
+	char sizeOfArray[x];
+	x = 0;
+	HAL_UART_Transmit(&huart1,(uint8_t*)"\r\n", sizeof("\r\n"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1,(uint8_t*)str, sizeof(sizeOfArray), HAL_MAX_DELAY);
+	sprintf(numbers, "%.2f", number);
+	while(numbers[x] != '\0')
+	{
+		uint8_t sendData = numbers[x];
+		HAL_UART_Transmit(&huart1, &sendData, sizeof(sendData), HAL_MAX_DELAY);
+		x++;
+	}
+}
 
 /* USER CODE END 1 */
 

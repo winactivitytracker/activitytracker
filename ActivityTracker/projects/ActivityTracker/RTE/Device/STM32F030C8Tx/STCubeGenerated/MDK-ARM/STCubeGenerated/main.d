@@ -44,3 +44,6 @@ stcubegenerated\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_w
 stcubegenerated\main.o: ../Inc/i2c.h
 stcubegenerated\main.o: ../Inc/usart.h
 stcubegenerated\main.o: ../Inc/gpio.h
+stcubegenerated\main.o: ../Inc/mpu.h
+stcubegenerated\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+stcubegenerated\main.o: ../Inc/max30102.h

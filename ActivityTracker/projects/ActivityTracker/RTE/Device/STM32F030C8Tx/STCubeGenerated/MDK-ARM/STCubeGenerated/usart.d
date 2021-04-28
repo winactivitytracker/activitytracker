@@ -33,3 +33,4 @@ stcubegenerated\usart.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim.h
 stcubegenerated\usart.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim_ex.h
 stcubegenerated\usart.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h
 stcubegenerated\usart.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart_ex.h
+stcubegenerated\usart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

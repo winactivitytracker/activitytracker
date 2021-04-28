@@ -8,6 +8,8 @@
 "stcubegenerated\stm32f0xx_it.o"
 "stcubegenerated\stm32f0xx_hal_msp.o"
 "stcubegenerated\stm32f0xx_hal_timebase_tim.o"
+"stcubegenerated\mpu.o"
+"stcubegenerated\max30102.o"
 "stcubegenerated\stm32f0xx_hal_rcc.o"
 "stcubegenerated\stm32f0xx_hal_rcc_ex.o"
 "stcubegenerated\stm32f0xx_hal.o"

@@ -23,6 +23,8 @@
 #include "i2c.h"
 #include "usart.h"
 #include "gpio.h"
+#include "mpu.h"
+#include "max30102.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -92,6 +94,9 @@ int main(void)
   MX_I2C1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+
+	MPU6050Init();
+	max30102_init();
 
   /* USER CODE END 2 */
 

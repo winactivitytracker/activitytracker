@@ -10,6 +10,7 @@
       <TargetName>STCubeGenerated</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
+      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -429,6 +430,26 @@
               <FileName>stm32f0xx_hal_timebase_tim.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/stm32f0xx_hal_timebase_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>MPU.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\MPU.c</FilePath>
+            </File>
+            <File>
+              <FileName>MPU.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Inc\MPU.h</FilePath>
+            </File>
+            <File>
+              <FileName>max30102.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\max30102.c</FilePath>
+            </File>
+            <File>
+              <FileName>max30102.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Inc\max30102.h</FilePath>
             </File>
           </Files>
         </Group>
