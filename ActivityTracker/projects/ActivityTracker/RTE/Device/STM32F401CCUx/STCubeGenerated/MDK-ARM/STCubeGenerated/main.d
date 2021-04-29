@@ -58,3 +58,6 @@ stcubegenerated\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 stcubegenerated\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 stcubegenerated\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 stcubegenerated\main.o: ../Inc/gpio.h
+stcubegenerated\main.o: ../Inc/ssd1306.h
+stcubegenerated\main.o: ../Inc/fonts.h
+stcubegenerated\main.o: ../Inc/test.h

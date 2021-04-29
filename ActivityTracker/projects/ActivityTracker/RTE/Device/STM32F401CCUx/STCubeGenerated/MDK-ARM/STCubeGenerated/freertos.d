@@ -48,3 +48,9 @@ stcubegenerated\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb
 stcubegenerated\freertos.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h
 stcubegenerated\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 stcubegenerated\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
+stcubegenerated\freertos.o: ../Inc/ssd1306.h
+stcubegenerated\freertos.o: ../Inc/fonts.h
+stcubegenerated\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+stcubegenerated\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+stcubegenerated\freertos.o: ../Inc/test.h
+stcubegenerated\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

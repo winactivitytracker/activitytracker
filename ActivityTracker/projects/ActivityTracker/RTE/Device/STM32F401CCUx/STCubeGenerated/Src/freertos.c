@@ -26,7 +26,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "ssd1306.h"
+#include "fonts.h"
+#include "test.h"
+#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -161,7 +164,8 @@ void LEDTurnOn(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_8);
+	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_8);
+	//HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_9);
     osDelay(300);
   }
   /* USER CODE END LEDTurnOn */
@@ -180,8 +184,23 @@ void LEDTurnOff(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_8);
-    osDelay(500);
+	static uint16_t counter = 0;
+	char numbers[5];
+
+	
+	//SSD1306_Clear();
+	SSD1306_GotoXY (1,10); // goto 10, 10 
+	SSD1306_Puts ("The Real Activity Tracker", &Font_7x10, 1); // print Hello 
+	SSD1306_GotoXY (1, 30); 
+	//SSD1306_Puts (counter, &Font_11x18, 1); 
+	sprintf(numbers, "%d", counter);
+	SSD1306_Puts(numbers, &Font_16x26, 1);
+	SSD1306_UpdateScreen(); // update screen
+	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_9);
+	
+   
+	 counter++;
+	   osDelay(1000);
   }
   /* USER CODE END LEDTurnOff */
 }
