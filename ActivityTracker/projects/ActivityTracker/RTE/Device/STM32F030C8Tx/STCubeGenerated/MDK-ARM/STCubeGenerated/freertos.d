@@ -43,8 +43,10 @@ stcubegenerated\freertos.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_ua
 stcubegenerated\freertos.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart_ex.h
 stcubegenerated\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h
 stcubegenerated\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
-stcubegenerated\freertos.o: ../Inc/max30102.h
 stcubegenerated\freertos.o: ../Inc/mpu.h
 stcubegenerated\freertos.o: ../Inc/i2c.h
 stcubegenerated\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+stcubegenerated\freertos.o: ../Inc/max30102.h
+stcubegenerated\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+stcubegenerated\freertos.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 stcubegenerated\freertos.o: ../Inc/usart.h

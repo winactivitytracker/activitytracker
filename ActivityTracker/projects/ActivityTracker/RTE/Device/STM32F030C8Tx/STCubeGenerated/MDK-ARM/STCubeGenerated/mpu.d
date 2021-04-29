@@ -1,4 +1,4 @@
-stcubegenerated\mpu.o: ..\Src\MPU.c
+stcubegenerated\mpu.o: ..\Src\mpu.c
 stcubegenerated\mpu.o: ../Inc/mpu.h
 stcubegenerated\mpu.o: ../Inc/i2c.h
 stcubegenerated\mpu.o: ../Inc/main.h

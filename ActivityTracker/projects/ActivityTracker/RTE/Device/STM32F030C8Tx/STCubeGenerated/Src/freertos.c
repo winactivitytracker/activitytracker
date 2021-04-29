@@ -23,14 +23,13 @@
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
-#include "max30102.h"
-#include "mpu.h"
-#include "usart.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-SAMPLE fifoData;
+#include "mpu.h"
+#include "max30102.h"
+#include "usart.h"
 
 /* USER CODE END Includes */
 
@@ -57,21 +56,21 @@ SAMPLE fifoData;
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
-  .stack_size = 128 * 4,
+  .stack_size = 64 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for LEDOn */
 osThreadId_t LEDOnHandle;
 const osThreadAttr_t LEDOn_attributes = {
   .name = "LEDOn",
-  .stack_size = 128 * 2,
+  .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for LEDOff */
 osThreadId_t LEDOffHandle;
 const osThreadAttr_t LEDOff_attributes = {
   .name = "LEDOff",
-  .stack_size = 128 * 2,
+  .stack_size = 64 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 
@@ -145,7 +144,7 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(1000);
   }
   /* USER CODE END StartDefaultTask */
 }
@@ -163,17 +162,13 @@ void StartTask02(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	  //max30102_cal();
-      //uint8_t spo2 = max30102_getSpO2();
-      //uint8_t heartReat = max30102_getHeartRate();
-	  //USARTPrintNumberFloat(heartReat, "HeartRate: ");
-	  //USARTPrintNumberFloat(spo2, "Oxygen: ");
-	  max30102_getFIFO(&fifoData, max30102_getUnreadSampleCount());
-	  USARTPrintNumber(fifoData.iRed, "iRed: ");
+	  MAX30100_InterruptHandler();
+	  //max30102_getFIFO(&fifoData, max30102_getUnreadSampleCount());
+	  //USARTPrintNumber(fifoData.iRed, "iRed: ");
 	  //USARTPrintNumber(fifoData.red, "Red: ");
 	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, GPIO_PIN_SET);
 	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_SET);
-    osDelay(500);
+    osDelay(1000);
   }
   /* USER CODE END StartTask02 */
 }
@@ -193,7 +188,7 @@ void StartTask03(void *argument)
   {
 	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_2, GPIO_PIN_RESET);
 	  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, GPIO_PIN_RESET);
-    osDelay(700);
+    osDelay(1500);
   }
   /* USER CODE END StartTask03 */
 }

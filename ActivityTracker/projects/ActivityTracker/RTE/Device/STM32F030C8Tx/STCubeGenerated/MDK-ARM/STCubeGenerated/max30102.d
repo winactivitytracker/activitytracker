@@ -1,7 +1,6 @@
 stcubegenerated\max30102.o: ..\Src\max30102.c
 stcubegenerated\max30102.o: ../Inc/max30102.h
 stcubegenerated\max30102.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-stcubegenerated\max30102.o: ../Inc/i2c.h
 stcubegenerated\max30102.o: ../Inc/main.h
 stcubegenerated\max30102.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal.h
 stcubegenerated\max30102.o: ../Inc/stm32f0xx_hal_conf.h
@@ -34,3 +33,6 @@ stcubegenerated\max30102.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_ti
 stcubegenerated\max30102.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim_ex.h
 stcubegenerated\max30102.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart.h
 stcubegenerated\max30102.o: ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_uart_ex.h
+stcubegenerated\max30102.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+stcubegenerated\max30102.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+stcubegenerated\max30102.o: ../Inc/i2c.h
