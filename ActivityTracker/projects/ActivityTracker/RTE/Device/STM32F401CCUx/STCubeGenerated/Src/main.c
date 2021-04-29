@@ -98,7 +98,8 @@ int main(void)
   MX_SPI1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-	SSD1306_Init (); // initialize the display 
+  SSD1306_Init (); // initialize the display 
+  SSD1306_Clear();
 	
 
   /* USER CODE END 2 */

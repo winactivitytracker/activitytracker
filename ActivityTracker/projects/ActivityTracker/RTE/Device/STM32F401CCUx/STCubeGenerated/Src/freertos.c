@@ -186,21 +186,30 @@ void LEDTurnOff(void *argument)
   {
 	static uint16_t counter = 0;
 	char numbers[5];
+	  
 
 	
 	//SSD1306_Clear();
-	SSD1306_GotoXY (1,10); // goto 10, 10 
-	SSD1306_Puts ("The Real Activity Tracker", &Font_7x10, 1); // print Hello 
-	SSD1306_GotoXY (1, 30); 
-	//SSD1306_Puts (counter, &Font_11x18, 1); 
-	sprintf(numbers, "%d", counter);
-	SSD1306_Puts(numbers, &Font_16x26, 1);
-	SSD1306_UpdateScreen(); // update screen
-	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_9);
+	//SSD1306_GotoXY (1,10); // goto 10, 10 
+	//SSD1306_Puts ("The Real Activity Tracker", &Font_7x10, 1); // print Hello 
+	if(counter >= 10 && counter < 100)
+		SSD1306_GotoXY (55, 24); 
+	else if(counter >= 100)
+		SSD1306_GotoXY (48, 24); 
+	else
+		SSD1306_GotoXY (60, 24);
 	
+	
+	  
+	 //SSD1306_GotoXY (1,10); // goto 10, 10 
+	SSD1306_DrawFilledCircle(64, 32, 30, 1);
+	sprintf(numbers, "%d", counter);
+	SSD1306_Puts(numbers, &Font_11x18, 0);
+	
+	SSD1306_UpdateScreen();
    
-	 counter++;
-	   osDelay(1000);
+	counter++;
+	osDelay(1000);
   }
   /* USER CODE END LEDTurnOff */
 }
