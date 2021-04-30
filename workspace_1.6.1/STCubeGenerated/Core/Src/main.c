@@ -67,12 +67,8 @@ void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN 0 */
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
- {
-   GPS_CallBack();
- }
-
-void UART1_SendString(char* s) {
-    HAL_UART_Transmit(&huart1, (uint8_t*) s, strlen(s), 1000);
+{
+	if(huart == &huart1) GPS_UART_CallBack();
 }
 /* USER CODE END 0 */
 
@@ -108,12 +104,9 @@ int main(void)
   MX_SPI1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  //HAL_UART_MspInit();
-  SSD1306_Init (); // initialize the display
-  SSD1306_Clear();
+  //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9|GPIO_PIN_10, GPIO_PIN_RESET);
   GPS_Init();
-  UART1_SendString("WORK!");
-
+  SSD1306_Init();
 
   /* USER CODE END 2 */
 

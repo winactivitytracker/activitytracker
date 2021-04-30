@@ -52,7 +52,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+extern GPS_t GPS;
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -61,17 +61,10 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 64 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-/* Definitions for LEDOn */
-osThreadId_t LEDOnHandle;
-const osThreadAttr_t LEDOn_attributes = {
-  .name = "LEDOn",
-  .stack_size = 64 * 4,
-  .priority = (osPriority_t) osPriorityLow,
-};
-/* Definitions for LEDOff */
-osThreadId_t LEDOffHandle;
-const osThreadAttr_t LEDOff_attributes = {
-  .name = "LEDOff",
+/* Definitions for Gps */
+osThreadId_t GpsHandle;
+const osThreadAttr_t Gps_attributes = {
+  .name = "Gps",
   .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
@@ -82,8 +75,7 @@ const osThreadAttr_t LEDOff_attributes = {
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
-void LEDTurnOn(void *argument);
-void LEDTurnOff(void *argument);
+void GpsTask(void *argument);
 
 extern void MX_USB_DEVICE_Init(void);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
@@ -118,11 +110,8 @@ void MX_FREERTOS_Init(void) {
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
-  /* creation of LEDOn */
-  LEDOnHandle = osThreadNew(LEDTurnOn, NULL, &LEDOn_attributes);
-
-  /* creation of LEDOff */
-  LEDOffHandle = osThreadNew(LEDTurnOff, NULL, &LEDOff_attributes);
+  /* creation of Gps */
+  GpsHandle = osThreadNew(GpsTask, NULL, &Gps_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -154,70 +143,42 @@ void StartDefaultTask(void *argument)
   /* USER CODE END StartDefaultTask */
 }
 
-/* USER CODE BEGIN Header_LEDTurnOn */
+/* USER CODE BEGIN Header_GpsTask */
 /**
-* @brief Function implementing the LEDOn thread.
+* @brief Function implementing the Gps thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_LEDTurnOn */
-void LEDTurnOn(void *argument)
+/* USER CODE END Header_GpsTask */
+void GpsTask(void *argument)
 {
-  /* USER CODE BEGIN LEDTurnOn */
+  /* USER CODE BEGIN GpsTask */
   /* Infinite loop */
   for(;;)
   {
-	  //GPS_CallBack();
-	  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_8);
-	  //HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_9);
-	  osDelay(300);
+
+	  	char numbers[5];
+
+	  	SSD1306_GotoXY (0,0);
+	  	SSD1306_Puts ("LAT:", &Font_7x10, 1);
+
+	  	SSD1306_GotoXY (40, 0);
+	  	sprintf(numbers, "%f", GPS.dec_latitude);
+	  	SSD1306_Puts(numbers, &Font_7x10, 1);
+
+	  	SSD1306_GotoXY (0,32);
+	  	SSD1306_Puts ("LONG:", &Font_7x10, 1);
+
+	  	SSD1306_GotoXY (40, 32);
+	  	sprintf(numbers, "%f", GPS.dec_longitude);
+		SSD1306_Puts(numbers, &Font_7x10, 1);
+
+	  	SSD1306_UpdateScreen();
+
+
+	  	osDelay(500);
   }
-  /* USER CODE END LEDTurnOn */
-}
-
-/* USER CODE BEGIN Header_LEDTurnOff */
-/**
-* @brief Function implementing the LEDOff thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_LEDTurnOff */
-void LEDTurnOff(void *argument)
-{
-  /* USER CODE BEGIN LEDTurnOff */
-  /* Infinite loop */
-  for(;;)
-  {
-	  GPS_Process();
-	  static uint16_t counter = 0;
-	  	char numbers[16];
-
-	  	//SSD1306_Clear();
-	  	SSD1306_GotoXY (1,5); // goto 10, 10
-	  	SSD1306_Puts ("GPS!", &Font_11x18, 1); // print Hello
-	  	SSD1306_GotoXY (40,5); // goto 10, 10
-	  	sprintf(numbers, "%d",counter);
-	  	SSD1306_Puts (numbers, &Font_11x18, 1); // print Hello
-	  	SSD1306_GotoXY (1, 25);
-	  	SSD1306_Puts ("Lon: ", &Font_11x18, 1);
-	  	SSD1306_GotoXY (40, 25);
-	  	sprintf(numbers, "%f", GPS.GPGGA.LongitudeDecimal);
-	  	SSD1306_Puts (numbers, &Font_11x18, 1);
-	  	SSD1306_GotoXY (1, 45);
-	  	SSD1306_Puts ("Lan: ", &Font_11x18, 1);
-	  	SSD1306_GotoXY (40, 45);
-	  	sprintf(numbers, "%f", GPS.GPGGA.LatitudeDecimal);
-	  	SSD1306_Puts (numbers, &Font_11x18, 1);
-	  	sprintf(numbers, "%d", counter);
-	  	//SSD1306_Puts(numbers, &Font_11x18, 1);
-	  	SSD1306_UpdateScreen(); // update screen
-	  	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_9);
-
-
-	  	 counter++;
-	  	   osDelay(1000);
-  }
-  /* USER CODE END LEDTurnOff */
+  /* USER CODE END GpsTask */
 }
 
 /* Private application code --------------------------------------------------*/
