@@ -61,3 +61,4 @@ stcubegenerated\main.o: ../Inc/gpio.h
 stcubegenerated\main.o: ../Inc/ssd1306.h
 stcubegenerated\main.o: ../Inc/fonts.h
 stcubegenerated\main.o: ../Inc/test.h
+stcubegenerated\main.o: ../Inc/GPS.h

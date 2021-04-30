@@ -16,6 +16,7 @@
 "stcubegenerated\fonts.o"
 "stcubegenerated\ssd1306.o"
 "stcubegenerated\test.o"
+"stcubegenerated\gps.o"
 "stcubegenerated\stm32f4xx_hal_pcd.o"
 "stcubegenerated\stm32f4xx_hal_pcd_ex.o"
 "stcubegenerated\stm32f4xx_ll_usb.o"

@@ -32,6 +32,7 @@
 #include "ssd1306.h"
 #include "fonts.h"
 #include "test.h"
+#include "GPS.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -63,7 +64,10 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  GPS_CallBack();
+}
 /* USER CODE END 0 */
 
 /**
@@ -100,6 +104,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   SSD1306_Init (); // initialize the display 
   SSD1306_Clear();
+  GPS_Init();
 	
 
   /* USER CODE END 2 */

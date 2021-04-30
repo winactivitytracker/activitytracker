@@ -30,6 +30,7 @@
 #include "fonts.h"
 #include "test.h"
 #include "stdio.h"
+#include "GPS.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -187,24 +188,19 @@ void LEDTurnOff(void *argument)
 	static uint16_t counter = 0;
 	char numbers[5];
 	  
-
+	GPS_Process();
 	
-	//SSD1306_Clear();
-	//SSD1306_GotoXY (1,10); // goto 10, 10 
-	//SSD1306_Puts ("The Real Activity Tracker", &Font_7x10, 1); // print Hello 
-	if(counter >= 10 && counter < 100)
-		SSD1306_GotoXY (55, 24); 
-	else if(counter >= 100)
-		SSD1306_GotoXY (48, 24); 
-	else
-		SSD1306_GotoXY (60, 24);
+	SSD1306_GotoXY (0,0);
+	SSD1306_Puts ("LAT:", &Font_7x10, 1);
 	
-	
+	SSD1306_GotoXY (40, 0); 
+	SSD1306_Putc(convertDegMinToDecDeg(GPS.GPGGA.LongitudeDecimal), &Font_7x10, 1);
+		
+	SSD1306_GotoXY (0,32);
+	SSD1306_Puts ("LONG:", &Font_7x10, 1); 
 	  
-	 //SSD1306_GotoXY (1,10); // goto 10, 10 
-	SSD1306_DrawFilledCircle(64, 32, 30, 1);
-	sprintf(numbers, "%d", counter);
-	SSD1306_Puts(numbers, &Font_11x18, 0);
+	SSD1306_GotoXY (40, 32);
+	SSD1306_Putc(convertDegMinToDecDeg(GPS.GPGGA.LatitudeDecimal), &Font_7x10, 1);
 	
 	SSD1306_UpdateScreen();
    
