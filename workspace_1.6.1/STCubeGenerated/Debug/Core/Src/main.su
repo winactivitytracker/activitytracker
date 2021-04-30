@@ -1,0 +1,6 @@
+main.c:69:6:HAL_UART_RxCpltCallback	16	static
+main.c:74:6:UART1_SendString	16	static
+main.c:83:5:main	8	static
+main.c:142:6:SystemClock_Config	88	static
+main.c:195:6:HAL_TIM_PeriodElapsedCallback	16	static
+main.c:212:6:Error_Handler	4	static,ignoring_inline_asm

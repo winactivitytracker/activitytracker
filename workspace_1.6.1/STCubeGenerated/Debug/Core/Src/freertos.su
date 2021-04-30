@@ -1,0 +1,4 @@
+freertos.c:96:6:MX_FREERTOS_Init	8	static
+freertos.c:144:6:StartDefaultTask	16	static
+freertos.c:164:6:LEDTurnOn	16	static
+freertos.c:185:6:LEDTurnOff	32	static
