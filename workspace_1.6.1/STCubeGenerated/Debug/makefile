@@ -9,14 +9,10 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include USB_DEVICE/Target/subdir.mk
--include USB_DEVICE/App/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/subdir.mk
--include Middlewares/ST/STM32_USB_Device_Library/Core/Src/subdir.mk
--include Middlewares/ST/STM32_USB_Device_Library/Class/DFU/Src/subdir.mk
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
@@ -69,8 +65,8 @@ all: main-build
 main-build: STCubeGenerated.elf secondary-outputs
 
 # Tool invocations
-STCubeGenerated.elf: $(OBJS) $(USER_OBJS) C:\Users\joel-\Documents\activitytracker\workspace_1.6.1\STCubeGenerated\STM32F401CCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "STCubeGenerated.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\joel-\Documents\activitytracker\workspace_1.6.1\STCubeGenerated\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="STCubeGenerated.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+STCubeGenerated.elf: $(OBJS) $(USER_OBJS) C:\School\IOT\KBS\GitHub\IoT\activitytracker\workspace_1.6.1\STCubeGenerated\STM32F401CCUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "STCubeGenerated.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\School\IOT\KBS\GitHub\IoT\activitytracker\workspace_1.6.1\STCubeGenerated\STM32F401CCUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="STCubeGenerated.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

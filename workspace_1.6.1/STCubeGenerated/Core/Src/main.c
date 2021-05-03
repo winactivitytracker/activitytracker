@@ -23,7 +23,7 @@
 #include "i2c.h"
 #include "spi.h"
 #include "usart.h"
-#include "usb_device.h"
+#include "usb_otg.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -59,6 +59,7 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
+static void MX_NVIC_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -68,6 +69,7 @@ void MX_FREERTOS_Init(void);
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
+	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_8);
 	if(huart == &huart1) GPS_UART_CallBack();
 }
 /* USER CODE END 0 */
@@ -103,10 +105,19 @@ int main(void)
   MX_I2C1_Init();
   MX_SPI1_Init();
   MX_USART1_UART_Init();
+  MX_USB_OTG_FS_PCD_Init();
+
+  /* Initialize interrupts */
+  MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
   //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9|GPIO_PIN_10, GPIO_PIN_RESET);
-  GPS_Init();
   SSD1306_Init();
+  SSD1306_Clear();
+  SSD1306_GotoXY (0,0);
+  SSD1306_Puts ("TRACKER!", &Font_7x10, 1);
+  SSD1306_UpdateScreen();
+  HAL_Delay(1000);
+  GPS_Init();
 
   /* USER CODE END 2 */
 
@@ -171,6 +182,17 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief NVIC Configuration.
+  * @retval None
+  */
+static void MX_NVIC_Init(void)
+{
+  /* USART1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(USART1_IRQn);
 }
 
 /* USER CODE BEGIN 4 */
