@@ -31,7 +31,7 @@
 
 #include "ssd1306.h"
 #include "fonts.h"
-#include "test.h"
+//#include "test.h"
 #include "gps.h"
 
 /* USER CODE END Includes */
@@ -69,8 +69,7 @@ static void MX_NVIC_Init(void);
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_8);
-	if(huart == &huart1) GPS_UART_CallBack();
+	GPS_UART_CallBack();
 }
 /* USER CODE END 0 */
 
@@ -110,15 +109,12 @@ int main(void)
   /* Initialize interrupts */
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
-  //HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9|GPIO_PIN_10, GPIO_PIN_RESET);
+  GPS_Init();
   SSD1306_Init();
   SSD1306_Clear();
-  SSD1306_GotoXY (0,0);
-  SSD1306_Puts ("TRACKER!", &Font_7x10, 1);
   SSD1306_UpdateScreen();
-  HAL_Delay(1000);
-  GPS_Init();
 
+  __HAL_UART_ENABLE_IT(&huart1, UART_FLAG_RXNE);
   /* USER CODE END 2 */
 
   /* Init scheduler */

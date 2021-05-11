@@ -27,7 +27,7 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "usbd_dfu.h"
+#include "usbd_dfu_if.h"
 
 /* USER CODE BEGIN INCLUDE */
 

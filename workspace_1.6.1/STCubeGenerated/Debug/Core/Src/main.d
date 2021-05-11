@@ -47,7 +47,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Core/Inc/i2c.h ../Core/Inc/main.h ../Core/Inc/spi.h \
  ../Core/Inc/usart.h ../Core/Inc/usb_otg.h ../Core/Inc/gpio.h \
  ../Core/Inc/ssd1306.h ../Core/Inc/fonts.h ../Core/Inc/fonts.h \
- ../Core/Inc/test.h ../Core/Inc/gps.h
+ ../Core/Inc/gps.h
 
 ../Core/Inc/main.h:
 
@@ -158,7 +158,5 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/fonts.h:
 
 ../Core/Inc/fonts.h:
-
-../Core/Inc/test.h:
 
 ../Core/Inc/gps.h:

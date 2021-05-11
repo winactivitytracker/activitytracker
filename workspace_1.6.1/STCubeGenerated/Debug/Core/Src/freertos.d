@@ -45,7 +45,8 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
  ../Core/Inc/ssd1306.h ../Core/Inc/fonts.h ../Core/Inc/fonts.h \
- ../Core/Inc/test.h ../Core/Inc/gps.h
+ ../Core/Inc/test.h ../Core/Inc/gps.h ../Core/Inc/usart.h \
+ ../Core/Inc/main.h
 
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 
@@ -148,3 +149,7 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
 ../Core/Inc/test.h:
 
 ../Core/Inc/gps.h:
+
+../Core/Inc/usart.h:
+
+../Core/Inc/main.h:
