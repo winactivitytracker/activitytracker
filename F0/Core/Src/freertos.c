@@ -60,12 +60,26 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 64 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-/* Definitions for myTask02 */
-osThreadId_t myTask02Handle;
-const osThreadAttr_t myTask02_attributes = {
-  .name = "myTask02",
+/* Definitions for REDLED */
+osThreadId_t REDLEDHandle;
+const osThreadAttr_t REDLED_attributes = {
+  .name = "REDLED",
   .stack_size = 64 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
+/* Definitions for ReadMPU */
+osThreadId_t ReadMPUHandle;
+const osThreadAttr_t ReadMPU_attributes = {
+  .name = "ReadMPU",
+  .stack_size = 64 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for GREENLED */
+osThreadId_t GREENLEDHandle;
+const osThreadAttr_t GREENLED_attributes = {
+  .name = "GREENLED",
+  .stack_size = 64 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -74,7 +88,9 @@ const osThreadAttr_t myTask02_attributes = {
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
-void StartTask02(void *argument);
+void StartREDLED(void *argument);
+void StartReadMPU(void *argument);
+void StartGREENLED(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -108,8 +124,14 @@ void MX_FREERTOS_Init(void) {
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
-  /* creation of myTask02 */
-  myTask02Handle = osThreadNew(StartTask02, NULL, &myTask02_attributes);
+  /* creation of REDLED */
+  REDLEDHandle = osThreadNew(StartREDLED, NULL, &REDLED_attributes);
+
+  /* creation of ReadMPU */
+  ReadMPUHandle = osThreadNew(StartReadMPU, NULL, &ReadMPU_attributes);
+
+  /* creation of GREENLED */
+  GREENLEDHandle = osThreadNew(StartGREENLED, NULL, &GREENLED_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -134,30 +156,66 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_2);
 	  osDelay(200);
   }
   /* USER CODE END StartDefaultTask */
 }
 
-/* USER CODE BEGIN Header_StartTask02 */
+/* USER CODE BEGIN Header_StartREDLED */
 /**
-* @brief Function implementing the myTask02 thread.
+* @brief Function implementing the REDLED thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_StartTask02 */
-void StartTask02(void *argument)
+/* USER CODE END Header_StartREDLED */
+void StartREDLED(void *argument)
 {
-  /* USER CODE BEGIN StartTask02 */
+  /* USER CODE BEGIN StartREDLED */
   /* Infinite loop */
   for(;;)
   {
-	  MPUReadAll(&MPUData[0], &MPUData[1], &MPUData[2], &MPUData[3], &MPUData[4], &MPUData[5]);
 	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_2);
 	  osDelay(100);
   }
-  /* USER CODE END StartTask02 */
+  /* USER CODE END StartREDLED */
+}
+
+/* USER CODE BEGIN Header_StartReadMPU */
+/**
+* @brief Function implementing the ReadMPU thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartReadMPU */
+void StartReadMPU(void *argument)
+{
+  /* USER CODE BEGIN StartReadMPU */
+  /* Infinite loop */
+  for(;;)
+  {
+	  MPUReadAll(MPUData[0], MPUData[1], MPUData[2], MPUData[3], MPUData[4], MPUData[5]);
+	  osDelay(50);
+  }
+  /* USER CODE END StartReadMPU */
+}
+
+/* USER CODE BEGIN Header_StartGREENLED */
+/**
+* @brief Function implementing the GREENLED thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartGREENLED */
+void StartGREENLED(void *argument)
+{
+  /* USER CODE BEGIN StartGREENLED */
+  /* Infinite loop */
+  for(;;)
+  {
+	  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_2);
+	  osDelay(100);
+  }
+  /* USER CODE END StartGREENLED */
 }
 
 /* Private application code --------------------------------------------------*/

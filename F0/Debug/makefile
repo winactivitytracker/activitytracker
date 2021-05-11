@@ -80,8 +80,8 @@ all: main-build
 main-build: F0SensorBoard.elf secondary-outputs
 
 # Tool invocations
-F0SensorBoard.elf: $(OBJS) $(USER_OBJS) C:\School\IOT\KBS\STMWorkspace\F0\STM32F030C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "F0SensorBoard.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"C:\School\IOT\KBS\STMWorkspace\F0\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="F0SensorBoard.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+F0SensorBoard.elf: $(OBJS) $(USER_OBJS) C:\School\IOT\KBS\GitHub\IoT\activitytracker\F0\STM32F030C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "F0SensorBoard.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"C:\School\IOT\KBS\GitHub\IoT\activitytracker\F0\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="F0SensorBoard.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

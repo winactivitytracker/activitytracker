@@ -2,7 +2,7 @@
 Mcu.Family=STM32F0
 ProjectManager.MainLocation=Core/Src
 ProjectManager.ProjectFileName=F0SensorBoard.ioc
-FREERTOS.Tasks01=defaultTask,24,64,StartDefaultTask,Default,NULL,Dynamic,NULL,NULL;myTask02,8,64,StartTask02,Default,NULL,Dynamic,NULL,NULL
+FREERTOS.Tasks01=defaultTask,24,64,StartDefaultTask,Default,NULL,Dynamic,NULL,NULL;REDLED,16,64,StartREDLED,Default,NULL,Dynamic,NULL,NULL;ReadMPU,24,64,StartReadMPU,Default,NULL,Dynamic,NULL,NULL;GREENLED,16,64,StartGREENLED,Default,NULL,Dynamic,NULL,NULL
 ProjectManager.KeepUserCode=true
 PA10.Mode=Asynchronous
 Mcu.UserName=STM32F030C8Tx

@@ -25,7 +25,7 @@
 #define MPU_G1000G	0x10 //0b00010000
 #define MPU_G2000G	0x18 //0b00011000
 
-bool MPU6050Init(void);
+bool MPU6050Init();
 void MPU6050ReadAccel(uint16_t *aXRaw, uint16_t *aYRaw, uint16_t *aZRaw);
 void MPU6050ReadGyro(uint16_t *gXRaw, uint16_t *gYRaw, uint16_t *gZRaw);
 void MPUReadAll(uint16_t *aXRaw, uint16_t *aYRaw, uint16_t *aZRaw, uint16_t *gXRaw, uint16_t *gYRaw, uint16_t *gZRaw);

@@ -1,3 +1,5 @@
-freertos.c:86:6:MX_FREERTOS_Init	8	static
-freertos.c:131:6:StartDefaultTask	16	static
-freertos.c:150:6:StartTask02	32	static
+freertos.c:102:6:MX_FREERTOS_Init	8	static
+freertos.c:153:6:StartDefaultTask	16	static
+freertos.c:171:6:StartREDLED	16	static
+freertos.c:190:6:StartReadMPU	32	static
+freertos.c:209:6:StartGREENLED	16	static

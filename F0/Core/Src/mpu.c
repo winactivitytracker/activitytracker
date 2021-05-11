@@ -2,7 +2,7 @@
 
 uint8_t currentAccelScale, currentGyroScale;
 
-bool MPU6050Init(void)
+bool MPU6050Init()
 {
 	uint8_t check;
 	uint8_t data;
@@ -22,13 +22,13 @@ bool MPU6050Init(void)
 		HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, SMPLRT_DIV_REG, 1, &data, 1, 1000);
 
 		// Set accelerometer configuration in ACCEL_CONFIG Register
-		// XA_ST=0,YA_ST=0,ZA_ST=0, FS_SEL=0 -> ± 2g
+		// XA_ST=0,YA_ST=0,ZA_ST=0, FS_SEL=0 -> ï¿½ 2g
 		data = MPU_A2G;
 		currentAccelScale = data;
 		HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, ACCEL_CONFIG_REG, 1, &data, 1, 1000);
 
 		// Set Gyroscopic configuration in GYRO_CONFIG Register
-		// XG_ST=0,YG_ST=0,ZG_ST=0, FS_SEL=0 -> ± 250 °/s
+		// XG_ST=0,YG_ST=0,ZG_ST=0, FS_SEL=0 -> ï¿½ 250 ï¿½/s
 		data = MPU_G250G;
 		currentGyroScale = data;
 		HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, GYRO_CONFIG_REG, 1, &data, 1, 1000);
@@ -74,7 +74,7 @@ void MPU6050ReadGyro(uint16_t *gXRaw, uint16_t *gYRaw, uint16_t *gZRaw)
 	*gYRaw = (int16_t)(RecData[2] << 8 | RecData [3]);
 	*gZRaw = (int16_t)(RecData[4] << 8 | RecData [5]);
 
-	/*** convert the RAW values into dps (°/s)
+	/*** convert the RAW values into dps (ï¿½/s)
 	     we have to divide according to the Full scale value set in FS_SEL
 	     I have configured FS_SEL = 0. So I am dividing by 131.0
 	     for more details check GYRO_CONFIG Register              ****/
