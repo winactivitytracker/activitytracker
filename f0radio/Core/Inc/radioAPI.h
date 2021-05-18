@@ -15,6 +15,8 @@ extern "C"
 
 void radioInterrupt();
 void radioSend(char * message, uint8_t length);
+void radioEdge();
+void radioCount();
 
 #ifdef __cplusplus
 }

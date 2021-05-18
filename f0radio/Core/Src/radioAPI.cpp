@@ -18,5 +18,17 @@ void radioSend(char * message, uint8_t length)
 
 void radioInterrupt()
 {
+	// Use this version if you don't want Manchester encoding
 	return r.interrupt();
+	//return r.interruptManchester();
+}
+
+void radioEdge()
+{
+	return r.edge();
+}
+
+void radioCount()
+{
+	return r.count();
 }

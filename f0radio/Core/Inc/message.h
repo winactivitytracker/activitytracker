@@ -8,6 +8,7 @@
 using namespace std;
 
 #include <string>
+#include <list>
 
 extern "C"
 {
@@ -18,7 +19,7 @@ class message
 {
 private:
 	string messageString;
-	uint8_t bitPointer;
+	uint16_t bitPointer;
 	uint8_t mirrorByte(uint8_t b);
 public:
 	message(string msg);

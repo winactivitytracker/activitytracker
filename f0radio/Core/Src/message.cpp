@@ -22,7 +22,58 @@ message::message(string msg)
 {
 	messageString = msg;
 	bitPointer = 0;
+
+	/*
+	// Turn the message into a char *
+	char const * charArray = msg.c_str();
+
+	// Manchester encode the message
+	// i: the bit in the charArray
+	// j: the bit in the bitArray
+	uint64_t i = 0;
+	uint64_t j = 0;
+	while(i < (msg.length() * 8))
+	{
+		bool bit = (charArray[(i/8)] >> i) & 1;
+		if(bit == 1)
+		{
+			bits.push_back(false);
+			bits.push_back(true);
+		}
+		else
+		{
+			bits.push_back(true);
+			bits.push_back(false);
+		}
+
+		i++;
+		j += 2;
+	}
+	*/
 }
+
+/*
+uint8_t message::setNextBit()
+{
+	if(bits.empty())
+	{
+		return NO_NEW_BITS;
+	}
+
+	auto front = bits.begin();
+	std::advance(front, bitPointer);
+
+	if(front == bits.end())
+	{
+		return NO_NEW_BITS;
+	}
+	else
+	{
+		bitPointer++;
+		return *front;
+	}
+}
+*/
 
 // Return the currently selected bit in the message,
 // then move the pointer to the next one
