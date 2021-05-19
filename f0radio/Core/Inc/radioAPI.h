@@ -13,10 +13,10 @@ extern "C"
 {
 #endif
 
-void radioInterrupt();
 void radioSend(char * message, uint8_t length);
-void radioEdge();
-void radioCount();
+void radioSendTick();
+void radioReceiveTick();
+void radioEcho();
 
 #ifdef __cplusplus
 }

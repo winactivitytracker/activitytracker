@@ -51,7 +51,6 @@
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-static void MX_NVIC_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -61,16 +60,12 @@ static void MX_NVIC_Init(void);
 
 void startCounter()
 {
-	//HAL_TIM_Base_Start_IT(&htim16);
-	//HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/48);
-	SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+	HAL_TIM_Base_Start_IT(&htim16);
 }
 
 void stopCounter()
 {
-	//HAL_TIM_Base_Stop_IT(&htim16);
-	//HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/48);
-	SysTick->CTRL &= ~(SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk);
+	HAL_TIM_Base_Stop_IT(&htim16);
 }
 
 /* USER CODE END 0 */
@@ -99,25 +94,21 @@ int main(void)
 
   /* USER CODE BEGIN SysInit */
 
-  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/48);
-  startCounter();
-
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM15_Init();
-
-  /* Initialize interrupts */
-  MX_NVIC_Init();
+  MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
 
   // Insert a test message
-  char * message = "Hello World!";
-  radioSend(message, 12);
+  char * message = "a";
+  radioSend(message,1);
 
   // Enable the timer interrupt for the transmitter
   HAL_TIM_Base_Start_IT(&htim15);
+  HAL_TIM_Base_Start_IT(&htim16);
 
   /* USER CODE END 2 */
 
@@ -128,6 +119,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+	radioEcho();
+	HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }
@@ -164,17 +158,6 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-}
-
-/**
-  * @brief NVIC Configuration.
-  * @retval None
-  */
-static void MX_NVIC_Init(void)
-{
-  /* EXTI0_1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(EXTI0_1_IRQn, 1, 0);
-  HAL_NVIC_EnableIRQ(EXTI0_1_IRQn);
 }
 
 /* USER CODE BEGIN 4 */

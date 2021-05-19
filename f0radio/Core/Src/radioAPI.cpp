@@ -16,19 +16,27 @@ void radioSend(char * message, uint8_t length)
 	return r.send(messageString);
 }
 
-void radioInterrupt()
+void radioSendTick()
 {
 	// Use this version if you don't want Manchester encoding
-	return r.interrupt();
-	//return r.interruptManchester();
+	return r.sendTick();
+	//return r.sendTickM();
 }
 
-void radioEdge()
+void radioReceiveTick()
 {
-	return r.edge();
+	return r.receiveTick();
 }
 
-void radioCount()
+void radioEcho()
 {
-	return r.count();
+	// FIXME: There is no string in this message
+	message m = r.getInboundMessage();
+	if(m.getIsComplete() == true)
+	{
+		string s = m.getMessageString();
+		char c[s.size() + 1];
+		s.copy(c,s.size()+1);
+		radioSend(c,m.getMessageString().length());
+	}
 }

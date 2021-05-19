@@ -2,35 +2,22 @@
 
 #include "radio.h"
 
-// The send function adds a message to the queue.
-// The interrupt handler will notice and start sending this message bit by bit.
-void radio::send(string msg)
-{
-	message m(msg);
-	messages.push_back(m);
-}
-
-// Return the currently active message
-message radio::getMessage()
-{
-	auto iterator = messages.begin();
-	advance(iterator, messagePointer);
-	return *iterator;
-}
-
-uint8_t radio::getNextBit()
+uint8_t radio::getNextOutboundBit()
 {
 	uint8_t retVal;
 
-	message m = getMessage();
-	retVal = m.setNextBit();
-	setMessage(m);
+	auto iterator = outboundMessages.begin();
+	advance(iterator, outboundMessagePointer);
+
+	message m = *iterator;
+	retVal = m.getNextBit();
+	setOutboundMessage(m);
 
 	return retVal;
 }
 
 // Function to mock getNextBit(), to compare performance of this vs getNextBit()
-uint8_t radio::getFakeBit()
+uint8_t radio::getFakeOutboundBit()
 {
 	static bool one = false;
 	static uint8_t counter = 0;
@@ -53,32 +40,40 @@ uint8_t radio::getFakeBit()
 
 // Replace the currently active message.
 // This is for keeping the bitPointer variable updated.
-void radio::setMessage(message m)
+void radio::setOutboundMessage(message m)
 {
-	auto iterator = messages.begin();
-	advance(iterator, messagePointer);
-	messages.insert(iterator,m);
+	auto iterator = outboundMessages.begin();
+	advance(iterator, outboundMessagePointer);
+	outboundMessages.insert(iterator,m);
 }
 
 // Move on to the next message.
 // This is called when the previous message is fully sent.
-uint8_t radio::nextMessage()
+uint8_t radio::nextOutboundMessage()
 {
-	if(messages.size() > (messagePointer + 1))
+	if(outboundMessages.size() > (outboundMessagePointer + 1))
 	{
-		messagePointer = 0;
+		outboundMessagePointer = 0;
 		return NO_NEW_MESSAGE;
 	}
 	else
 	{
-		messagePointer++;
+		outboundMessagePointer++;
 		return 0;
 	}
 }
 
+// The send function adds a message to the queue.
+// The interrupt handler will notice and start sending this message bit by bit.
+void radio::send(string msg)
+{
+	message m(msg);
+	outboundMessages.push_back(m);
+}
+
 // Function to be called by the interrupt handler.
 // Standard version with start and stop bits, using a state machine.
-void radio::interrupt()
+void radio::sendTick()
 {
 	// Counter to keep track of how long a pin should be set or unset
 	static uint8_t holdFor = 1;
@@ -93,50 +88,58 @@ void radio::interrupt()
 		{
 			case START_HIGH:
 				SEND_HIGH;
+				RED_HIGH;
 				holdFor = LENGTH_START;
 				state = START_LOW;
 				break;
 			case START_LOW:
 				SEND_LOW;
+				RED_LOW;
 				holdFor = LENGTH_START;
 				state = MSG_HIGH;
 				break;
 			case MSG_HIGH:
-				switch(getNextBit())
+				switch(getNextOutboundBit())
 				{
 					case 0:
 						SEND_HIGH;
+						RED_HIGH;
 						holdFor = LENGTH_ZERO;
 						state = MSG_LOW;
 						break;
 					case 1:
 						SEND_HIGH;
+						RED_HIGH;
 						holdFor = LENGTH_ONE;
 						state = MSG_LOW;
 						break;
 					// When getNextBit() returns this, the message is done and the next one can be selected
 					case NO_NEW_BITS:
 						SEND_LOW;
+						RED_LOW;
 						state = STOP_HIGH;
 						break;
 				}
 				break;
 			case MSG_LOW:
 				SEND_LOW;
+				RED_LOW;
 				state = MSG_HIGH;
 				break;
 			case STOP_HIGH:
 				SEND_HIGH;
+				RED_HIGH;
 				holdFor = LENGTH_START;
 				state = STOP_LOW;
 				break;
 			case STOP_LOW:
 				SEND_LOW;
+				RED_LOW;
 				holdFor = LENGTH_START;
 				state = IDLE;
 				break;
 			case IDLE:
-				if(nextMessage() != NO_NEW_MESSAGE)
+				if(nextOutboundMessage() != NO_NEW_MESSAGE)
 				{
 					state = START_HIGH;
 				}
@@ -151,15 +154,15 @@ void radio::interrupt()
 
 // Function to be called by the interrupt handler.
 // Simple implementation of manchester encoding.
-void radio::interruptManchester()
+void radio::sendTickM()
 {
 	static bool clock = true;
 	static uint8_t bit;
 
 	if(clock)
 	{
-		//bit = getFakeBit();
-		bit = getNextBit();
+		//bit = getFakeOutboundBit();
+		bit = getNextOutboundBit();
 		clock = false;
 	}
 	else
@@ -170,12 +173,28 @@ void radio::interruptManchester()
 	switch(bit)
 	{
 		case 0:
-			if(clock)	SEND_HIGH;
-			else		SEND_LOW;
+			if(clock)
+			{
+				SEND_HIGH;
+				RED_HIGH;
+			}
+			else
+			{
+				SEND_LOW;
+				RED_LOW;
+			}
 			break;
 		case 1:
-			if(clock)	SEND_LOW;
-			else		SEND_HIGH;
+			if(clock)
+			{
+				SEND_LOW;
+				RED_LOW;
+			}
+			else
+			{
+				SEND_HIGH;
+				RED_HIGH;
+			}
 			break;
 		case NO_NEW_BITS:
 			SEND_LOW;
@@ -183,34 +202,70 @@ void radio::interruptManchester()
 	}
 }
 
-void radio::edge()
-{
-	// check if already counting
-	if(isCounting)
-	{
-		// Stop the timer and check the counter
-		stopCounter();
-		isCounting = false;
+// Receiver functions
 
-		if((ZERO_MIN > counter) && (counter > ZERO_MAX))
+message radio::getInboundMessage()
+{
+	return inboundMessage;
+}
+
+void radio::receiveTick()
+{
+	static bool started = false;
+	static bool isCounting = false;
+	static uint16_t counter = 0;
+	bool on = RECEIVE;
+
+	if(on)
+	{
+		if(isCounting)
 		{
-			// Add zero to buffer
+			counter++;
 		}
-		else if((ONE_MIN > counter) && (counter > ONE_MAX))
+		else
 		{
-			// Add one to buffer
+			counter = 0;
+			isCounting = true;
 		}
 	}
 	else
 	{
-		// Start the counter's timer
-		counter = 0;
-		startCounter();
-		isCounting = true;
-	}
-}
+		if(isCounting)
+		{
+			if((START_MIN < counter) && (counter < START_MAX))
+			{
+				// Stop the timer
+				isCounting = false;
+				counter = 0;
 
-void radio::count()
-{
-	counter++;
+				if(started)
+				{
+					inboundMessage.setIsComplete(true);
+					stopCounter();
+				}
+				else
+				{
+					started = true;
+				}
+			}
+			else if((ZERO_MIN < counter) && (counter < ZERO_MAX))
+			{
+				// Stop the timer
+				isCounting = false;
+				counter = 0;
+
+				// Add zero to buffer
+				inboundMessage.setNextBit(0);
+			}
+			else if((ONE_MIN < counter) && (counter < ONE_MAX))
+			{
+				// Stop the timer
+				isCounting = false;
+				counter = 0;
+
+				// Add one to buffer
+				inboundMessage.setNextBit(1);
+			}
+		}
+	}
 }

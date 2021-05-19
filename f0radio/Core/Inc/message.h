@@ -7,8 +7,8 @@
 
 using namespace std;
 
-#include <string>
 #include <list>
+#include <string>
 
 extern "C"
 {
@@ -20,10 +20,16 @@ class message
 private:
 	string messageString;
 	uint16_t bitPointer;
+	bool isComplete;
 	uint8_t mirrorByte(uint8_t b);
 public:
+	message();
 	message(string msg);
-	uint8_t setNextBit();
+	string getMessageString();
+	bool getIsComplete();
+	void setIsComplete(bool i);
+	uint8_t getNextBit();
+	void setNextBit(uint8_t bit);
 };
 
 #endif /* SRC_MESSAGE_H_ */
