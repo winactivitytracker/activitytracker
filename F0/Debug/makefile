@@ -9,10 +9,6 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/subdir.mk
--include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM0/subdir.mk
--include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/subdir.mk
--include Middlewares/Third_Party/FreeRTOS/Source/subdir.mk
 -include Drivers/STM32F0xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
@@ -80,8 +76,8 @@ all: main-build
 main-build: F0SensorBoard.elf secondary-outputs
 
 # Tool invocations
-F0SensorBoard.elf: $(OBJS) $(USER_OBJS) C:\School\IOT\KBS\STMWorkspace\F0\STM32F030C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-g++ -o "F0SensorBoard.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"C:\School\IOT\KBS\STMWorkspace\F0\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="F0SensorBoard.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
+F0SensorBoard.elf: $(OBJS) $(USER_OBJS) C:\School\IOT\KBS\GitHub\IoT\activitytracker\F0\STM32F030C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-g++ -o "F0SensorBoard.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0 -T"C:\School\IOT\KBS\GitHub\IoT\activitytracker\F0\STM32F030C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="F0SensorBoard.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -lstdc++ -lsupc++ -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

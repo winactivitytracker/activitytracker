@@ -2,5 +2,5 @@ mpu.c:5:6:MPU6050Init	32	static
 mpu.c:43:6:MPU6050ReadAccel	56	static
 mpu.c:65:6:MPU6050ReadGyro	56	static
 mpu.c:87:6:MPUReadAll	24	static
-mpu.c:93:6:MPUSetAccel	40	static
-mpu.c:116:6:MPUSetGyro	40	static
+mpu.c:93:6:MPUSetAccel	32	static
+mpu.c:100:6:MPUSetGyro	32	static

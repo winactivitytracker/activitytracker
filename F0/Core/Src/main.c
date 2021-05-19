@@ -19,13 +19,15 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "cmsis_os.h"
 #include "i2c.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+#include "mpu.h"
+#include <stdio.h>
 
 /* USER CODE END Includes */
 
@@ -47,11 +49,15 @@
 
 /* USER CODE BEGIN PV */
 
+int32_t MPUData[6];
+int16_t allData[20][6];
+uint8_t counter = 0;
+char* nameArray[6] = {"aX: ", "aY: ", "aZ: ", "gX: ", "gY: ", "gZ: "};
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -94,20 +100,70 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   MPU6050Init();
+  MPUSetAccel(MPU_A16G);
+  MPUSetGyro(MPU_G2000G);
 
+  for(uint8_t i = 0; i < 6; i++)
+  {
+	  HAL_UART_Transmit(&huart1, nameArray[i], sizeof(nameArray[i]), HAL_MAX_DELAY);
+	  if(i != 5)
+	  {
+		  HAL_UART_Transmit(&huart1, ", ", sizeof(", "), HAL_MAX_DELAY);
+	  }
+	  if(i == 5)
+	  {
+		  HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+	  }
+  }
   /* USER CODE END 2 */
 
-  /* Init scheduler */
-  osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
-  MX_FREERTOS_Init();
-  /* Start scheduler */
-  osKernelStart();
-
-  /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if(counter == 20)
+	  {
+		  char numbers[15];
+		  float current;
+		  for(uint8_t i = 0; i < 20; i++)
+		  {
+			  MPUData[0] = MPUData[0] + allData[i][0];
+			  MPUData[1] = MPUData[1] + allData[i][1];
+			  MPUData[2] = MPUData[2] + allData[i][2];
+			  MPUData[3] = MPUData[3] + allData[i][3];
+			  MPUData[4] = MPUData[4] + allData[i][4];
+			  MPUData[5] = MPUData[5] + allData[i][5];
+		  }
+
+		  for(uint8_t i = 0; i < 6; i++)
+		  {
+			  MPUData[i] = MPUData[i] / counter;
+		 	  if(i < 3)
+		   	  {
+		   	  	  current = (float)MPUData[i] / 2048.0;
+		   	  } else
+		   	  {
+		   	  	  current = (float)MPUData[i] / 16.4;
+		   	  }
+		 	  MPUData[i] = 0;
+		   	  sprintf(numbers, "%.2f", current);
+		   	  HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
+		   	  if(i != 5)
+		   	  {
+		   		  HAL_UART_Transmit(&huart1, ", ", sizeof(", "), HAL_MAX_DELAY);
+		   	  }
+		   	  if(i == 5)
+		   	  {
+		   		  HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+		   	  }
+		   }
+		   counter = 0;
+		   HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_2);
+	  }
+	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_2);
+	  MPUReadAll(&allData[counter][0], &allData[counter][1], &allData[counter][2], &allData[counter][3], &allData[counter][4], &allData[counter][5]);
+	  counter++;
+	  HAL_Delay(50);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -131,7 +187,10 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL12;
+  RCC_OscInitStruct.PLL.PREDIV = RCC_PREDIV_DIV1;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -140,11 +199,11 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
   {
     Error_Handler();
   }
