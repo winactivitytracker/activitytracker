@@ -96,7 +96,6 @@ int GPS_validate(char *nmeastr){
     i=0;
     calculated_check=0;
 
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_9);
     // check to ensure that the string starts with a $
     if(nmeastr[i] == '$')
         i++;

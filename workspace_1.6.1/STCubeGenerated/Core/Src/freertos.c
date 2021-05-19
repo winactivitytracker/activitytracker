@@ -26,14 +26,15 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "user_diskio_spi.h"
 #include "ssd1306.h"
 #include "fonts.h"
 #include "test.h"
 #include "stdio.h"
 #include "gps.h"
 #include "usart.h"
-#include <stdlib.h>
+#include "sdCard.h"
+#include "adc.h"
 
 /* USER CODE END Includes */
 
@@ -54,7 +55,10 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
+
+extern uint16_t ADCValue;
 extern GPS_t GPS;
+
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -70,9 +74,16 @@ const osThreadAttr_t Gps_attributes = {
   .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
+/* Definitions for ADCSemaphore */
+osSemaphoreId_t ADCSemaphoreHandle;
+const osSemaphoreAttr_t ADCSemaphore_attributes = {
+  .name = "ADCSemaphore"
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
+
+void ADC_IRQHandler();
 
 /* USER CODE END FunctionPrototypes */
 
@@ -94,6 +105,10 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
+
+  /* Create the semaphores(s) */
+  /* creation of ADCSemaphore */
+  ADCSemaphoreHandle = osSemaphoreNew(1, 1, &ADCSemaphore_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
@@ -137,7 +152,36 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	  uint16_t localADC = ADCValue;
+	  SSD1306_Clear();
+	  char numbers[16];
+	  char battNumber[16];
+	  float battVoltage = 0.0;
+
+	  SSD1306_GotoXY (0,0);
+	  SSD1306_Puts ("ADC:", &Font_7x10, 1);
+
+	  sprintf(numbers, "%d", localADC);
+
+	  SSD1306_GotoXY (40, 0);
+	  SSD1306_Puts(numbers, &Font_7x10, 1);
+
+	  SSD1306_GotoXY (0,20);
+	  SSD1306_Puts ("BattADC:", &Font_7x10, 1);
+	  battVoltage = localADC / (float)4095;
+	  sprintf(battNumber, "%0.2f", battVoltage);
+	  SSD1306_GotoXY (40, 20);
+	  SSD1306_Puts(battNumber, &Font_7x10, 1);
+
+	  SSD1306_GotoXY (0,40);
+	  SSD1306_Puts ("Batt:", &Font_7x10, 1);
+	  battVoltage = battVoltage * 4.2;
+	  sprintf(battNumber, "%.2f", battVoltage);
+	  SSD1306_GotoXY (40, 40);
+	  SSD1306_Puts(battNumber, &Font_7x10, 1);
+	  SSD1306_UpdateScreen();
+	  //HAL_ADC_Start_IT(&hadc1);
+	  osDelay(500);
   }
   /* USER CODE END StartDefaultTask */
 }
@@ -152,56 +196,40 @@ void StartDefaultTask(void *argument)
 void GpsTask(void *argument)
 {
   /* USER CODE BEGIN GpsTask */
-
   /* Infinite loop */
   for(;;)
   {
-
-	    char numbers[5];
-	  	char data [10];
-	  	uint32_t mask;
-
-		//HAL_UART_Receive_IT(&huart1, data, 10);
-
-	  	SSD1306_GotoXY (0,0);
-	  	SSD1306_Puts ("LAT:", &Font_7x10, 1);
-
-	  	SSD1306_GotoXY (40, 0);
-	  	sprintf(numbers, "%f", GPS.dec_latitude);
-	  	SSD1306_Puts(numbers, &Font_7x10, 1);
-
-	  	SSD1306_GotoXY (0,14);
-	  	SSD1306_Puts ("LONG:", &Font_7x10, 1);
-
-	  	SSD1306_GotoXY (40, 14);
-	  	sprintf(numbers, "%f", GPS.dec_longitude);
-		SSD1306_Puts(numbers, &Font_7x10, 1);
-
-	  	SSD1306_GotoXY (0,28);
-		SSD1306_Puts ("KMPH:", &Font_7x10, 1);
-
-		SSD1306_GotoXY (40, 28);
-		sprintf(numbers, "%f", GPS.speed_km);
-		SSD1306_Puts(numbers, &Font_7x10, 1);
-
-		SSD1306_GotoXY (0,42);
-		SSD1306_Puts ("TIME:", &Font_7x10, 1);
-
-		SSD1306_GotoXY (40, 42);
-		sprintf(numbers, "%T", GPS.utc_time);
-		SSD1306_Puts(numbers , &Font_7x10, 1);
-
-	  	SSD1306_UpdateScreen();
-
-
-
-	  	osDelay(500);
+	  static uint16_t counter = 0;
+	  char numbers[15];
+	  sprintf(numbers, "%d", counter);
+	  	  if(writeFile("CSVTest.csv", numbers))
+	  	  {
+	  		  writeFile("CSVTest.csv", ", ");
+	  		  writeFile("CSVTest.csv", numbers);
+	  		  writeFile("CSVTest.csv", ", ");
+	  		  writeFile("CSVTest.csv", numbers);
+	  		  writeFile("CSVTest.csv", ", ");
+	  		  writeFile("CSVTest.csv", numbers);
+	  		  writeFile("CSVTest.csv", ", ");
+	  		  writeFile("CSVTest.csv", numbers);
+	  		  writeFile("CSVTest.csv", "\n");
+	  		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
+	  		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_SET);
+	  	  } else
+	  	  {
+	  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_SET);
+	  		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
+	  	  }
+	  	  counter++;
+	  	osDelay(1000);
   }
   /* USER CODE END GpsTask */
 }
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+
+
 
 /* USER CODE END Application */
 

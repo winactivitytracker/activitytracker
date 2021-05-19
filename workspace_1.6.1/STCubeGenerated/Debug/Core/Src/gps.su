@@ -1,5 +1,5 @@
 gps.c:57:6:GPS_Init	8	static
 gps.c:63:6:GPS_UART_CallBack	16	static
 gps.c:90:5:GPS_validate	32	static
-gps.c:131:6:GPS_parse	48	static
-gps.c:160:7:GPS_nmea_to_dec	32	static
+gps.c:130:6:GPS_parse	48	static
+gps.c:159:7:GPS_nmea_to_dec	32	static

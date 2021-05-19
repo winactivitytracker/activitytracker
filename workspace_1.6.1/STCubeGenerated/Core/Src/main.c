@@ -20,10 +20,11 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
+#include "adc.h"
+#include "fatfs.h"
 #include "i2c.h"
 #include "spi.h"
 #include "usart.h"
-#include "usb_otg.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -33,6 +34,7 @@
 #include "fonts.h"
 //#include "test.h"
 #include "gps.h"
+#include "sdCard.h"
 
 /* USER CODE END Includes */
 
@@ -104,7 +106,8 @@ int main(void)
   MX_I2C1_Init();
   MX_SPI1_Init();
   MX_USART1_UART_Init();
-  MX_USB_OTG_FS_PCD_Init();
+  MX_FATFS_Init();
+  MX_ADC1_Init();
 
   /* Initialize interrupts */
   MX_NVIC_Init();
@@ -113,8 +116,20 @@ int main(void)
   SSD1306_Init();
   SSD1306_Clear();
   SSD1306_UpdateScreen();
-
+  initSdCard();
   __HAL_UART_ENABLE_IT(&huart1, UART_FLAG_RXNE);
+  __HAL_ADC_ENABLE_IT(&hadc1, ADC_FLAG_EOC);
+  HAL_ADC_Start_IT(&hadc1);
+  //HAL_ADCEx_Calibration_Start(&hadc1);
+
+  SSD1306_GotoXY (0,0);
+  SSD1306_Puts ("SD:", &Font_7x10, 1);
+
+  SSD1306_UpdateScreen();
+
+  HAL_Delay(1000);
+  writeFile("CSVTest.csv", "One, Two, Three, Four, Five\n");
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -151,16 +166,10 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 15;
-  RCC_OscInitStruct.PLL.PLLN = 144;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 5;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -189,6 +198,9 @@ static void MX_NVIC_Init(void)
   /* USART1_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(USART1_IRQn);
+  /* ADC_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(ADC_IRQn, 6, 0);
+  HAL_NVIC_EnableIRQ(ADC_IRQn);
 }
 
 /* USER CODE BEGIN 4 */
