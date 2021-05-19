@@ -157,45 +157,28 @@ void GpsTask(void *argument)
   for(;;)
   {
 
-	    char numbers[5];
-	  	char data [10];
-	  	uint32_t mask;
+	  char numbers[256];
+		char data [10];
 
-		//HAL_UART_Receive_IT(&huart1, data, 10);
+		SSD1306_GotoXY (0,0);
+		SSD1306_Puts ("R.A.T:", &Font_11x18, 1);
 
-	  	SSD1306_GotoXY (0,0);
-	  	SSD1306_Puts ("LAT:", &Font_7x10, 1);
+		SSD1306_GotoXY (0, 20);
+		sprintf(numbers, "%.2f", GPS.speed_km);
+		SSD1306_Puts(numbers, &Font_16x26, 1);
+		SSD1306_GotoXY (66,34);
+		SSD1306_Puts ("KMPH", &Font_7x10, 1);
 
-	  	SSD1306_GotoXY (40, 0);
-	  	sprintf(numbers, "%f", GPS.dec_latitude);
-	  	SSD1306_Puts(numbers, &Font_7x10, 1);
+		SSD1306_GotoXY (0, 45);
+		float time = GPS.utc_time +20000;
+		sprintf(numbers, "%f", time );
+		sprintf(data, "%c%c:%c%c:%c%c", numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5]);
+		SSD1306_Puts(data, &Font_7x10, 1);
 
-	  	SSD1306_GotoXY (0,14);
-	  	SSD1306_Puts ("LONG:", &Font_7x10, 1);
+		SSD1306_UpdateScreen();
 
-	  	SSD1306_GotoXY (40, 14);
-	  	sprintf(numbers, "%f", GPS.dec_longitude);
-		SSD1306_Puts(numbers, &Font_7x10, 1);
-
-	  	SSD1306_GotoXY (0,28);
-		SSD1306_Puts ("KMPH:", &Font_7x10, 1);
-
-		SSD1306_GotoXY (40, 28);
-		sprintf(numbers, "%f", GPS.speed_km);
-		SSD1306_Puts(numbers, &Font_7x10, 1);
-
-		SSD1306_GotoXY (0,42);
-		SSD1306_Puts ("TIME:", &Font_7x10, 1);
-
-		SSD1306_GotoXY (40, 42);
-		sprintf(numbers, "%T", GPS.utc_time);
-		SSD1306_Puts(numbers , &Font_7x10, 1);
-
-	  	SSD1306_UpdateScreen();
-
-
-
-	  	osDelay(500);
+		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_8);
+		osDelay(1);
   }
   /* USER CODE END GpsTask */
 }

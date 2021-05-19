@@ -16,6 +16,7 @@ typedef struct{
 	float dec_longitude;
 	float dec_latitude;
 	float altitude_ft;
+	float dec_speed_km;
 
 	// GGA - Global Positioning System Fixed Data
 	float nmea_longitude;
@@ -45,6 +46,12 @@ typedef struct{
 	char speed_k_unit;
 	float speed_km; // speek km/hr
 	char speed_km_unit;
+
+	uint8_t		rxBuffer[512];
+	uint16_t	rxIndex;
+	uint8_t		rxTmp;
+	uint32_t	LastTime;
+
 } GPS_t;
 
 #if (GPS_DEBUG == 1)
