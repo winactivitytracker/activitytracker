@@ -63,10 +63,10 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 64 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-/* Definitions for GspTask */
-osThreadId_t GspTaskHandle;
-const osThreadAttr_t GspTask_attributes = {
-  .name = "GspTask",
+/* Definitions for DrawOnOledTask */
+osThreadId_t DrawOnOledTaskHandle;
+const osThreadAttr_t DrawOnOledTask_attributes = {
+  .name = "DrawOnOledTask",
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
@@ -77,7 +77,7 @@ void getTime();
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
-void StartGPSTask(void *argument);
+void StartDrawing(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -111,8 +111,8 @@ void MX_FREERTOS_Init(void) {
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
-  /* creation of GspTask */
-  GspTaskHandle = osThreadNew(StartGPSTask, NULL, &GspTask_attributes);
+  /* creation of DrawOnOledTask */
+  DrawOnOledTaskHandle = osThreadNew(StartDrawing, NULL, &DrawOnOledTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -142,16 +142,16 @@ void StartDefaultTask(void *argument)
   /* USER CODE END StartDefaultTask */
 }
 
-/* USER CODE BEGIN Header_StartGPSTask */
+/* USER CODE BEGIN Header_StartDrawing */
 /**
-* @brief Function implementing the GspTask thread.
+* @brief Function implementing the DrawOnOledTask thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_StartGPSTask */
-void StartGPSTask(void *argument)
+/* USER CODE END Header_StartDrawing */
+void StartDrawing(void *argument)
 {
-  /* USER CODE BEGIN StartGPSTask */
+  /* USER CODE BEGIN StartDrawing */
   /* Infinite loop */
   for(;;)
   {
@@ -166,15 +166,14 @@ void StartGPSTask(void *argument)
 	SSD1306_GotoXY (66,34);
 	SSD1306_Puts ("KMPH", &Font_7x10, 1);
 
-
 	getTime();
 
 	SSD1306_UpdateScreen();
 
 	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_8);
-	osDelay(1);
+    osDelay(1);
   }
-  /* USER CODE END StartGPSTask */
+  /* USER CODE END StartDrawing */
 }
 
 /* Private application code --------------------------------------------------*/
