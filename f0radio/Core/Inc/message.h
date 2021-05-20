@@ -20,7 +20,6 @@ class message
 private:
 	string messageString;
 	uint16_t bitPointer;
-	bool isComplete;
 	uint8_t mirrorByte(uint8_t b);
 public:
 	message();

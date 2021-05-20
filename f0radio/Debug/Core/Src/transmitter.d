@@ -1,5 +1,5 @@
-Core/Src/radio.o: ../Core/Src/radio.cpp ../Core/Inc/radio.h \
- ../Core/Inc/message.h ../Core/Inc/main.h \
+Core/Src/transmitter.o: ../Core/Src/transmitter.cpp \
+ ../Core/Inc/transmitter.h ../Core/Inc/message.h ../Core/Inc/main.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal.h \
  ../Core/Inc/stm32f0xx_hal_conf.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_rcc.h \
@@ -28,7 +28,7 @@ Core/Src/radio.o: ../Core/Src/radio.cpp ../Core/Inc/radio.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim_ex.h
 
-../Core/Inc/radio.h:
+../Core/Inc/transmitter.h:
 
 ../Core/Inc/message.h:
 

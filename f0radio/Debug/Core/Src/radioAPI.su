@@ -1,41 +1,106 @@
 gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	16	static
-stl_list.h:109:7:std::__detail::_List_node_header::_List_node_header()	16	static
-stl_list.h:149:7:void std::__detail::_List_node_header::_M_init()	16	static
-stl_list.h:370:14:std::__cxx11::_List_base<message, std::allocator<message> >::_List_impl::~_List_impl()	16	static
-stl_list.h:456:7:std::__cxx11::_List_base<_Tp, _Alloc>::_List_base() [with _Tp = message; _Alloc = std::allocator<message>]	16	static
-stl_list.h:669:7:std::__cxx11::list<_Tp, _Alloc>::list() [with _Tp = message; _Alloc = std::allocator<message>]	16	static
-stl_list.h:823:7:std::__cxx11::list<_Tp, _Alloc>::~list() [with _Tp = message; _Alloc = std::allocator<message>]	16	static
-message.h:18:7:message::~message()	16	static
-radio.h:42:7:radio::radio()	16	static
-radioAPI.cpp:11:6:void radioSend(char*, uint8_t)	88	static
-radioAPI.cpp:19:6:void radioSendTick()	8	static
+stl_deque.h:93:3:constexpr std::size_t std::__deque_buf_size(std::size_t)	16	static
+transmitter.h:33:7:transmitter::transmitter()	16	static
+receiver.h:27:7:receiver::receiver()	16	static
+radioAPI.cpp:13:6:void radioSend(char*)	80	static
+radioAPI.cpp:21:6:void radioSendTick()	8	static
 radioAPI.cpp:26:6:void radioReceiveTick()	8	static
-radioAPI.cpp:31:6:void radioEcho()	136	dynamic
-stl_list.h:375:2:std::__cxx11::_List_base<_Tp, _Alloc>::_List_impl::_List_impl() [with _Tp = message; _Alloc = std::allocator<message>]	16	static
-allocator.h:153:7:std::allocator< <template-parameter-1-1> >::~allocator() [with _Tp = std::_List_node<message>]	16	static
-stl_list.h:494:7:std::__cxx11::_List_base<_Tp, _Alloc>::~_List_base() [with _Tp = message; _Alloc = std::allocator<message>]	16	static
-basic_string.h:625:9:std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::basic_string(_InputIterator, _InputIterator, const _Alloc&) [with _InputIterator = char*; <template-parameter-2-2> = void; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]	32	static
-allocator.h:138:7:std::allocator< <template-parameter-1-1> >::allocator() [with _Tp = std::_List_node<message>]	16	static
-new_allocator.h:89:7:__gnu_cxx::new_allocator<_Tp>::~new_allocator() [with _Tp = std::_List_node<message>]	16	static
-list.tcc:66:5:void std::__cxx11::_List_base<_Tp, _Alloc>::_M_clear() [with _Tp = message; _Alloc = std::allocator<message>]	32	static
-basic_string.h:263:9:void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct(_InIterator, _InIterator) [with _InIterator = char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]	32	static
-new_allocator.h:80:7:__gnu_cxx::new_allocator<_Tp>::new_allocator() [with _Tp = std::_List_node<message>]	16	static
-stl_list.h:170:18:_Tp* std::_List_node<_Tp>::_M_valptr() [with _Tp = message]	16	static
-stl_list.h:448:7:std::__cxx11::_List_base<_Tp, _Alloc>::_Node_alloc_type& std::__cxx11::_List_base<_Tp, _Alloc>::_M_get_Node_allocator() [with _Tp = message; _Alloc = std::allocator<message>]	16	static
-alloc_traits.h:495:2:static void std::allocator_traits<std::allocator<_CharT> >::destroy(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, _Up*) [with _Up = message; _Tp = std::_List_node<message>]	16	static
-stl_list.h:441:7:void std::__cxx11::_List_base<_Tp, _Alloc>::_M_put_node(typename std::__cxx11::_List_base<_Tp, _Alloc>::_Node_alloc_traits::pointer) [with _Tp = message; _Alloc = std::allocator<message>]	16	static
-basic_string.h:243:9:void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct_aux(_InIterator, _InIterator, std::__false_type) [with _InIterator = char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]	40	static
-aligned_buffer.h:72:7:_Tp* __gnu_cxx::__aligned_membuf<_Tp>::_M_ptr() [with _Tp = message]	16	static
-new_allocator.h:151:2:void __gnu_cxx::new_allocator<_Tp>::destroy(_Up*) [with _Up = message; _Tp = std::_List_node<message>]	16	static
-alloc_traits.h:469:7:static void std::allocator_traits<std::allocator<_CharT> >::deallocate(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, std::allocator_traits<std::allocator<_CharT> >::pointer, std::allocator_traits<std::allocator<_CharT> >::size_type) [with _Tp = std::_List_node<message>]	24	static
-basic_string.tcc:206:7:void std::__cxx11::basic_string<_CharT, _Traits, _Alloc>::_M_construct(_InIterator, _InIterator, std::forward_iterator_tag) [with _FwdIterator = char*; _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]	32	static
-aligned_buffer.h:64:7:void* __gnu_cxx::__aligned_membuf<_Tp>::_M_addr() [with _Tp = message]	16	static
-new_allocator.h:119:7:void __gnu_cxx::new_allocator<_Tp>::deallocate(__gnu_cxx::new_allocator<_Tp>::pointer, __gnu_cxx::new_allocator<_Tp>::size_type) [with _Tp = std::_List_node<message>]	24	static
-type_traits.h:152:5:bool __gnu_cxx::__is_null_pointer(_Type*) [with _Type = char]	16	static
-stl_iterator_base_funcs.h:138:5:typename std::iterator_traits<_Iterator>::difference_type std::distance(_InputIterator, _InputIterator) [with _InputIterator = char*]	32	static
-stl_iterator_base_types.h:205:5:constexpr typename std::iterator_traits<_Iterator>::iterator_category std::__iterator_category(const _Iter&) [with _Iter = char*]	16	static
-stl_iterator_base_funcs.h:98:5:constexpr typename std::iterator_traits<_Iterator>::difference_type std::__distance(_RandomAccessIterator, _RandomAccessIterator, std::random_access_iterator_tag) [with _RandomAccessIterator = char*]	24	static
-radio.h:42:7:radio::~radio()	16	static
-radioAPI.cpp:42:1:void __static_initialization_and_destruction_0(int, int)	16	static
-radioAPI.cpp:42:1:cpp)	8	static
-radioAPI.cpp:42:1:cpp)	8	static
+message.h:18:7:message::~message()	16	static
+radioAPI.cpp:31:6:void radioEcho()	96	static
+stl_deque.h:915:7:std::deque<_Tp, _Alloc>::deque() [with _Tp = message; _Alloc = std::allocator<message>]	16	static
+stl_deque.h:1071:7:std::deque<_Tp, _Alloc>::~deque() [with _Tp = message; _Alloc = std::allocator<message>]	56	static
+stl_deque.h:915:7:std::deque<_Tp, _Alloc>::deque() [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	16	static
+stl_deque.h:1071:7:std::deque<_Tp, _Alloc>::~deque() [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	56	static
+bitset:869:26:constexpr std::bitset<_Nb>::bitset() [with unsigned int _Nb = 1000]	16	static
+stl_deque.h:567:14:std::_Deque_base<message, std::allocator<message> >::_Deque_impl::~_Deque_impl()	16	static
+stl_deque.h:508:7:std::_Deque_base<_Tp, _Alloc>::_Deque_base() [with _Tp = message; _Alloc = std::allocator<message>]	16	static
+stl_deque.h:678:5:std::_Deque_base<_Tp, _Alloc>::~_Deque_base() [with _Tp = message; _Alloc = std::allocator<message>]	16	static
+stl_deque.h:1193:7:std::deque<_Tp, _Alloc>::iterator std::deque<_Tp, _Alloc>::begin() [with _Tp = message; _Alloc = std::allocator<message>]	16	static
+stl_deque.h:1210:7:std::deque<_Tp, _Alloc>::iterator std::deque<_Tp, _Alloc>::end() [with _Tp = message; _Alloc = std::allocator<message>]	16	static
+stl_deque.h:605:7:std::_Deque_base<_Tp, _Alloc>::_Tp_alloc_type& std::_Deque_base<_Tp, _Alloc>::_M_get_Tp_allocator() [with _Tp = message; _Alloc = std::allocator<message>]	16	static
+stl_deque.h:167:7:std::_Deque_iterator<_Tp, _Ref, _Ptr>::_Deque_iterator(const std::_Deque_iterator<_Tp, _Ref, _Ptr>&) [with _Tp = message; _Ref = message&; _Ptr = message*]	16	static
+stl_deque.h:2113:7:void std::deque<_Tp, _Alloc>::_M_destroy_data(std::deque<_Tp, _Alloc>::iterator, std::deque<_Tp, _Alloc>::iterator, const std::allocator<_CharT>&) [with _Tp = message; _Alloc = std::allocator<message>]	64	static
+stl_deque.h:567:14:std::_Deque_base<std::bitset<8>, std::allocator<std::bitset<8> > >::_Deque_impl::~_Deque_impl()	16	static
+stl_deque.h:508:7:std::_Deque_base<_Tp, _Alloc>::_Deque_base() [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	16	static
+stl_deque.h:678:5:std::_Deque_base<_Tp, _Alloc>::~_Deque_base() [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	16	static
+stl_deque.h:1193:7:std::deque<_Tp, _Alloc>::iterator std::deque<_Tp, _Alloc>::begin() [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	16	static
+stl_deque.h:1210:7:std::deque<_Tp, _Alloc>::iterator std::deque<_Tp, _Alloc>::end() [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	16	static
+stl_deque.h:605:7:std::_Deque_base<_Tp, _Alloc>::_Tp_alloc_type& std::_Deque_base<_Tp, _Alloc>::_M_get_Tp_allocator() [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	16	static
+stl_deque.h:167:7:std::_Deque_iterator<_Tp, _Ref, _Ptr>::_Deque_iterator(const std::_Deque_iterator<_Tp, _Ref, _Ptr>&) [with _Tp = std::bitset<8>; _Ref = std::bitset<8>&; _Ptr = std::bitset<8>*]	16	static
+stl_deque.h:2113:7:void std::deque<_Tp, _Alloc>::_M_destroy_data(std::deque<_Tp, _Alloc>::iterator, std::deque<_Tp, _Alloc>::iterator, const std::allocator<_CharT>&) [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	56	static
+bitset:82:26:constexpr std::_Base_bitset<_Nw>::_Base_bitset() [with unsigned int _Nw = 32]	16	static
+stl_deque.h:575:2:std::_Deque_base<_Tp, _Alloc>::_Deque_impl::_Deque_impl() [with _Tp = message; _Alloc = std::allocator<message>]	16	static
+allocator.h:153:7:std::allocator< <template-parameter-1-1> >::~allocator() [with _Tp = message]	16	static
+stl_deque.h:699:5:void std::_Deque_base<_Tp, _Alloc>::_M_initialize_map(std::size_t) [with _Tp = message; _Alloc = std::allocator<message>]	48	static
+stl_deque.h:756:5:void std::_Deque_base<_Tp, _Alloc>::_M_destroy_nodes(std::_Deque_base<_Tp, _Alloc>::_Map_pointer, std::_Deque_base<_Tp, _Alloc>::_Map_pointer) [with _Tp = message; _Alloc = std::allocator<message>]	32	static
+stl_deque.h:638:7:void std::_Deque_base<_Tp, _Alloc>::_M_deallocate_map(std::_Deque_base<_Tp, _Alloc>::_Map_pointer, std::size_t) [with _Tp = message; _Alloc = std::allocator<message>]	40	static
+deque.tcc:854:6:void std::deque<_Tp, _Alloc>::_M_destroy_data_aux(std::deque<_Tp, _Alloc>::iterator, std::deque<_Tp, _Alloc>::iterator) [with _Tp = message; _Alloc = std::allocator<message>]	40	static
+stl_deque.h:575:2:std::_Deque_base<_Tp, _Alloc>::_Deque_impl::_Deque_impl() [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	16	static
+allocator.h:153:7:std::allocator< <template-parameter-1-1> >::~allocator() [with _Tp = std::bitset<8>]	16	static
+stl_deque.h:699:5:void std::_Deque_base<_Tp, _Alloc>::_M_initialize_map(std::size_t) [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	48	static
+stl_deque.h:756:5:void std::_Deque_base<_Tp, _Alloc>::_M_destroy_nodes(std::_Deque_base<_Tp, _Alloc>::_Map_pointer, std::_Deque_base<_Tp, _Alloc>::_Map_pointer) [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	32	static
+stl_deque.h:638:7:void std::_Deque_base<_Tp, _Alloc>::_M_deallocate_map(std::_Deque_base<_Tp, _Alloc>::_Map_pointer, std::size_t) [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	40	static
+allocator.h:138:7:std::allocator< <template-parameter-1-1> >::allocator() [with _Tp = message]	16	static
+stl_deque.h:150:7:std::_Deque_iterator<_Tp, _Ref, _Ptr>::_Deque_iterator() [with _Tp = message; _Ref = message&; _Ptr = message*]	16	static
+new_allocator.h:89:7:__gnu_cxx::new_allocator<_Tp>::~new_allocator() [with _Tp = message]	16	static
+stl_algobase.h:222:5:constexpr const _Tp& std::max(const _Tp&, const _Tp&) [with _Tp = unsigned int]	16	static
+stl_deque.h:631:7:std::_Deque_base<_Tp, _Alloc>::_Map_pointer std::_Deque_base<_Tp, _Alloc>::_M_allocate_map(std::size_t) [with _Tp = message; _Alloc = std::allocator<message>]	32	static
+stl_deque.h:738:5:void std::_Deque_base<_Tp, _Alloc>::_M_create_nodes(std::_Deque_base<_Tp, _Alloc>::_Map_pointer, std::_Deque_base<_Tp, _Alloc>::_Map_pointer) [with _Tp = message; _Alloc = std::allocator<message>]	32	static
+stl_deque.h:273:7:void std::_Deque_iterator<_Tp, _Ref, _Ptr>::_M_set_node(std::_Deque_iterator<_Tp, _Ref, _Ptr>::_Map_pointer) [with _Tp = message; _Ref = message&; _Ptr = message*]	24	static
+stl_deque.h:624:7:void std::_Deque_base<_Tp, _Alloc>::_M_deallocate_node(std::_Deque_base<_Tp, _Alloc>::_Ptr) [with _Tp = message; _Alloc = std::allocator<message>]	24	static
+stl_deque.h:613:7:std::_Deque_base<_Tp, _Alloc>::_Map_alloc_type std::_Deque_base<_Tp, _Alloc>::_M_get_map_allocator() const [with _Tp = message; _Alloc = std::allocator<message>]	16	static
+allocator.h:153:7:std::allocator< <template-parameter-1-1> >::~allocator() [with _Tp = message*]	16	static
+alloc_traits.h:469:7:static void std::allocator_traits<std::allocator<_CharT> >::deallocate(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, std::allocator_traits<std::allocator<_CharT> >::pointer, std::allocator_traits<std::allocator<_CharT> >::size_type) [with _Tp = message*]	24	static
+stl_deque.h:889:21:static std::size_t std::deque<_Tp, _Alloc>::_S_buffer_size() [with _Tp = message; _Alloc = std::allocator<message>]	8	static
+stl_construct.h:203:5:void std::_Destroy(_ForwardIterator, _ForwardIterator, std::allocator<_T2>&) [with _ForwardIterator = message*; _Tp = message]	24	static
+allocator.h:138:7:std::allocator< <template-parameter-1-1> >::allocator() [with _Tp = std::bitset<8>]	16	static
+stl_deque.h:150:7:std::_Deque_iterator<_Tp, _Ref, _Ptr>::_Deque_iterator() [with _Tp = std::bitset<8>; _Ref = std::bitset<8>&; _Ptr = std::bitset<8>*]	16	static
+new_allocator.h:89:7:__gnu_cxx::new_allocator<_Tp>::~new_allocator() [with _Tp = std::bitset<8>]	16	static
+stl_deque.h:631:7:std::_Deque_base<_Tp, _Alloc>::_Map_pointer std::_Deque_base<_Tp, _Alloc>::_M_allocate_map(std::size_t) [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	32	static
+stl_deque.h:738:5:void std::_Deque_base<_Tp, _Alloc>::_M_create_nodes(std::_Deque_base<_Tp, _Alloc>::_Map_pointer, std::_Deque_base<_Tp, _Alloc>::_Map_pointer) [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	32	static
+stl_deque.h:273:7:void std::_Deque_iterator<_Tp, _Ref, _Ptr>::_M_set_node(std::_Deque_iterator<_Tp, _Ref, _Ptr>::_Map_pointer) [with _Tp = std::bitset<8>; _Ref = std::bitset<8>&; _Ptr = std::bitset<8>*]	24	static
+stl_deque.h:624:7:void std::_Deque_base<_Tp, _Alloc>::_M_deallocate_node(std::_Deque_base<_Tp, _Alloc>::_Ptr) [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	24	static
+stl_deque.h:613:7:std::_Deque_base<_Tp, _Alloc>::_Map_alloc_type std::_Deque_base<_Tp, _Alloc>::_M_get_map_allocator() const [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	16	static
+allocator.h:153:7:std::allocator< <template-parameter-1-1> >::~allocator() [with _Tp = std::bitset<8>*]	16	static
+alloc_traits.h:469:7:static void std::allocator_traits<std::allocator<_CharT> >::deallocate(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, std::allocator_traits<std::allocator<_CharT> >::pointer, std::allocator_traits<std::allocator<_CharT> >::size_type) [with _Tp = std::bitset<8>*]	24	static
+new_allocator.h:80:7:__gnu_cxx::new_allocator<_Tp>::new_allocator() [with _Tp = message]	16	static
+alloc_traits.h:443:7:static _Tp* std::allocator_traits<std::allocator<_CharT> >::allocate(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, std::allocator_traits<std::allocator<_CharT> >::size_type) [with _Tp = message*]	16	static
+stl_deque.h:617:7:std::_Deque_base<_Tp, _Alloc>::_Ptr std::_Deque_base<_Tp, _Alloc>::_M_allocate_node() [with _Tp = message; _Alloc = std::allocator<message>]	24	static
+stl_deque.h:130:21:static std::size_t std::_Deque_iterator<_Tp, _Ref, _Ptr>::_S_buffer_size() [with _Tp = message; _Ref = message&; _Ptr = message*]	8	static
+alloc_traits.h:469:7:static void std::allocator_traits<std::allocator<_CharT> >::deallocate(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, std::allocator_traits<std::allocator<_CharT> >::pointer, std::allocator_traits<std::allocator<_CharT> >::size_type) [with _Tp = message]	24	static
+stl_deque.h:609:7:const _Tp_alloc_type& std::_Deque_base<_Tp, _Alloc>::_M_get_Tp_allocator() const [with _Tp = message; _Alloc = std::allocator<message>]	16	static
+allocator.h:151:2:std::allocator< <template-parameter-1-1> >::allocator(const std::allocator<_Tp1>&) [with _Tp1 = message; _Tp = message*]	16	static
+new_allocator.h:89:7:__gnu_cxx::new_allocator<_Tp>::~new_allocator() [with _Tp = message*]	16	static
+new_allocator.h:119:7:void __gnu_cxx::new_allocator<_Tp>::deallocate(__gnu_cxx::new_allocator<_Tp>::pointer, __gnu_cxx::new_allocator<_Tp>::size_type) [with _Tp = message*]	24	static
+stl_construct.h:127:5:void std::_Destroy(_ForwardIterator, _ForwardIterator) [with _ForwardIterator = message*]	16	static
+new_allocator.h:80:7:__gnu_cxx::new_allocator<_Tp>::new_allocator() [with _Tp = std::bitset<8>]	16	static
+alloc_traits.h:443:7:static _Tp* std::allocator_traits<std::allocator<_CharT> >::allocate(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, std::allocator_traits<std::allocator<_CharT> >::size_type) [with _Tp = std::bitset<8>*]	16	static
+stl_deque.h:617:7:std::_Deque_base<_Tp, _Alloc>::_Ptr std::_Deque_base<_Tp, _Alloc>::_M_allocate_node() [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	24	static
+stl_deque.h:130:21:static std::size_t std::_Deque_iterator<_Tp, _Ref, _Ptr>::_S_buffer_size() [with _Tp = std::bitset<8>; _Ref = std::bitset<8>&; _Ptr = std::bitset<8>*]	8	static
+alloc_traits.h:469:7:static void std::allocator_traits<std::allocator<_CharT> >::deallocate(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, std::allocator_traits<std::allocator<_CharT> >::pointer, std::allocator_traits<std::allocator<_CharT> >::size_type) [with _Tp = std::bitset<8>]	24	static
+stl_deque.h:609:7:const _Tp_alloc_type& std::_Deque_base<_Tp, _Alloc>::_M_get_Tp_allocator() const [with _Tp = std::bitset<8>; _Alloc = std::allocator<std::bitset<8> >]	16	static
+allocator.h:151:2:std::allocator< <template-parameter-1-1> >::allocator(const std::allocator<_Tp1>&) [with _Tp1 = std::bitset<8>; _Tp = std::bitset<8>*]	16	static
+new_allocator.h:89:7:__gnu_cxx::new_allocator<_Tp>::~new_allocator() [with _Tp = std::bitset<8>*]	16	static
+new_allocator.h:119:7:void __gnu_cxx::new_allocator<_Tp>::deallocate(__gnu_cxx::new_allocator<_Tp>::pointer, __gnu_cxx::new_allocator<_Tp>::size_type) [with _Tp = std::bitset<8>*]	24	static
+new_allocator.h:102:7:_Tp* __gnu_cxx::new_allocator<_Tp>::allocate(__gnu_cxx::new_allocator<_Tp>::size_type, const void*) [with _Tp = message*]	24	static
+alloc_traits.h:443:7:static _Tp* std::allocator_traits<std::allocator<_CharT> >::allocate(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, std::allocator_traits<std::allocator<_CharT> >::size_type) [with _Tp = message]	16	static
+new_allocator.h:119:7:void __gnu_cxx::new_allocator<_Tp>::deallocate(__gnu_cxx::new_allocator<_Tp>::pointer, __gnu_cxx::new_allocator<_Tp>::size_type) [with _Tp = message]	24	static
+new_allocator.h:80:7:__gnu_cxx::new_allocator<_Tp>::new_allocator() [with _Tp = message*]	16	static
+stl_construct.h:105:9:static void std::_Destroy_aux<<anonymous> >::__destroy(_ForwardIterator, _ForwardIterator) [with _ForwardIterator = message*; bool <anonymous> = false]	16	static
+new_allocator.h:102:7:_Tp* __gnu_cxx::new_allocator<_Tp>::allocate(__gnu_cxx::new_allocator<_Tp>::size_type, const void*) [with _Tp = std::bitset<8>*]	24	static
+alloc_traits.h:443:7:static _Tp* std::allocator_traits<std::allocator<_CharT> >::allocate(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, std::allocator_traits<std::allocator<_CharT> >::size_type) [with _Tp = std::bitset<8>]	16	static
+new_allocator.h:119:7:void __gnu_cxx::new_allocator<_Tp>::deallocate(__gnu_cxx::new_allocator<_Tp>::pointer, __gnu_cxx::new_allocator<_Tp>::size_type) [with _Tp = std::bitset<8>]	24	static
+new_allocator.h:80:7:__gnu_cxx::new_allocator<_Tp>::new_allocator() [with _Tp = std::bitset<8>*]	16	static
+new_allocator.h:132:7:__gnu_cxx::new_allocator<_Tp>::size_type __gnu_cxx::new_allocator<_Tp>::max_size() const [with _Tp = message*]	16	static
+new_allocator.h:102:7:_Tp* __gnu_cxx::new_allocator<_Tp>::allocate(__gnu_cxx::new_allocator<_Tp>::size_type, const void*) [with _Tp = message]	24	static
+move.h:47:5:constexpr _Tp* std::__addressof(_Tp&) [with _Tp = message]	16	static
+stl_construct.h:97:5:void std::_Destroy(_Tp*) [with _Tp = message]	16	static
+new_allocator.h:132:7:__gnu_cxx::new_allocator<_Tp>::size_type __gnu_cxx::new_allocator<_Tp>::max_size() const [with _Tp = std::bitset<8>*]	16	static
+new_allocator.h:102:7:_Tp* __gnu_cxx::new_allocator<_Tp>::allocate(__gnu_cxx::new_allocator<_Tp>::size_type, const void*) [with _Tp = std::bitset<8>]	24	static
+new_allocator.h:132:7:__gnu_cxx::new_allocator<_Tp>::size_type __gnu_cxx::new_allocator<_Tp>::max_size() const [with _Tp = message]	16	static
+new_allocator.h:132:7:__gnu_cxx::new_allocator<_Tp>::size_type __gnu_cxx::new_allocator<_Tp>::max_size() const [with _Tp = std::bitset<8>]	16	static
+receiver.h:27:7:receiver::~receiver()	16	static
+transmitter.h:33:7:transmitter::~transmitter()	16	static
+radioAPI.cpp:43:1:void __static_initialization_and_destruction_0(int, int)	16	static
+radioAPI.cpp:43:1:cpp)	8	static
+radioAPI.cpp:43:1:cpp)	8	static

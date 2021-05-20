@@ -3,40 +3,41 @@
 
 using namespace std;
 
-#include "radio.h"
+#include "transmitter.h"
+#include "receiver.h"
 #include "radioAPI.h"
 
-radio r;
+transmitter t;
+receiver r;
 
-void radioSend(char * message, uint8_t length)
+void radioSend(char * message)
 {
 	// Convert C char pointer to C++ string
-	string messageString(message, message + length);
+	string messageString(message);
 
-	return r.send(messageString);
+	return t.send(messageString);
 }
 
 void radioSendTick()
 {
-	// Use this version if you don't want Manchester encoding
-	return r.sendTick();
-	//return r.sendTickM();
+	return t.tick();
 }
 
 void radioReceiveTick()
 {
-	return r.receiveTick();
+	return r.tick();
 }
 
 void radioEcho()
 {
-	// FIXME: There is no string in this message
-	message m = r.getInboundMessage();
-	if(m.getIsComplete() == true)
+	if(r.checkMessage())
 	{
+		// Get the filled up message object
+		message m = r.popMessage();
+
+		// Get the received string from the message
 		string s = m.getMessageString();
-		char c[s.size() + 1];
-		s.copy(c,s.size()+1);
-		radioSend(c,m.getMessageString().length());
+
+		t.send(s);
 	}
 }

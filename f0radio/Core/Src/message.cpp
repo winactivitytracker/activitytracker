@@ -36,16 +36,6 @@ string message::getMessageString()
 	return messageString;
 }
 
-bool message::getIsComplete()
-{
-	return isComplete;
-}
-
-void message::setIsComplete(bool i)
-{
-	isComplete = i;
-}
-
 // Return the currently selected bit in the message,
 // then move the pointer to the next one
 uint8_t message::getNextBit()
@@ -78,8 +68,17 @@ uint8_t message::getNextBit()
 // Write a bit to a messageString
 void message::setNextBit(uint8_t bit)
 {
-	char c = messageString[bitPointer/8];
-	c ^= (-bit ^ c) & (1UL << (bitPointer%8));
-	messageString[bitPointer/8] = c;
+	uint8_t charPointer = bitPointer / 8;
+	uint8_t c = messageString[charPointer];
+	if(bit) c |= (1UL << (7 - (bitPointer % 8)));
+	if(charPointer > messageString.length())
+	{
+		messageString += c;
+	}
+	else
+	{
+		messageString[charPointer] = c;
+	}
+
 	bitPointer++;
 }

@@ -13,7 +13,7 @@ extern "C"
 {
 #endif
 
-void radioSend(char * message, uint8_t length);
+void radioSend(char * message);
 void radioSendTick();
 void radioReceiveTick();
 void radioEcho();

@@ -103,8 +103,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   // Insert a test message
-  char * message = "a";
-  radioSend(message,1);
+  char * message = " ~";
+  radioSend(message);
 
   // Enable the timer interrupt for the transmitter
   HAL_TIM_Base_Start_IT(&htim15);

@@ -1,4 +1,4 @@
-Core/Src/radioAPI.o: ../Core/Src/radioAPI.cpp ../Core/Inc/transmitter.h \
+Core/Src/receiver.o: ../Core/Src/receiver.cpp ../Core/Inc/receiver.h \
  ../Core/Inc/message.h ../Core/Inc/main.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal.h \
  ../Core/Inc/stm32f0xx_hal_conf.h \
@@ -26,10 +26,9 @@ Core/Src/radioAPI.o: ../Core/Src/radioAPI.cpp ../Core/Inc/transmitter.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_pwr.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_pwr_ex.h \
  ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim.h \
- ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim_ex.h \
- ../Core/Inc/receiver.h ../Core/Inc/radioAPI.h
+ ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim_ex.h
 
-../Core/Inc/transmitter.h:
+../Core/Inc/receiver.h:
 
 ../Core/Inc/message.h:
 
@@ -88,7 +87,3 @@ Core/Src/radioAPI.o: ../Core/Src/radioAPI.cpp ../Core/Inc/transmitter.h \
 ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim.h:
 
 ../Drivers/STM32F0xx_HAL_Driver/Inc/stm32f0xx_hal_tim_ex.h:
-
-../Core/Inc/receiver.h:
-
-../Core/Inc/radioAPI.h:

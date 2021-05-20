@@ -3,7 +3,5 @@ message.cpp:11:9:uint8_t message::mirrorByte(uint8_t)	16	static
 message.cpp:21:1:message::message()	16	static
 message.cpp:28:1:message::message(std::string)	16	static
 message.cpp:34:8:std::string message::getMessageString()	16	static
-message.cpp:39:6:bool message::getIsComplete()	16	static
-message.cpp:44:6:void message::setIsComplete(bool)	16	static
-message.cpp:51:9:uint8_t message::getNextBit()	32	static
-message.cpp:79:6:void message::setNextBit(uint8_t)	32	static
+message.cpp:41:9:uint8_t message::getNextBit()	32	static
+message.cpp:69:6:void message::setNextBit(uint8_t)	32	static
