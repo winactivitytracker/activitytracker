@@ -1,3 +1,4 @@
 freertos.c:89:6:MX_FREERTOS_Init	8	static
 freertos.c:134:6:StartDefaultTask	16	static
-freertos.c:152:6:GpsTask	320	static
+freertos.c:152:6:StartGPSTask	32	static
+freertos.c:182:6:getTime	56	static

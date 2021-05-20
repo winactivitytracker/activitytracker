@@ -63,21 +63,21 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 64 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-/* Definitions for Gps */
-osThreadId_t GpsHandle;
-const osThreadAttr_t Gps_attributes = {
-  .name = "Gps",
-  .stack_size = 256 * 4,
+/* Definitions for GspTask */
+osThreadId_t GspTaskHandle;
+const osThreadAttr_t GspTask_attributes = {
+  .name = "GspTask",
+  .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-
+void getTime();
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
-void GpsTask(void *argument);
+void StartGPSTask(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -111,8 +111,8 @@ void MX_FREERTOS_Init(void) {
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
-  /* creation of Gps */
-  GpsHandle = osThreadNew(GpsTask, NULL, &Gps_attributes);
+  /* creation of GspTask */
+  GspTaskHandle = osThreadNew(StartGPSTask, NULL, &GspTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -142,50 +142,59 @@ void StartDefaultTask(void *argument)
   /* USER CODE END StartDefaultTask */
 }
 
-/* USER CODE BEGIN Header_GpsTask */
+/* USER CODE BEGIN Header_StartGPSTask */
 /**
-* @brief Function implementing the Gps thread.
+* @brief Function implementing the GspTask thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_GpsTask */
-void GpsTask(void *argument)
+/* USER CODE END Header_StartGPSTask */
+void StartGPSTask(void *argument)
 {
-  /* USER CODE BEGIN GpsTask */
-
+  /* USER CODE BEGIN StartGPSTask */
   /* Infinite loop */
   for(;;)
   {
+	char numbers[10];
 
-	  char numbers[256];
-		char data [10];
+	SSD1306_GotoXY (0,0);
+	SSD1306_Puts ("R.A.T:", &Font_11x18, 1);
 
-		SSD1306_GotoXY (0,0);
-		SSD1306_Puts ("R.A.T:", &Font_11x18, 1);
+	SSD1306_GotoXY (0, 20);
+	sprintf(numbers, "%.2f", GPS.speed_km);
+	SSD1306_Puts(numbers, &Font_16x26, 1);
+	SSD1306_GotoXY (66,34);
+	SSD1306_Puts ("KMPH", &Font_7x10, 1);
 
-		SSD1306_GotoXY (0, 20);
-		sprintf(numbers, "%.2f", GPS.speed_km);
-		SSD1306_Puts(numbers, &Font_16x26, 1);
-		SSD1306_GotoXY (66,34);
-		SSD1306_Puts ("KMPH", &Font_7x10, 1);
 
-		SSD1306_GotoXY (0, 45);
-		float time = GPS.utc_time +20000;
-		sprintf(numbers, "%f", time );
-		sprintf(data, "%c%c:%c%c:%c%c", numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5]);
-		SSD1306_Puts(data, &Font_7x10, 1);
+	getTime();
 
-		SSD1306_UpdateScreen();
+	SSD1306_UpdateScreen();
 
-		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_8);
-		osDelay(1);
+	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_8);
+	osDelay(1);
   }
-  /* USER CODE END GpsTask */
+  /* USER CODE END StartGPSTask */
 }
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
+void getTime()
+{
+	SSD1306_GotoXY (0, 45);
 
+	char toArray[10];
+
+	float time = GPS.utc_time + 20000; //make it CET
+	sprintf(toArray, "%f", time );
+
+	if(time < 100000)
+		sprintf(toArray, "%c:%c%c:%c%c", toArray[0], toArray[1], toArray[2], toArray[3], toArray[4]);
+	else
+		sprintf(toArray, "%c%c:%c%c:%c%c", toArray[0], toArray[1], toArray[2], toArray[3], toArray[4], toArray[5]);
+
+	SSD1306_Puts(toArray, &Font_7x10, 1);
+}
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
