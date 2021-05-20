@@ -170,8 +170,7 @@ void StartDrawing(void *argument)
 
 	SSD1306_UpdateScreen();
 
-	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_8);
-    osDelay(1);
+    osDelay(500);
   }
   /* USER CODE END StartDrawing */
 }
