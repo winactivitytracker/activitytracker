@@ -52,7 +52,7 @@
 int32_t MPUData[6];
 int16_t allData[20][6];
 uint8_t counter = 0;
-char* nameArray[6] = {"aX: ", "aY: ", "aZ: ", "gX: ", "gY: ", "gZ: "};
+char* nameArray[6] = {"aX", "aY", "aZ", "gX", "gY", "gZ"};
 
 /* USER CODE END PV */
 
@@ -123,7 +123,7 @@ int main(void)
   {
 	  if(counter == 20)
 	  {
-		  char numbers[15];
+		  char numbers[6];
 		  float current;
 		  for(uint8_t i = 0; i < 20; i++)
 		  {
@@ -135,24 +135,24 @@ int main(void)
 			  MPUData[5] = MPUData[5] + allData[i][5];
 		  }
 
-		  for(uint8_t i = 0; i < 6; i++)
+		  for(uint8_t j = 0; j < 6; j++)
 		  {
-			  MPUData[i] = MPUData[i] / counter;
-		 	  if(i < 3)
+			  MPUData[j] = MPUData[j] / counter;
+		 	  if(j < 3)
 		   	  {
-		   	  	  current = (float)MPUData[i] / 2048.0;
+		   	  	  current = (float)MPUData[j] / 2048.0;
 		   	  } else
 		   	  {
-		   	  	  current = (float)MPUData[i] / 16.4;
+		   	  	  current = (float)MPUData[j] / 16.4;
 		   	  }
-		 	  MPUData[i] = 0;
-		   	  sprintf(numbers, "%.2f", current);
+		 	  MPUData[j] = 0;
+		   	  sprintf(numbers, "%.3f", current);
 		   	  HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
-		   	  if(i != 5)
+		   	  if(j != 5)
 		   	  {
 		   		  HAL_UART_Transmit(&huart1, ", ", sizeof(", "), HAL_MAX_DELAY);
 		   	  }
-		   	  if(i == 5)
+		   	  if(j == 5)
 		   	  {
 		   		  HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
 		   	  }
@@ -209,7 +209,7 @@ void SystemClock_Config(void)
   }
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1|RCC_PERIPHCLK_I2C1;
   PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK1;
-  PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_HSI;
+  PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_SYSCLK;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
