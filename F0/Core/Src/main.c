@@ -121,6 +121,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  uint8_t forCounter;
 	  if(counter == 20)
 	  {
 		  char numbers[6];
@@ -134,29 +135,30 @@ int main(void)
 			  MPUData[4] = MPUData[4] + allData[i][4];
 			  MPUData[5] = MPUData[5] + allData[i][5];
 		  }
-
-		  for(uint8_t j = 0; j < 6; j++)
+		  forCounter = 0;
+		  while(forCounter < 6)
 		  {
-			  MPUData[j] = MPUData[j] / counter;
-		 	  if(j < 3)
-		   	  {
-		   	  	  current = (float)MPUData[j] / 2048.0;
-		   	  } else
-		   	  {
-		   	  	  current = (float)MPUData[j] / 16.4;
-		   	  }
-		 	  MPUData[j] = 0;
-		   	  sprintf(numbers, "%.3f", current);
-		   	  HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
-		   	  if(j != 5)
-		   	  {
-		   		  HAL_UART_Transmit(&huart1, ", ", sizeof(", "), HAL_MAX_DELAY);
-		   	  }
-		   	  if(j == 5)
-		   	  {
-		   		  HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
-		   	  }
-		   }
+			  MPUData[forCounter] = MPUData[forCounter] / counter;
+			  if(forCounter < 3)
+			  {
+			  	  current = (float)MPUData[forCounter] / 2048.0;
+			  } else
+			  {
+			   	  current = (float)MPUData[forCounter] / 16.4;
+			  }
+			  MPUData[forCounter] = 0;
+			  sprintf(numbers, "%.3f", current);
+			  HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
+			 if(forCounter != 5)
+			 {
+				 HAL_UART_Transmit(&huart1, ", ", sizeof(", "), HAL_MAX_DELAY);
+			 }
+			 if(forCounter == 5)
+			 {
+				 HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+			 }
+			 forCounter++;
+		  }
 		   counter = 0;
 		   HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_2);
 	  }

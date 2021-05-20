@@ -40,7 +40,7 @@ bool MPU6050Init(void)
 
 }
 
-void MPU6050ReadAccel(uint16_t *aXRaw, uint16_t *aYRaw, uint16_t *aZRaw)
+void MPU6050ReadAccel(int16_t *aXRaw, int16_t *aYRaw, int16_t *aZRaw)
 {
 	uint8_t RecData[6];
 
@@ -62,7 +62,7 @@ void MPU6050ReadAccel(uint16_t *aXRaw, uint16_t *aYRaw, uint16_t *aZRaw)
 	//Az = Accel_Z_RAW/16384.0;
 }
 
-void MPU6050ReadGyro(uint16_t *gXRaw, uint16_t *gYRaw, uint16_t *gZRaw)
+void MPU6050ReadGyro(int16_t *gXRaw, int16_t *gYRaw, int16_t *gZRaw)
 {
 	uint8_t RecData[6];
 
@@ -84,7 +84,7 @@ void MPU6050ReadGyro(uint16_t *gXRaw, uint16_t *gYRaw, uint16_t *gZRaw)
 	//Gz = Gyro_Z_RAW/131.0;
 }
 
-void MPUReadAll(uint16_t *aXRaw, uint16_t *aYRaw, uint16_t *aZRaw, uint16_t *gXRaw, uint16_t *gYRaw, uint16_t *gZRaw)
+void MPUReadAll(int16_t *aXRaw, int16_t *aYRaw, int16_t *aZRaw, int16_t *gXRaw, int16_t *gYRaw, int16_t *gZRaw)
 {
 	MPU6050ReadAccel(aXRaw, aYRaw, aZRaw);
 	MPU6050ReadGyro(gXRaw, gYRaw, gZRaw);

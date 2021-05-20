@@ -26,9 +26,9 @@
 #define MPU_G2000G	0x18 //0b00011000
 
 bool MPU6050Init(void);
-void MPU6050ReadAccel(uint16_t *aXRaw, uint16_t *aYRaw, uint16_t *aZRaw);
-void MPU6050ReadGyro(uint16_t *gXRaw, uint16_t *gYRaw, uint16_t *gZRaw);
-void MPUReadAll(uint16_t *aXRaw, uint16_t *aYRaw, uint16_t *aZRaw, uint16_t *gXRaw, uint16_t *gYRaw, uint16_t *gZRaw);
+void MPU6050ReadAccel(int16_t *aXRaw, int16_t *aYRaw, int16_t *aZRaw);
+void MPU6050ReadGyro(int16_t *gXRaw, int16_t *gYRaw, int16_t *gZRaw);
+void MPUReadAll(int16_t *aXRaw, int16_t *aYRaw, int16_t *aZRaw, int16_t *gXRaw, int16_t *gYRaw, int16_t *gZRaw);
 void MPUSetAccel(uint8_t acceleration);
 void MPUSetGyro(uint8_t gyroSpeed);
 
