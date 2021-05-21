@@ -20,6 +20,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "i2c.h"
+#include "rtc.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -51,8 +52,13 @@
 
 int32_t MPUData[6];
 int16_t allData[20][6];
+int16_t MPURTCData[40][4][6];
+
 uint8_t counter = 0;
+uint8_t forCounter;
+
 char* nameArray[6] = {"aX", "aY", "aZ", "gX", "gY", "gZ"};
+RTC_TimeTypeDef currTime, currDate = {0};
 
 /* USER CODE END PV */
 
@@ -97,6 +103,7 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   MX_USART1_UART_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
 
   MPU6050Init();
@@ -108,7 +115,7 @@ int main(void)
 	  HAL_UART_Transmit(&huart1, nameArray[i], sizeof(nameArray[i]), HAL_MAX_DELAY);
 	  if(i != 5)
 	  {
-		  HAL_UART_Transmit(&huart1, ", ", sizeof(", "), HAL_MAX_DELAY);
+		  HAL_UART_Transmit(&huart1, ",", sizeof(","), HAL_MAX_DELAY);
 	  }
 	  if(i == 5)
 	  {
@@ -121,51 +128,79 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  uint8_t forCounter;
-	  if(counter == 20)
-	  {
-		  char numbers[6];
-		  float current;
-		  for(uint8_t i = 0; i < 20; i++)
-		  {
-			  MPUData[0] = MPUData[0] + allData[i][0];
-			  MPUData[1] = MPUData[1] + allData[i][1];
-			  MPUData[2] = MPUData[2] + allData[i][2];
-			  MPUData[3] = MPUData[3] + allData[i][3];
-			  MPUData[4] = MPUData[4] + allData[i][4];
-			  MPUData[5] = MPUData[5] + allData[i][5];
-		  }
-		  forCounter = 0;
-		  while(forCounter < 6)
-		  {
-			  MPUData[forCounter] = MPUData[forCounter] / counter;
-			  if(forCounter < 3)
-			  {
-			  	  current = (float)MPUData[forCounter] / 2048.0;
-			  } else
-			  {
-			   	  current = (float)MPUData[forCounter] / 16.4;
-			  }
-			  MPUData[forCounter] = 0;
-			  sprintf(numbers, "%.3f", current);
-			  HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
-			 if(forCounter != 5)
-			 {
-				 HAL_UART_Transmit(&huart1, ", ", sizeof(", "), HAL_MAX_DELAY);
-			 }
-			 if(forCounter == 5)
-			 {
-				 HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
-			 }
-			 forCounter++;
-		  }
-		   counter = 0;
-		   HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_2);
-	  }
+	  char numbers[6];
+	  float current;
+//	  if(counter == 20)
+//	  {
+//		  char numbers[6];
+//		  float current;
+//		  for(uint8_t i = 0; i < 20; i++)
+//		  {
+//			  MPUData[0] = MPUData[0] + allData[i][0];
+//			  MPUData[1] = MPUData[1] + allData[i][1];
+//			  MPUData[2] = MPUData[2] + allData[i][2];
+//			  MPUData[3] = MPUData[3] + allData[i][3];
+//			  MPUData[4] = MPUData[4] + allData[i][4];
+//			  MPUData[5] = MPUData[5] + allData[i][5];
+//		  }
+//		  forCounter = 0;
+//		  while(forCounter < 6)
+//		  {
+//			  MPUData[forCounter] = MPUData[forCounter] / counter;
+//			  if(forCounter < 3)
+//			  {
+//			  	  current = (float)MPUData[forCounter] / 2048.0;
+//			  } else
+//			  {
+//			   	  current = (float)MPUData[forCounter] / 16.4;
+//			  }
+//			  MPUData[forCounter] = 0;
+//			  sprintf(numbers, "%.3f", current);
+//			  HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
+//			 if(forCounter != 5)
+//			 {
+//				 HAL_UART_Transmit(&huart1, ", ", sizeof(", "), HAL_MAX_DELAY);
+//			 }
+//			 if(forCounter == 5)
+//			 {
+//				 HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+//			 }
+//			 forCounter++;
+//		  }
+//		   counter = 0;
+//		   HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_2);
+//	  }
 	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_2);
 	  MPUReadAll(&allData[counter][0], &allData[counter][1], &allData[counter][2], &allData[counter][3], &allData[counter][4], &allData[counter][5]);
-	  counter++;
-	  HAL_Delay(50);
+	  //counter++;
+
+	  forCounter = 0;
+	  		  while(forCounter < 6)
+	  		  {
+	  			 HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_2);
+	  			  //MPUData[forCounter] = MPUData[forCounter] / counter;
+	  			  if(forCounter < 3)
+	  			  {
+	  			  	  current = (float)allData[0][forCounter] / 2048.0;
+	  			  } else
+	  			  {
+	  			   	  current = (float)allData[0][forCounter] / 16.4;
+	  			  }
+	  			  allData[0][forCounter] = 0;
+	  			  sprintf(numbers, "%.3f", current);
+	  			  HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
+	  			 if(forCounter != 5)
+	  			 {
+	  				 HAL_UART_Transmit(&huart1, ", ", sizeof(", "), HAL_MAX_DELAY);
+	  			 }
+	  			 if(forCounter == 5)
+	  			 {
+	  				HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+
+	  			 }
+	  			 forCounter++;
+	  		  }
+	  HAL_Delay(250);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -186,9 +221,10 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL12;
@@ -209,9 +245,11 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1|RCC_PERIPHCLK_I2C1;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1|RCC_PERIPHCLK_I2C1
+                              |RCC_PERIPHCLK_RTC;
   PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK1;
   PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_SYSCLK;
+  PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSI;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
@@ -219,6 +257,13 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void getMPUData()
+{
+	HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
+	HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
+	MPUReadAll(&MPURTCData[currTime.Seconds][counter][0], &MPURTCData[currTime.Seconds][counter][1], &MPURTCData[currTime.Seconds][counter][2], &MPURTCData[currTime.Seconds][counter][3], &MPURTCData[currTime.Seconds][counter][4], &MPURTCData[currTime.Seconds][counter][5]);
+}
 
 /* USER CODE END 4 */
 

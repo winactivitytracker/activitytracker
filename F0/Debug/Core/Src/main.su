@@ -1,4 +1,5 @@
-main.c:74:5:main	48	static
-main.c:180:6:SystemClock_Config	96	static
-main.c:233:6:HAL_TIM_PeriodElapsedCallback	16	static
-main.c:250:6:Error_Handler	8	static,ignoring_inline_asm
+main.c:80:5:main	48	static
+main.c:215:6:SystemClock_Config	96	static
+main.c:261:6:getMPUData	8	static
+main.c:276:6:HAL_TIM_PeriodElapsedCallback	16	static
+main.c:293:6:Error_Handler	8	static,ignoring_inline_asm
