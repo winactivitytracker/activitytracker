@@ -1,3 +1,4 @@
-freertos.c:100:6:MX_FREERTOS_Init	8	static
-freertos.c:149:6:StartDefaultTask	56	static
-freertos.c:196:6:GpsTask	32	static
+freertos.c:104:6:MX_FREERTOS_Init	8	static
+freertos.c:153:6:StartDefaultTask	56	static
+freertos.c:200:6:GpsTask	32	static
+freertos.c:236:7:calculateBattery	24	static

@@ -46,6 +46,9 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
+#define CALCULATEPERCENTAGE 0
+#define CALCULATEVOLTAGE 1
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -84,6 +87,7 @@ const osSemaphoreAttr_t ADCSemaphore_attributes = {
 /* USER CODE BEGIN FunctionPrototypes */
 
 void ADC_IRQHandler();
+float calculateBattery(uint8_t whatCalculation);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -152,8 +156,8 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	  uint16_t localADC = ADCValue;
-	  SSD1306_Clear();
+
+	  //SSD1306_Clear();
 	  char numbers[16];
 	  char battNumber[16];
 	  float battVoltage = 0.0;
@@ -161,26 +165,26 @@ void StartDefaultTask(void *argument)
 	  SSD1306_GotoXY (0,0);
 	  SSD1306_Puts ("ADC:", &Font_7x10, 1);
 
-	  sprintf(numbers, "%d", localADC);
+	  sprintf(numbers, "%d", ADCValue);
 
-	  SSD1306_GotoXY (40, 0);
+	  SSD1306_GotoXY (50, 0);
 	  SSD1306_Puts(numbers, &Font_7x10, 1);
 
-	  SSD1306_GotoXY (0,20);
+	  battVoltage = calculateBattery(CALCULATEPERCENTAGE);
+	  SSD1306_GotoXY (0,15);
 	  SSD1306_Puts ("BattADC:", &Font_7x10, 1);
-	  battVoltage = localADC / (float)4095;
-	  sprintf(battNumber, "%0.2f", battVoltage);
-	  SSD1306_GotoXY (40, 20);
+	  sprintf(battNumber, "%.0f", battVoltage);
+	  SSD1306_GotoXY (50, 15);
 	  SSD1306_Puts(battNumber, &Font_7x10, 1);
 
-	  SSD1306_GotoXY (0,40);
+	  battVoltage = calculateBattery(CALCULATEVOLTAGE);
+	  SSD1306_GotoXY (0,30);
 	  SSD1306_Puts ("Batt:", &Font_7x10, 1);
-	  battVoltage = battVoltage * 4.2;
-	  sprintf(battNumber, "%.2f", battVoltage);
-	  SSD1306_GotoXY (40, 40);
+	  sprintf(battNumber, "%.2f volt", battVoltage);
+	  SSD1306_GotoXY (50, 30);
 	  SSD1306_Puts(battNumber, &Font_7x10, 1);
 	  SSD1306_UpdateScreen();
-	  //HAL_ADC_Start_IT(&hadc1);
+
 	  osDelay(500);
   }
   /* USER CODE END StartDefaultTask */
@@ -229,7 +233,20 @@ void GpsTask(void *argument)
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
 
-
+float calculateBattery(uint8_t whatCalculation)
+{
+	uint16_t localADC = ADCValue;	//grab the last conversion value
+	HAL_ADC_Start_IT(&hadc1);		//start a new conversion already so it's ready for the next time the function is called
+	if(whatCalculation == CALCULATEPERCENTAGE)
+	{
+		return 71.428571428571 * ((localADC / (float)4095) * 4.2) - 200;
+		//return (localADC / (float)4095) * 100;
+	} else if(whatCalculation == CALCULATEVOLTAGE)
+	{
+		return (localADC / (float)4095) * 4.2;
+	}
+	return -1.0;
+}
 
 /* USER CODE END Application */
 
