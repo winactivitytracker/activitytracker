@@ -1862,7 +1862,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x29 Core/Src/test.o
  .debug_macro   0x0000000000000000       0x1d Core/Src/test.o
  .debug_line    0x0000000000000000      0xbe3 Core/Src/test.o
- .debug_str     0x0000000000000000    0x8cc4a Core/Src/test.o
+ .debug_str     0x0000000000000000    0x8cc46 Core/Src/test.o
  .comment       0x0000000000000000       0x54 Core/Src/test.o
  .debug_frame   0x0000000000000000       0xfc Core/Src/test.o
  .ARM.attributes
@@ -2569,7 +2569,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xba Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o
  .debug_macro   0x0000000000000000      0x126 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o
  .debug_line    0x0000000000000000     0x13d0 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o
- .debug_str     0x0000000000000000    0x89ba6 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o
+ .debug_str     0x0000000000000000    0x89ba2 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o
  .comment       0x0000000000000000       0x54 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o
  .debug_frame   0x0000000000000000       0xac Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.o
  .ARM.attributes
@@ -2692,7 +2692,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xba Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o
  .debug_macro   0x0000000000000000      0x126 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o
  .debug_line    0x0000000000000000      0xa2b Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o
- .debug_str     0x0000000000000000    0x89a3e Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o
+ .debug_str     0x0000000000000000    0x89a3a Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o
  .comment       0x0000000000000000       0x54 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o
  .debug_frame   0x0000000000000000      0x174 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.o
  .ARM.attributes
@@ -2831,7 +2831,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xba Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o
  .debug_macro   0x0000000000000000      0x126 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o
  .debug_line    0x0000000000000000      0xacf Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o
- .debug_str     0x0000000000000000    0x89b7f Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o
+ .debug_str     0x0000000000000000    0x89b7b Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o
  .comment       0x0000000000000000       0x54 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o
  .debug_frame   0x0000000000000000      0x274 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.o
  .ARM.attributes
@@ -2981,7 +2981,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xba Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.o
  .debug_macro   0x0000000000000000      0x126 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.o
  .debug_line    0x0000000000000000      0xbd3 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.o
- .debug_str     0x0000000000000000    0x89cb8 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.o
+ .debug_str     0x0000000000000000    0x89cb4 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.o
  .comment       0x0000000000000000       0x54 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.o
  .debug_frame   0x0000000000000000      0x334 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.o
  .ARM.attributes
@@ -3085,7 +3085,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xba Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o
  .debug_macro   0x0000000000000000      0x126 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o
  .debug_line    0x0000000000000000      0x755 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o
- .debug_str     0x0000000000000000    0x8982b Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o
+ .debug_str     0x0000000000000000    0x89827 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o
  .comment       0x0000000000000000       0x54 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o
  .ARM.attributes
                 0x0000000000000000       0x39 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.o
@@ -3533,7 +3533,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xba Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.o
  .debug_macro   0x0000000000000000      0x126 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.o
  .debug_line    0x0000000000000000      0x7d0 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.o
- .debug_str     0x0000000000000000    0x89da2 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.o
+ .debug_str     0x0000000000000000    0x89d9e Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.o
  .comment       0x0000000000000000       0x54 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.o
  .debug_frame   0x0000000000000000       0x60 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.o
  .ARM.attributes
@@ -3809,7 +3809,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xba Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.o
  .debug_macro   0x0000000000000000      0x126 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.o
  .debug_line    0x0000000000000000      0x820 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.o
- .debug_str     0x0000000000000000    0x89d49 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.o
+ .debug_str     0x0000000000000000    0x89d45 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.o
  .comment       0x0000000000000000       0x54 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.o
  .debug_frame   0x0000000000000000       0xb0 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.o
  .ARM.attributes
@@ -3948,7 +3948,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xba Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o
  .debug_macro   0x0000000000000000      0x126 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o
  .debug_line    0x0000000000000000      0x949 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o
- .debug_str     0x0000000000000000    0x89c08 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o
+ .debug_str     0x0000000000000000    0x89c04 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o
  .comment       0x0000000000000000       0x54 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o
  .debug_frame   0x0000000000000000      0x264 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.o
  .ARM.attributes
@@ -4073,7 +4073,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xba Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o
  .debug_macro   0x0000000000000000      0x126 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o
  .debug_line    0x0000000000000000      0x8f7 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o
- .debug_str     0x0000000000000000    0x89b77 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o
+ .debug_str     0x0000000000000000    0x89b73 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o
  .comment       0x0000000000000000       0x54 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o
  .debug_frame   0x0000000000000000      0x15c Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.o
  .ARM.attributes
@@ -4297,7 +4297,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xba Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
  .debug_macro   0x0000000000000000      0x126 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
  .debug_line    0x0000000000000000      0xa6b Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
- .debug_str     0x0000000000000000    0x89b01 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
+ .debug_str     0x0000000000000000    0x89afd Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
  .comment       0x0000000000000000       0x54 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
  .debug_frame   0x0000000000000000       0xf0 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.o
  .ARM.attributes
@@ -5688,7 +5688,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xaa Middlewares/Third_Party/FreeRTOS/Source/croutine.o
  .debug_macro   0x0000000000000000       0x43 Middlewares/Third_Party/FreeRTOS/Source/croutine.o
  .debug_line    0x0000000000000000      0x4be Middlewares/Third_Party/FreeRTOS/Source/croutine.o
- .debug_str     0x0000000000000000     0x83d6 Middlewares/Third_Party/FreeRTOS/Source/croutine.o
+ .debug_str     0x0000000000000000     0x83d2 Middlewares/Third_Party/FreeRTOS/Source/croutine.o
  .comment       0x0000000000000000       0x54 Middlewares/Third_Party/FreeRTOS/Source/croutine.o
  .ARM.attributes
                 0x0000000000000000       0x39 Middlewares/Third_Party/FreeRTOS/Source/croutine.o
@@ -5800,7 +5800,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xaa Middlewares/Third_Party/FreeRTOS/Source/event_groups.o
  .debug_macro   0x0000000000000000       0x91 Middlewares/Third_Party/FreeRTOS/Source/event_groups.o
  .debug_line    0x0000000000000000      0xb05 Middlewares/Third_Party/FreeRTOS/Source/event_groups.o
- .debug_str     0x0000000000000000     0xbeef Middlewares/Third_Party/FreeRTOS/Source/event_groups.o
+ .debug_str     0x0000000000000000     0xbeeb Middlewares/Third_Party/FreeRTOS/Source/event_groups.o
  .comment       0x0000000000000000       0x54 Middlewares/Third_Party/FreeRTOS/Source/event_groups.o
  .debug_frame   0x0000000000000000      0x23c Middlewares/Third_Party/FreeRTOS/Source/event_groups.o
  .ARM.attributes
@@ -6128,7 +6128,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xaa Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.o
  .debug_macro   0x0000000000000000       0x18 Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.o
  .debug_line    0x0000000000000000      0xfc0 Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.o
- .debug_str     0x0000000000000000     0xbf93 Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.o
+ .debug_str     0x0000000000000000     0xbf8f Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.o
  .comment       0x0000000000000000       0x54 Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.o
  .debug_frame   0x0000000000000000      0x3c8 Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.o
  .ARM.attributes
@@ -8934,79 +8934,79 @@ LOAD c:/st/stm32cubeide_1.6.1/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
  .debug_line    0x0000000000022765      0x7af Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
  .debug_line    0x0000000000022f14      0x935 Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
 
-.debug_str      0x0000000000000000    0x9f913
- .debug_str     0x0000000000000000    0x8c786 Core/Src/fonts.o
-                                      0x8cac6 (size before relaxing)
- .debug_str     0x000000000008c786     0x5ffd Core/Src/freertos.o
-                                      0x92a82 (size before relaxing)
- .debug_str     0x0000000000092783      0x188 Core/Src/gpio.o
-                                      0x899d1 (size before relaxing)
- .debug_str     0x000000000009290b      0x4a7 Core/Src/gps.o
-                                      0x8df7a (size before relaxing)
- .debug_str     0x0000000000092db2      0x2d9 Core/Src/i2c.o
-                                      0x89ed6 (size before relaxing)
- .debug_str     0x000000000009308b      0xc72 Core/Src/main.o
-                                      0x92a68 (size before relaxing)
- .debug_str     0x0000000000093cfd       0x4b Core/Src/spi.o
-                                      0x89e2e (size before relaxing)
- .debug_str     0x0000000000093d48      0x528 Core/Src/ssd1306.o
-                                      0x8d5e3 (size before relaxing)
- .debug_str     0x0000000000094270       0x2c Core/Src/stm32f4xx_hal_msp.o
-                                      0x89cc0 (size before relaxing)
- .debug_str     0x000000000009429c       0xaa Core/Src/stm32f4xx_hal_timebase_tim.o
-                                      0x8a2d1 (size before relaxing)
- .debug_str     0x0000000000094346       0xb4 Core/Src/stm32f4xx_it.o
-                                      0x8a041 (size before relaxing)
- .debug_str     0x00000000000943fa     0x14db Core/Src/syscalls.o
-                                       0x8ee5 (size before relaxing)
- .debug_str     0x00000000000958d5       0x6b Core/Src/sysmem.o
-                                       0x62b8 (size before relaxing)
- .debug_str     0x0000000000095940       0xaf Core/Src/system_stm32f4xx.o
-                                      0x899a6 (size before relaxing)
- .debug_str     0x00000000000959ef       0x57 Core/Src/usart.o
-                                      0x8a1c2 (size before relaxing)
- .debug_str     0x0000000000095a46       0x59 Core/Src/usb_otg.o
-                                      0x89db5 (size before relaxing)
- .debug_str     0x0000000000095a9f       0x36 Core/Startup/startup_stm32f401ccux.o
-                                         0x89 (size before relaxing)
- .debug_str     0x0000000000095ad5      0x533 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
-                                      0x8a326 (size before relaxing)
- .debug_str     0x0000000000096008      0x389 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
-                                      0x8a103 (size before relaxing)
- .debug_str     0x0000000000096391      0x315 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
-                                      0x89dbe (size before relaxing)
- .debug_str     0x00000000000966a6      0x15f Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
-                                      0x89b4d (size before relaxing)
- .debug_str     0x0000000000096805      0xa99 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.o
-                                      0x8a91b (size before relaxing)
- .debug_str     0x000000000009729e      0x542 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.o
-                                      0x8a17e (size before relaxing)
- .debug_str     0x00000000000977e0      0x244 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
-                                      0x89da8 (size before relaxing)
- .debug_str     0x0000000000097a24      0x564 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.o
-                                      0x8a238 (size before relaxing)
- .debug_str     0x0000000000097f88      0xe3c Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
-                                      0x8acbc (size before relaxing)
- .debug_str     0x0000000000098dc4      0x538 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
-                                      0x8a46d (size before relaxing)
- .debug_str     0x00000000000992fc      0x5c6 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
-                                      0x8a2f8 (size before relaxing)
- .debug_str     0x00000000000998c2      0x68a Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.o
-                                      0x8a29f (size before relaxing)
- .debug_str     0x0000000000099f4c     0x2b32 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
-                                      0x93f74 (size before relaxing)
- .debug_str     0x000000000009ca7e      0x12d Middlewares/Third_Party/FreeRTOS/Source/list.o
-                                       0xab62 (size before relaxing)
- .debug_str     0x000000000009cbab      0x948 Middlewares/Third_Party/FreeRTOS/Source/queue.o
-                                       0xc4df (size before relaxing)
- .debug_str     0x000000000009d4f3     0x12ae Middlewares/Third_Party/FreeRTOS/Source/tasks.o
-                                       0xd041 (size before relaxing)
- .debug_str     0x000000000009e7a1      0x620 Middlewares/Third_Party/FreeRTOS/Source/timers.o
-                                       0xca5c (size before relaxing)
- .debug_str     0x000000000009edc1      0x817 Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
-                                       0x86a5 (size before relaxing)
- .debug_str     0x000000000009f5d8      0x33b Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
-                                       0xb455 (size before relaxing)
+.debug_str      0x0000000000000000    0x9f90f
+ .debug_str     0x0000000000000000    0x8c782 Core/Src/fonts.o
+                                      0x8cac2 (size before relaxing)
+ .debug_str     0x000000000008c782     0x5ffd Core/Src/freertos.o
+                                      0x92a7e (size before relaxing)
+ .debug_str     0x000000000009277f      0x188 Core/Src/gpio.o
+                                      0x899cd (size before relaxing)
+ .debug_str     0x0000000000092907      0x4a7 Core/Src/gps.o
+                                      0x8df76 (size before relaxing)
+ .debug_str     0x0000000000092dae      0x2d9 Core/Src/i2c.o
+                                      0x89ed2 (size before relaxing)
+ .debug_str     0x0000000000093087      0xc72 Core/Src/main.o
+                                      0x92a64 (size before relaxing)
+ .debug_str     0x0000000000093cf9       0x4b Core/Src/spi.o
+                                      0x89e2a (size before relaxing)
+ .debug_str     0x0000000000093d44      0x528 Core/Src/ssd1306.o
+                                      0x8d5df (size before relaxing)
+ .debug_str     0x000000000009426c       0x2c Core/Src/stm32f4xx_hal_msp.o
+                                      0x89cbc (size before relaxing)
+ .debug_str     0x0000000000094298       0xaa Core/Src/stm32f4xx_hal_timebase_tim.o
+                                      0x8a2cd (size before relaxing)
+ .debug_str     0x0000000000094342       0xb4 Core/Src/stm32f4xx_it.o
+                                      0x8a03d (size before relaxing)
+ .debug_str     0x00000000000943f6     0x14db Core/Src/syscalls.o
+                                       0x8ee1 (size before relaxing)
+ .debug_str     0x00000000000958d1       0x6b Core/Src/sysmem.o
+                                       0x62b4 (size before relaxing)
+ .debug_str     0x000000000009593c       0xaf Core/Src/system_stm32f4xx.o
+                                      0x899a2 (size before relaxing)
+ .debug_str     0x00000000000959eb       0x57 Core/Src/usart.o
+                                      0x8a1be (size before relaxing)
+ .debug_str     0x0000000000095a42       0x59 Core/Src/usb_otg.o
+                                      0x89db1 (size before relaxing)
+ .debug_str     0x0000000000095a9b       0x36 Core/Startup/startup_stm32f401ccux.o
+                                         0x85 (size before relaxing)
+ .debug_str     0x0000000000095ad1      0x533 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
+                                      0x8a322 (size before relaxing)
+ .debug_str     0x0000000000096004      0x389 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
+                                      0x8a0ff (size before relaxing)
+ .debug_str     0x000000000009638d      0x315 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.o
+                                      0x89dba (size before relaxing)
+ .debug_str     0x00000000000966a2      0x15f Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.o
+                                      0x89b49 (size before relaxing)
+ .debug_str     0x0000000000096801      0xa99 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.o
+                                      0x8a917 (size before relaxing)
+ .debug_str     0x000000000009729a      0x542 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.o
+                                      0x8a17a (size before relaxing)
+ .debug_str     0x00000000000977dc      0x244 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.o
+                                      0x89da4 (size before relaxing)
+ .debug_str     0x0000000000097a20      0x564 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.o
+                                      0x8a234 (size before relaxing)
+ .debug_str     0x0000000000097f84      0xe3c Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.o
+                                      0x8acb8 (size before relaxing)
+ .debug_str     0x0000000000098dc0      0x538 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.o
+                                      0x8a469 (size before relaxing)
+ .debug_str     0x00000000000992f8      0x5c6 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.o
+                                      0x8a2f4 (size before relaxing)
+ .debug_str     0x00000000000998be      0x68a Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.o
+                                      0x8a29b (size before relaxing)
+ .debug_str     0x0000000000099f48     0x2b32 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o
+                                      0x93f70 (size before relaxing)
+ .debug_str     0x000000000009ca7a      0x12d Middlewares/Third_Party/FreeRTOS/Source/list.o
+                                       0xab5e (size before relaxing)
+ .debug_str     0x000000000009cba7      0x948 Middlewares/Third_Party/FreeRTOS/Source/queue.o
+                                       0xc4db (size before relaxing)
+ .debug_str     0x000000000009d4ef     0x12ae Middlewares/Third_Party/FreeRTOS/Source/tasks.o
+                                       0xd03d (size before relaxing)
+ .debug_str     0x000000000009e79d      0x620 Middlewares/Third_Party/FreeRTOS/Source/timers.o
+                                       0xca58 (size before relaxing)
+ .debug_str     0x000000000009edbd      0x817 Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o
+                                       0x86a1 (size before relaxing)
+ .debug_str     0x000000000009f5d4      0x33b Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o
+                                       0xb451 (size before relaxing)
 
 .comment        0x0000000000000000       0x53
  .comment       0x0000000000000000       0x53 Core/Src/fonts.o
