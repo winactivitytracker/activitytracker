@@ -70,14 +70,23 @@ const osThreadAttr_t DrawOnOledTask_attributes = {
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
+/* Definitions for ActivityTask */
+osThreadId_t ActivityTaskHandle;
+const osThreadAttr_t ActivityTask_attributes = {
+  .name = "ActivityTask",
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 void getTime();
+void getActivity();
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
 void StartDrawing(void *argument);
+void StartActivityTask(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -113,6 +122,9 @@ void MX_FREERTOS_Init(void) {
 
   /* creation of DrawOnOledTask */
   DrawOnOledTaskHandle = osThreadNew(StartDrawing, NULL, &DrawOnOledTask_attributes);
+
+  /* creation of ActivityTask */
+  ActivityTaskHandle = osThreadNew(StartActivityTask, NULL, &ActivityTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -157,22 +169,55 @@ void StartDrawing(void *argument)
   {
 	char numbers[10];
 
-	SSD1306_GotoXY (0,0);
-	SSD1306_Puts ("R.A.T:", &Font_11x18, 1);
+//	SSD1306_GotoXY (0,0);
+//	SSD1306_Puts ("R.A.T:", &Font_11x18, 1);
 
 	SSD1306_GotoXY (0, 20);
 	sprintf(numbers, "%.2f", GPS.speed_km);
-	SSD1306_Puts(numbers, &Font_16x26, 1);
-	SSD1306_GotoXY (66,34);
-	SSD1306_Puts ("KMPH", &Font_7x10, 1);
+	SSD1306_Puts(numbers, &Font_11x18, 1);
+	SSD1306_GotoXY (50,26);
+	SSD1306_Puts ("km/u", &Font_7x10, 1);
 
 	getTime();
 
+	getActivity();
+
 	SSD1306_UpdateScreen();
 
-    osDelay(500);
+    osDelay(1);
   }
   /* USER CODE END StartDrawing */
+}
+
+/* USER CODE BEGIN Header_StartActivityTask */
+/**
+* @brief Function implementing the ActivityTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartActivityTask */
+void StartActivityTask(void *argument)
+{
+  /* USER CODE BEGIN StartActivityTask */
+  /* Infinite loop */
+  for(;;)
+  {
+	if(GPS.speed_km < 2.0)
+	{
+		GPS.currentActivity = 0;
+	}
+	else if(GPS.speed_km >= 2.0 && GPS.speed_km < 7.0)
+	{
+		GPS.currentActivity = 1;
+	}
+	else if(GPS.speed_km >= 7.0 && GPS.speed_km < 15.0)
+	{
+		GPS.currentActivity = 2;
+	}
+
+    osDelay(100);
+  }
+  /* USER CODE END StartActivityTask */
 }
 
 /* Private application code --------------------------------------------------*/
@@ -193,6 +238,30 @@ void getTime()
 
 	SSD1306_Puts(toArray, &Font_7x10, 1);
 }
+
+void getActivity()
+{
+	SSD1306_GotoXY (0,0);
+
+	char * activity;
+	switch (GPS.currentActivity) {
+		case 0:
+			activity = "Geen beweging";
+			break;
+		case 1:
+			activity = "Wandelen     ";
+			break;
+		case 2:
+			activity = "Hardlopen    ";
+			break;
+		default:
+			activity = "onbekende activiteit";
+			break;
+	}
+
+	SSD1306_Puts(activity, &Font_7x10, 1);
+}
+
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
