@@ -43,7 +43,6 @@ private:
 	deque<string> messages;
 	deque<bitset<8>> buffer;
 	uint8_t bitPointer;
-	uint8_t mirrorByte(uint8_t b);
 	void enable();
 	void disable();
 

@@ -1,4 +1,0 @@
-gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	16	static
-message.cpp:11:1:message::message()	16	static
-message.cpp:18:1:message::message(std::string)	16	static
-message.cpp:24:8:std::string message::getMessageString()	16	static
