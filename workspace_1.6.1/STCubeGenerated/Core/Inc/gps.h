@@ -51,7 +51,8 @@ typedef struct{
 	uint16_t	rxIndex;
 	uint8_t		rxTmp;
 	uint32_t	LastTime;
-	uint8_t 	currentActivity;
+	enum 		Activity{noMovement, walking, running, unknown};
+	enum 		Activity currentActivity;
 
 } GPS_t;
 

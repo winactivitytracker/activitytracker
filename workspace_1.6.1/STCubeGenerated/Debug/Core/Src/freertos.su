@@ -1,6 +1,6 @@
 freertos.c:98:6:MX_FREERTOS_Init	8	static
 freertos.c:146:6:StartDefaultTask	16	static
 freertos.c:164:6:StartDrawing	32	static
-freertos.c:199:6:StartActivityTask	16	static
-freertos.c:225:6:getTime	56	static
-freertos.c:242:6:getActivity	16	static
+freertos.c:202:6:StartActivityTask	24	static
+freertos.c:294:6:getTime	56	static
+freertos.c:311:8:getActivity	16	static

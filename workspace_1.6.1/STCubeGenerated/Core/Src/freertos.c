@@ -81,7 +81,7 @@ const osThreadAttr_t ActivityTask_attributes = {
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 void getTime();
-void getActivity();
+char * getActivity();
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -180,11 +180,14 @@ void StartDrawing(void *argument)
 
 	getTime();
 
-	getActivity();
+
+
+	SSD1306_GotoXY (0,0);
+	SSD1306_Puts(getActivity(), &Font_7x10, 1);
 
 	SSD1306_UpdateScreen();
 
-    osDelay(1);
+    osDelay(1000);
   }
   /* USER CODE END StartDrawing */
 }
@@ -199,20 +202,86 @@ void StartDrawing(void *argument)
 void StartActivityTask(void *argument)
 {
   /* USER CODE BEGIN StartActivityTask */
+	static float time;
+	static uint8_t activityPM[20];
+	static uint8_t counter = 0, counterPM = 0, counterPauze = 0;
+	static uint8_t trackActivity[4];
   /* Infinite loop */
   for(;;)
   {
-	if(GPS.speed_km < 2.0)
+	getActivity();
+
+	if(time != GPS.utc_time)
 	{
-		GPS.currentActivity = 0;
-	}
-	else if(GPS.speed_km >= 2.0 && GPS.speed_km < 7.0)
-	{
-		GPS.currentActivity = 1;
-	}
-	else if(GPS.speed_km >= 7.0 && GPS.speed_km < 15.0)
-	{
-		GPS.currentActivity = 2;
+		time = GPS.utc_time;
+
+		if(counter < 60)
+		{
+			switch (GPS.currentActivity) {
+				case noMovement:
+					trackActivity[noMovement]++;
+					break;
+				case walking:
+					trackActivity[walking]++;
+					break;
+				case running:
+					trackActivity[running]++;
+					break;
+				default:
+					trackActivity[unknown]++;
+					break;
+			}
+
+			counter++;
+		}
+		else
+		{
+			uint8_t current = 0, index = 0;
+
+			for(int i = 0; i < 4; i++)
+			{
+				if(current < trackActivity[i])
+				{
+					current = trackActivity[i];
+					trackActivity[i] = 0;
+					index = i;
+				}
+			}
+
+			if(counterPM < 20)
+			{
+				if(counterPM == 0 && index == walking || index == running)
+				{
+					activityPM[counterPM] = index;
+					//possibility to write the activity of the last active minute to sd!!
+					//not implemented
+					counterPM++;
+				}
+				else if(counterPM != 0 && index == noMovement || index == unknown)
+				{
+					if(counterPauze < 2)
+					{
+						counterPauze++;
+						counterPM++;
+					}
+					else
+					{
+						counterPM = 20;
+						counterPauze = 0;
+					}
+				}
+			}
+			else
+			{
+				//calculate the avarage for total activity
+				//and write total activity to sd
+				//not implemented
+
+				counterPM = 0;
+			}
+			counter = 0;
+		}
+
 	}
 
     osDelay(100);
@@ -229,7 +298,7 @@ void getTime()
 	char toArray[10];
 
 	float time = GPS.utc_time + 20000; //make it CET
-	sprintf(toArray, "%f", time );
+	sprintf(toArray, "%f", time);
 
 	if(time < 100000)
 		sprintf(toArray, "%c:%c%c:%c%c", toArray[0], toArray[1], toArray[2], toArray[3], toArray[4]);
@@ -239,27 +308,32 @@ void getTime()
 	SSD1306_Puts(toArray, &Font_7x10, 1);
 }
 
-void getActivity()
+char * getActivity()
 {
-	SSD1306_GotoXY (0,0);
-
 	char * activity;
-	switch (GPS.currentActivity) {
-		case 0:
-			activity = "Geen beweging";
-			break;
-		case 1:
-			activity = "Wandelen     ";
-			break;
-		case 2:
-			activity = "Hardlopen    ";
-			break;
-		default:
-			activity = "onbekende activiteit";
-			break;
-	}
 
-	SSD1306_Puts(activity, &Font_7x10, 1);
+	if(GPS.speed_km < 3.0)
+		{
+			activity = "Geen beweging";
+			GPS.currentActivity = noMovement;
+		}
+		else if(GPS.speed_km >= 2.0 && GPS.speed_km < 7.0)
+		{
+			activity = "Wandelen     ";
+			GPS.currentActivity = walking;
+		}
+		else if(GPS.speed_km >= 7.0 && GPS.speed_km < 15.0)
+		{
+			activity = "Hardlopen    ";
+			GPS.currentActivity = running;
+		}
+		else
+		{
+			activity = "onbekend     ";
+			GPS.currentActivity =  unknown;
+		}
+
+	return activity;
 }
 
 /* USER CODE END Application */
