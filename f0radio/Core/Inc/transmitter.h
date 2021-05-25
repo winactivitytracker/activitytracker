@@ -8,10 +8,15 @@
 #ifndef SRC_TRANSMITTER_H_
 #define SRC_TRANSMITTER_H_
 
+using namespace std;
+
 #include <bitset>
 #include <deque>
-#include "message.h"
+#include <string>
+#include "tim.h"
 #include "main.h"
+
+#define NO_NEW_BITS		2
 
 #define START_HIGH		0
 #define START_LOW		1
@@ -21,9 +26,10 @@
 #define STOP_HIGH		5
 #define IDLE			6
 
-#define LENGTH_START	5
-#define LENGTH_ONE		3
+#define LENGTH_START	3
 #define LENGTH_ZERO		1
+#define LENGTH_ONE		2
+#define LENGTH_STOP		4
 
 #define SEND_HIGH		(GPIOB->BSRR = GPIO_BSRR_BS_3)
 #define SEND_LOW		(GPIOB->BSRR = GPIO_BSRR_BR_3)
@@ -34,15 +40,18 @@ class transmitter
 {
 private:
 
-	deque<message> messages;
+	deque<string> messages;
 	deque<bitset<8>> buffer;
-	uint8_t bufferPointer;
+	uint8_t bitPointer;
+	uint8_t mirrorByte(uint8_t b);
+	void enable();
+	void disable();
 
 public:
 
 	void fillBuffer();
 	uint8_t getNextBit();
-	void send(string msg);
+	void send(string message);
 	void tick();
 
 };

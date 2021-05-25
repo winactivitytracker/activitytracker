@@ -3,6 +3,8 @@
 
 using namespace std;
 
+#include <cstring>
+
 #include "transmitter.h"
 #include "receiver.h"
 #include "radioAPI.h"
@@ -15,29 +17,46 @@ void radioSend(char * message)
 	// Convert C char pointer to C++ string
 	string messageString(message);
 
-	return t.send(messageString);
+	t.send(messageString);
 }
 
-void radioSendTick()
-{
-	return t.tick();
-}
-
-void radioReceiveTick()
-{
-	return r.tick();
-}
-
-void radioEcho()
+// Get a message from the message queue.
+// str should be a char*, and it must be initialized
+bool radioReceive(char* *str)
 {
 	if(r.checkMessage())
 	{
 		// Get the filled up message object
-		message m = r.popMessage();
+		string message = r.popMessage();
 
-		// Get the received string from the message
-		string s = m.getMessageString();
+		// Here be dragons
+		*str = const_cast<char*>(message.c_str());
 
-		t.send(s);
+		return true;
 	}
+	else
+	{
+		// There is no message in the queue
+		return false;
+	}
+}
+
+void radioEnableReceiver()
+{
+	r.enable();
+}
+
+void radioDisableReceiver()
+{
+	r.disable();
+}
+
+void radioSendTick()
+{
+	t.tick();
+}
+
+void radioReceiveTick()
+{
+	r.tick();
 }

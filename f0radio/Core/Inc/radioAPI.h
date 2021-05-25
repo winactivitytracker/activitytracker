@@ -13,10 +13,15 @@ extern "C"
 {
 #endif
 
+#include <stdbool.h>
+
 void radioSend(char * message);
+bool radioReceive(char* *str);
+void radioEnableReceiver();
+void radioDisableReceiver();
 void radioSendTick();
 void radioReceiveTick();
-void radioEcho();
+
 
 #ifdef __cplusplus
 }

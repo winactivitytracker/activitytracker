@@ -7,23 +7,43 @@
 
 #include "transmitter.h"
 
+
+void transmitter::enable()
+{
+	HAL_TIM_Base_Start_IT(&htim15);
+}
+
+void transmitter::disable()
+{
+	HAL_TIM_Base_Stop_IT(&htim15);
+}
+
+// Function to mirror the bits in a byte.
+uint8_t transmitter::mirrorByte(uint8_t b)
+{
+	b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
+	b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
+	b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
+
+	return b;
+}
+
 // Pop the next message from the outbound queue
 // and add it to the outbound buffer
 void transmitter::fillBuffer()
 {
-	message m = messages.front();
+	string m = messages.front();
 	messages.pop_front();
 
-	string s = m.getMessageString();
-
-	for(uint8_t i = 0; i < s.length(); i++)
+	for(uint8_t i = 0; i < m.length(); i++)
 	{
-		bitset<8> c = s[i];
+		bitset<8> c = m[i];
 		buffer.push_back(c);
 	}
-	bufferPointer = 0;
+	bitPointer = 0;
 }
 
+// Get the next bit to send
 uint8_t transmitter::getNextBit()
 {
 	if(buffer.empty())
@@ -31,10 +51,10 @@ uint8_t transmitter::getNextBit()
 		return NO_NEW_BITS;
 	}
 
-	if(bufferPointer > 7)
+	if(bitPointer > 7)
 	{
 		buffer.pop_front();
-		bufferPointer = 0;
+		bitPointer = 0;
 
 		if(buffer.empty())
 		{
@@ -42,19 +62,19 @@ uint8_t transmitter::getNextBit()
 		}
 	}
 
-	uint8_t retVal = buffer.front()[bufferPointer];
+	uint8_t retVal = buffer.front()[bitPointer];
 
-	bufferPointer++;
+	bitPointer++;
 
 	return retVal;
 }
 
 // The send function adds a message to the queue.
 // The interrupt handler will notice and start sending this message bit by bit.
-void transmitter::send(string msg)
+void transmitter::send(string message)
 {
-	message m(msg);
-	messages.push_back(m);
+	enable();
+	messages.push_back(message);
 }
 
 // Function to be called by the interrupt handler.
@@ -105,7 +125,7 @@ void transmitter::tick()
 					case NO_NEW_BITS:
 						SEND_LOW;
 						RED_LOW;
-						state = STOP_HIGH;
+						state = STOP_LOW;
 						break;
 				}
 				break;
@@ -114,21 +134,29 @@ void transmitter::tick()
 				RED_LOW;
 				state = MSG_HIGH;
 				break;
-			case STOP_HIGH:
-				SEND_HIGH;
-				RED_HIGH;
-				holdFor = LENGTH_START;
-				state = STOP_LOW;
-				break;
 			case STOP_LOW:
 				SEND_LOW;
 				RED_LOW;
-				holdFor = LENGTH_START;
+				holdFor = LENGTH_STOP;
+				state = STOP_HIGH;
+				break;
+			case STOP_HIGH:
+				SEND_HIGH;
+				RED_HIGH;
+				holdFor = LENGTH_STOP;
 				state = IDLE;
 				break;
 			case IDLE:
-				if(!messages.empty())
+				SEND_LOW;
+				RED_LOW;
+				if(messages.empty())
 				{
+					disable();
+				}
+				else
+				{
+					holdFor = 10;
+					bitPointer = 0;
 					state = START_HIGH;
 				}
 				break;
