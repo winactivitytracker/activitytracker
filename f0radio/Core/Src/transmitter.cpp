@@ -22,6 +22,9 @@ void transmitter::disable()
 // and add it to the outbound buffer
 void transmitter::fillBuffer()
 {
+	// FIXME: This doesn't account for an empty queue.
+	// This means everything will break if the timer
+	// is running and there is no new message.
 	string m = messages.front();
 	messages.pop_front();
 
@@ -83,14 +86,14 @@ void transmitter::tick()
 		switch(state)
 		{
 			case START_HIGH:
-				SEND_HIGH;
-				RED_HIGH;
+				RADIO_SEND_HIGH;
+				LED_RED_HIGH;
 				holdFor = LENGTH_START;
 				state = START_LOW;
 				break;
 			case START_LOW:
-				SEND_LOW;
-				RED_LOW;
+				RADIO_SEND_LOW;
+				LED_RED_LOW;
 				holdFor = LENGTH_START;
 				state = MSG_HIGH;
 				// Fill the buffer with the message to be sent
@@ -100,45 +103,45 @@ void transmitter::tick()
 				switch(getNextBit())
 				{
 					case 0:
-						SEND_HIGH;
-						RED_HIGH;
+						RADIO_SEND_HIGH;
+						LED_RED_HIGH;
 						holdFor = LENGTH_ZERO;
 						state = MSG_LOW;
 						break;
 					case 1:
-						SEND_HIGH;
-						RED_HIGH;
+						RADIO_SEND_HIGH;
+						LED_RED_HIGH;
 						holdFor = LENGTH_ONE;
 						state = MSG_LOW;
 						break;
 					// When getNextBit() returns this, the message is done and the next one can be selected
 					case NO_NEW_BITS:
-						SEND_LOW;
-						RED_LOW;
+						RADIO_SEND_LOW;
+						LED_RED_LOW;
 						state = STOP_LOW;
 						break;
 				}
 				break;
 			case MSG_LOW:
-				SEND_LOW;
-				RED_LOW;
+				RADIO_SEND_LOW;
+				LED_RED_LOW;
 				state = MSG_HIGH;
 				break;
 			case STOP_LOW:
-				SEND_LOW;
-				RED_LOW;
+				RADIO_SEND_LOW;
+				LED_RED_LOW;
 				holdFor = LENGTH_STOP;
 				state = STOP_HIGH;
 				break;
 			case STOP_HIGH:
-				SEND_HIGH;
-				RED_HIGH;
+				RADIO_SEND_HIGH;
+				LED_RED_HIGH;
 				holdFor = LENGTH_STOP;
 				state = IDLE;
 				break;
 			case IDLE:
-				SEND_LOW;
-				RED_LOW;
+				RADIO_SEND_LOW;
+				LED_RED_LOW;
 				if(messages.empty())
 				{
 					disable();

@@ -33,11 +33,9 @@ using namespace std;
 #define STOP_MIN		350
 #define STOP_MAX		430
 
-#define RECEIVE			(GPIOB->IDR & GPIO_IDR_1)
-#define GREEN_HIGH		(GPIOB->BSRR = GPIO_BSRR_BS_2)
-#define GREEN_LOW		(GPIOB->BSRR = GPIO_BSRR_BR_2)
-#define RED_HIGH		(GPIOA->BSRR = GPIO_BSRR_BS_2)
-#define RED_LOW			(GPIOA->BSRR = GPIO_BSRR_BR_2)
+#define RADIO_RECEIVE	(GPIOB->IDR & GPIO_IDR_1)
+#define LED_GREEN_HIGH	(GPIOB->BSRR = GPIO_BSRR_BS_2)
+#define LED_GREEN_LOW	(GPIOB->BSRR = GPIO_BSRR_BR_2)
 
 class receiver
 {
@@ -46,13 +44,13 @@ private:
 	deque<string> messages;
 	deque<bitset<8>> buffer;
 	uint16_t bitPointer;
+	void clearBuffer();
+	void addToBuffer(bool bit);
 
 public:
 
 	void enable();
 	void disable();
-	void clearBuffer();
-	void addToBuffer(bool bit);
 	bool checkMessage();
 	string popMessage();
 	void tick();

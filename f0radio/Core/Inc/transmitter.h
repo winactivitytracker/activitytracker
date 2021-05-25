@@ -31,10 +31,10 @@ using namespace std;
 #define LENGTH_ONE		2
 #define LENGTH_STOP		4
 
-#define SEND_HIGH		(GPIOB->BSRR = GPIO_BSRR_BS_3)
-#define SEND_LOW		(GPIOB->BSRR = GPIO_BSRR_BR_3)
-#define RED_HIGH		(GPIOA->BSRR = GPIO_BSRR_BS_2)
-#define RED_LOW			(GPIOA->BSRR = GPIO_BSRR_BR_2)
+#define RADIO_SEND_HIGH	(GPIOB->BSRR = GPIO_BSRR_BS_3)
+#define RADIO_SEND_LOW	(GPIOB->BSRR = GPIO_BSRR_BR_3)
+#define LED_RED_HIGH	(GPIOA->BSRR = GPIO_BSRR_BS_2)
+#define LED_RED_LOW		(GPIOA->BSRR = GPIO_BSRR_BR_2)
 
 class transmitter
 {
@@ -45,11 +45,11 @@ private:
 	uint8_t bitPointer;
 	void enable();
 	void disable();
+	void fillBuffer();
+	uint8_t getNextBit();
 
 public:
 
-	void fillBuffer();
-	uint8_t getNextBit();
 	void send(string message);
 	void tick();
 

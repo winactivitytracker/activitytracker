@@ -58,14 +58,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define RED_Pin GPIO_PIN_2
-#define RED_GPIO_Port GPIOA
-#define RECEIVE_Pin GPIO_PIN_1
-#define RECEIVE_GPIO_Port GPIOB
-#define GREEN_Pin GPIO_PIN_2
-#define GREEN_GPIO_Port GPIOB
-#define SEND_Pin GPIO_PIN_3
-#define SEND_GPIO_Port GPIOB
+#define LED_RED_Pin GPIO_PIN_2
+#define LED_RED_GPIO_Port GPIOA
+#define RADIO_RECEIVE_Pin GPIO_PIN_1
+#define RADIO_RECEIVE_GPIO_Port GPIOB
+#define LED_GREEN_Pin GPIO_PIN_2
+#define LED_GREEN_GPIO_Port GPIOB
+#define RADIO_SEND_Pin GPIO_PIN_3
+#define RADIO_SEND_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
 void startCounter();

@@ -85,7 +85,7 @@ string receiver::popMessage()
 
 void receiver::tick()
 {
-	bool on = RECEIVE;
+	bool on = RADIO_RECEIVE;
 	static bool started = false;
 	static bool isCounting = false;
 	static uint16_t counter = 0;
@@ -105,7 +105,7 @@ void receiver::tick()
 	{
 		if((START_MIN < counter) && (counter < START_MAX))
 		{
-			GREEN_HIGH;
+			LED_GREEN_HIGH;
 			// Remember that there has been a start bit
 			started = true;
 		}
@@ -123,7 +123,7 @@ void receiver::tick()
 			}
 			else if((STOP_MIN < counter) && (counter < STOP_MAX))
 			{
-				GREEN_LOW;
+				LED_GREEN_LOW;
 				// Forget the start bit so we can wait
 				// for the next message
 				started = false;

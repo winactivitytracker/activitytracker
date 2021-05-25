@@ -58,16 +58,6 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-void startCounter()
-{
-	HAL_TIM_Base_Start_IT(&htim16);
-}
-
-void stopCounter()
-{
-	HAL_TIM_Base_Stop_IT(&htim16);
-}
-
 /* USER CODE END 0 */
 
 /**
@@ -102,34 +92,21 @@ int main(void)
   MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
 
-  // Insert a test message
-  //char * message = "yo";
-  //radioSend(message);
-
-  // Enable the timer interrupt for the transmitter
-  //HAL_TIM_Base_Start_IT(&htim15);
-  HAL_TIM_Base_Start_IT(&htim16);
-  HAL_GPIO_WritePin(RED_GPIO_Port,RED_Pin,GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GREEN_GPIO_Port,GREEN_Pin,GPIO_PIN_RESET);
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  char * message = "yo";
   radioEnableReceiver();
+
   while(1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	//radioSend(message);
-	//HAL_Delay(5000);
-
-	char* incoming = "";
-	if(radioReceive(&incoming))
-	{
-
-	}
+	radioSend(message);
+	HAL_Delay(5000);
 
   }
   /* USER CODE END 3 */
