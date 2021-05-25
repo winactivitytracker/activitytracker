@@ -61,7 +61,7 @@
 
 extern uint16_t ADCValue;
 extern GPS_t GPS;
-float batteryPer = 0, batterVol = 0;
+float batteryPer = 0, batteryVol = 0;
 
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
@@ -257,7 +257,14 @@ void StartReadBattery(void *argument)
   for(;;)
   {
 	batteryPer = calculateBattery(CALCULATEPERCENTAGE);
-	batterVol = calculateBattery(CALCULATEVOLTAGE);
+	batteryVol = calculateBattery(CALCULATEVOLTAGE);
+	if(batteryVol < 3.2)
+	{
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, SET);
+	} else
+	{
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, RESET);
+	}
     osDelay(5000);
   }
   /* USER CODE END StartReadBattery */
