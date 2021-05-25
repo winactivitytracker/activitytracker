@@ -30,10 +30,10 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "sdCard.h"
 #include "ssd1306.h"
 #include "fonts.h"
 #include "gps.h"
-#include "sdCard.h"
 
 /* USER CODE END Includes */
 
@@ -111,13 +111,24 @@ int main(void)
   SSD1306_Init();
   SSD1306_Clear();
   SSD1306_UpdateScreen();
-
-  initSdCard();
+  HAL_Delay(1000);
+  if(initSdCard())
+  {
+	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, SET);
+	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, RESET);
+  } else
+  {
+	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, SET);
+	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, RESET);
+  }
 
   __HAL_UART_ENABLE_IT(&huart1, UART_FLAG_RXNE);
   __HAL_ADC_ENABLE_IT(&hadc1, ADC_FLAG_EOC);
 
   HAL_ADC_Start_IT(&hadc1);
+
+  writeFile("testFile.txt", "HELLO WORLD!");
+  HAL_Delay(1000);
   /* USER CODE END 2 */
 
   /* Init scheduler */

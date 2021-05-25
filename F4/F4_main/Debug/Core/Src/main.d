@@ -51,11 +51,11 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FatFs/src/diskio.h \
  ../Middlewares/Third_Party/FatFs/src/ff.h ../FATFS/Target/user_diskio.h \
  ../Core/Inc/i2c.h ../Core/Inc/spi.h ../Core/Inc/usart.h \
- ../Core/Inc/gpio.h ../Core/Inc/ssd1306.h ../Core/Inc/fonts.h \
- ../Core/Inc/fonts.h ../Core/Inc/gps.h ../Core/Inc/sdCard.h \
+ ../Core/Inc/gpio.h ../Core/Inc/sdCard.h \
  ../FATFS/Target/user_diskio_spi.h \
  ../Middlewares/Third_Party/FatFs/src/integer.h \
- ../Middlewares/Third_Party/FatFs/src/diskio.h
+ ../Middlewares/Third_Party/FatFs/src/diskio.h ../Core/Inc/ssd1306.h \
+ ../Core/Inc/fonts.h ../Core/Inc/fonts.h ../Core/Inc/gps.h
 
 ../Core/Inc/main.h:
 
@@ -177,14 +177,6 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 
 ../Core/Inc/gpio.h:
 
-../Core/Inc/ssd1306.h:
-
-../Core/Inc/fonts.h:
-
-../Core/Inc/fonts.h:
-
-../Core/Inc/gps.h:
-
 ../Core/Inc/sdCard.h:
 
 ../FATFS/Target/user_diskio_spi.h:
@@ -192,3 +184,11 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Middlewares/Third_Party/FatFs/src/integer.h:
 
 ../Middlewares/Third_Party/FatFs/src/diskio.h:
+
+../Core/Inc/ssd1306.h:
+
+../Core/Inc/fonts.h:
+
+../Core/Inc/fonts.h:
+
+../Core/Inc/gps.h:

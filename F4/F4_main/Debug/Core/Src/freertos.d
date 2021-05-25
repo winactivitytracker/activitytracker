@@ -46,7 +46,14 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
  ../Core/Inc/ssd1306.h ../Core/Inc/fonts.h ../Core/Inc/fonts.h \
  ../Core/Inc/test.h ../Core/Inc/gps.h ../Core/Inc/usart.h \
- ../Core/Inc/main.h ../Core/Inc/adc.h
+ ../Core/Inc/main.h ../Core/Inc/adc.h ../Core/Inc/sdCard.h \
+ ../FATFS/Target/user_diskio_spi.h \
+ ../Middlewares/Third_Party/FatFs/src/integer.h \
+ ../Middlewares/Third_Party/FatFs/src/diskio.h \
+ ../Middlewares/Third_Party/FatFs/src/integer.h \
+ ../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h \
+ ../Middlewares/Third_Party/FatFs/src/diskio.h \
+ ../Middlewares/Third_Party/FatFs/src/ff.h ../FATFS/Target/ffconf.h
 
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 
@@ -155,3 +162,21 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
 ../Core/Inc/main.h:
 
 ../Core/Inc/adc.h:
+
+../Core/Inc/sdCard.h:
+
+../FATFS/Target/user_diskio_spi.h:
+
+../Middlewares/Third_Party/FatFs/src/integer.h:
+
+../Middlewares/Third_Party/FatFs/src/diskio.h:
+
+../Middlewares/Third_Party/FatFs/src/integer.h:
+
+../Middlewares/Third_Party/FatFs/src/ff_gen_drv.h:
+
+../Middlewares/Third_Party/FatFs/src/diskio.h:
+
+../Middlewares/Third_Party/FatFs/src/ff.h:
+
+../FATFS/Target/ffconf.h:

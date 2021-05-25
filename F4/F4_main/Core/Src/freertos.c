@@ -35,6 +35,9 @@
 #include "usart.h"
 #include "adc.h"
 #include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include "sdCard.h"
 
 /* USER CODE END Includes */
 
@@ -75,7 +78,7 @@ const osThreadAttr_t defaultTask_attributes = {
 osThreadId_t DrawOnOledTaskHandle;
 const osThreadAttr_t DrawOnOledTask_attributes = {
   .name = "DrawOnOledTask",
-  .stack_size = 512 * 4,
+  .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for ActivityTask */
@@ -96,9 +99,12 @@ const osThreadAttr_t readBattery_attributes = {
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 
-void getTime();
+char* getTime();
 char* getActivity();
 float calculateBattery(uint8_t whatCalculation);
+char* activityToString(uint8_t activity);
+bool activityToSD(char* fileName, char* string);
+
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -189,21 +195,25 @@ void StartDrawing(void *argument)
   for(;;)
   {
 	char numbers[10];
+	char *currentTime;
 
 	SSD1306_GotoXY (0,0);
 	sprintf(numbers, "batt: %.0f", batteryPer);
 	SSD1306_Puts (numbers, &Font_7x10, 1);
 
-	SSD1306_GotoXY (0, 30);
+	SSD1306_GotoXY (0, 25);
 	sprintf(numbers, "%.2f", GPS.speed_km);
 	SSD1306_Puts(numbers, &Font_11x18, 1);
-	SSD1306_GotoXY (50,36);
+	SSD1306_GotoXY (50,31);
 	SSD1306_Puts ("km/u", &Font_7x10, 1);
-
-	getTime();
 
 	SSD1306_GotoXY (0,10);
 	SSD1306_Puts(getActivity(), &Font_7x10, 1);
+
+	currentTime = getTime();
+	SSD1306_GotoXY (0, 45);
+	SSD1306_Puts(currentTime, &Font_7x10, 1);
+	free(currentTime);
 
 	SSD1306_UpdateScreen();
 
@@ -226,6 +236,7 @@ void StartActivityTask(void *argument)
 	static uint8_t activityPM[20];
 	static uint8_t counter = 0, counterPM = 0, counterPauze = 0;
 	static uint8_t trackActivity[4];
+	char* SDString = "";
   /* Infinite loop */
   for(;;)
   {
@@ -270,14 +281,14 @@ void StartActivityTask(void *argument)
 
 	  			if(counterPM < 20)
 	  			{
-	  				if(counterPM == 0 && index == walking || index == running)
+	  				if(counterPM == 0 && (index == walking || index == running))
 	  				{
 	  					activityPM[counterPM] = index;
 	  					//possibility to write the activity of the last active minute to sd!!
 	  					//not implemented
 	  					counterPM++;
 	  				}
-	  				else if(counterPM != 0 && index == noMovement || index == unknown)
+	  				else if(counterPM != 0 && (index == noMovement || index == unknown))
 	  				{
 	  					if(counterPauze < 2)
 	  					{
@@ -289,6 +300,18 @@ void StartActivityTask(void *argument)
 	  						counterPM = 20;
 	  						counterPauze = 0;
 	  					}
+	  				}
+	  				else if(counterPM > 0)
+	  				{
+	  					activityPM[counterPM] = index;
+						//possibility to write the activity of the last active minute to sd!!
+						//not implemented
+						counterPM++;
+	  				}
+	  				if(counterPM != 0)
+	  				{
+	  					SDString = activityToString(index);
+						activityToSD("MinuteActivity.txt", SDString);
 	  				}
 	  			}
 	  			else
@@ -324,7 +347,7 @@ void StartReadBattery(void *argument)
   {
 	batteryPer = calculateBattery(CALCULATEPERCENTAGE);
 	batteryVol = calculateBattery(CALCULATEVOLTAGE);
-	if(batteryVol < 3.2)
+	if(batteryVol < 3.0)
 	{
 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, SET);
 	} else
@@ -338,12 +361,12 @@ void StartReadBattery(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-void getTime()
+char* getTime()
 {
-	SSD1306_GotoXY (0, 50);
 
-	char toArray[10];
+	char *toArray;
 
+	toArray = malloc (sizeof (char) * 10);
 	float time = GPS.utc_time + 20000; //make it CET
 	sprintf(toArray, "%f", time );
 
@@ -352,7 +375,9 @@ void getTime()
 	else
 		sprintf(toArray, "%c%c:%c%c:%c%c", toArray[0], toArray[1], toArray[2], toArray[3], toArray[4], toArray[5]);
 
-	SSD1306_Puts(toArray, &Font_7x10, 1);
+	return toArray;
+
+
 }
 
 char * getActivity()
@@ -362,12 +387,12 @@ char * getActivity()
 	if(GPS.speed_km < 3.0)
 		{
 			activity = "Geen beweging";
-			GPS.currentActivity = noMovement;
+			GPS.currentActivity = walking;
 		}
 		else if(GPS.speed_km >= 2.0 && GPS.speed_km < 7.0)
 		{
 			activity = "Wandelen     ";
-			GPS.currentActivity = walking;
+			GPS.currentActivity = noMovement;
 		}
 		else if(GPS.speed_km >= 7.0 && GPS.speed_km < 15.0)
 		{
@@ -398,6 +423,43 @@ float calculateBattery(uint8_t whatCalculation)
 	return -1.0;
 }
 
+char* activityToString(uint8_t activity)
+{
+	char* string;
+
+	switch (activity) {
+		case noMovement:
+			string = "Geen beweging";
+			break;
+		case walking:
+			string = "Wandelen";
+			break;
+		case running:
+			string = "Hardlopen";
+			break;
+		default:
+			string = "onbekend";
+			break;
+	}
+	return string;
+}
+
+bool activityToSD(char* fileName, char* string)
+{
+	char *sTime;
+	sTime = getTime();
+	//strcat(string, sTime);
+	if(writeFile(fileName, strcat(string, sTime)))
+	{
+		free(sTime);
+		return true;
+	} else
+	{
+		free(sTime);
+		return false;
+	}
+
+}
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
