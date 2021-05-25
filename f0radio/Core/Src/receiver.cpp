@@ -103,13 +103,16 @@ void receiver::tick()
 	}
 	else if(!on && isCounting)
 	{
-		if((START_MIN < counter) && (counter < START_MAX))
+		if(!started)
 		{
-			LED_GREEN_HIGH;
-			// Remember that there has been a start bit
-			started = true;
+			if((START_MIN < counter) && (counter < START_MAX))
+			{
+				LED_GREEN_HIGH;
+				// Remember that there has been a start bit
+				started = true;
+			}
 		}
-		else if(started)
+		else
 		{
 			if((ZERO_MIN < counter) && (counter < ZERO_MAX))
 			{
