@@ -56,6 +56,7 @@ void Error_Handler(void);
 /* USER CODE BEGIN EFP */
 
 void getMPUData();
+void stap();
 
 /* USER CODE END EFP */
 

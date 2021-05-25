@@ -103,4 +103,31 @@ void MPUSetGyro(uint8_t gyroSpeed)
 	HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, GYRO_CONFIG_REG, 1, &gyroSpeed, 1, 1000);
 }
 
+void MPUOrientation(uint8_t *orientationAxis, uint8_t *orientationNegative)
+{
+	uint16_t highestData = 0;
+	uint8_t negative = 0;
+	uint8_t forceCounter = 0;
+	int16_t axisData[6];
 
+	MPU6050ReadAccel(&axisData[0], &axisData[1], &axisData[2]);
+
+	while(forceCounter < 3)
+	{
+	  	if(axisData[forceCounter] < 0)
+	  	{
+	  		axisData[forceCounter] = axisData[forceCounter]*-1;
+	  		negative = 1;
+	  	}else
+	  	{
+	  		negative = 0;
+	  	}
+	  	if(highestData < axisData[forceCounter])
+	  	{
+	  		highestData = axisData[forceCounter];
+	  		*orientationAxis = forceCounter;
+	  		*orientationNegative = negative;
+	  	}
+		forceCounter++;
+	}
+}

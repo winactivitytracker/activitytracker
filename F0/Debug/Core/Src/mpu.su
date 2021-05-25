@@ -4,3 +4,4 @@ mpu.c:65:6:MPU6050ReadGyro	56	static
 mpu.c:87:6:MPUReadAll	24	static
 mpu.c:93:6:MPUSetAccel	32	static
 mpu.c:100:6:MPUSetGyro	32	static
+mpu.c:106:6:MPUOrientation	40	static

@@ -31,5 +31,6 @@ void MPU6050ReadGyro(int16_t *gXRaw, int16_t *gYRaw, int16_t *gZRaw);
 void MPUReadAll(int16_t *aXRaw, int16_t *aYRaw, int16_t *aZRaw, int16_t *gXRaw, int16_t *gYRaw, int16_t *gZRaw);
 void MPUSetAccel(uint8_t acceleration);
 void MPUSetGyro(uint8_t gyroSpeed);
+void MPUOrientation(uint8_t *orientationAxis, uint8_t *orientationNegative);
 
 #endif //__MPU_H_

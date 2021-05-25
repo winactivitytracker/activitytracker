@@ -29,6 +29,7 @@
 
 #include "mpu.h"
 #include <stdio.h>
+#include <stdbool.h>
 
 /* USER CODE END Includes */
 
@@ -55,17 +56,22 @@ int16_t allData[20][6];
 int16_t MPURTCData[40][4][6];
 
 uint8_t counter = 0;
-uint8_t forCounter;
 
-char* nameArray[6] = {"aX", "aY", "aZ"};
+char* nameArray[6] = {"aX", "aY", "aZ", "gX", "gY", "gZ"};
 RTC_TimeTypeDef currTime, currDate = {0};
+
+uint8_t orientationLeg[2];
+
+int16_t previous;
+
+uint8_t forceCounter;
 
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+float editMPUData();
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -110,108 +116,63 @@ int main(void)
   MPUSetAccel(MPU_A16G);
   MPUSetGyro(MPU_G2000G);
 
+  MPUOrientation(&orientationLeg[0], &orientationLeg[1]);
+
+  if(orientationLeg[1] == 1)
+  {
+	  HAL_UART_Transmit(&huart1, "-", sizeof("-"), HAL_MAX_DELAY);
+  }
+  if(orientationLeg[0] == 0)
+  {
+	  HAL_UART_Transmit(&huart1, "X", sizeof("X"), HAL_MAX_DELAY);
+  }
+  else if(orientationLeg[0] == 1)
+  {
+	  HAL_UART_Transmit(&huart1, "Y", sizeof("Y"), HAL_MAX_DELAY);
+  }
+  else
+  {
+	  HAL_UART_Transmit(&huart1, "Z", sizeof("Z"), HAL_MAX_DELAY);
+  }
+  HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+
   for(uint8_t i = 0; i < 3; i++)
   {
 	  HAL_UART_Transmit(&huart1, nameArray[i], sizeof(nameArray[i]), HAL_MAX_DELAY);
-	  if(i != 2)
+	  if(i != 5)
 	  {
 		  HAL_UART_Transmit(&huart1, ",", sizeof(","), HAL_MAX_DELAY);
 	  }
-	  if(i == 2)
+	  else
 	  {
 		  HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
 	  }
   }
+  char numberss[6];
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  char numbers[6];
-	  float current;
-	  float previous[3];
-//	  if(counter == 20)
-//	  {
-//		  char numbers[6];
-//		  float current;
-//		  for(uint8_t i = 0; i < 20; i++)
-//		  {
-//			  MPUData[0] = MPUData[0] + allData[i][0];
-//			  MPUData[1] = MPUData[1] + allData[i][1];
-//			  MPUData[2] = MPUData[2] + allData[i][2];
-//			  MPUData[3] = MPUData[3] + allData[i][3];
-//			  MPUData[4] = MPUData[4] + allData[i][4];
-//			  MPUData[5] = MPUData[5] + allData[i][5];
-//		  }
-//		  forCounter = 0;
-//		  while(forCounter < 6)
-//		  {
-//			  MPUData[forCounter] = MPUData[forCounter] / counter;
-//			  if(forCounter < 3)
-//			  {
-//			  	  current = (float)MPUData[forCounter] / 2048.0;
-//			  } else
-//			  {
-//			   	  current = (float)MPUData[forCounter] / 16.4;
-//			  }
-//			  MPUData[forCounter] = 0;
-//			  sprintf(numbers, "%.3f", current);
-//			  HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
-//			 if(forCounter != 5)
-//			 {
-//				 HAL_UART_Transmit(&huart1, ", ", sizeof(", "), HAL_MAX_DELAY);
-//			 }
-//			 if(forCounter == 5)
-//			 {
-//				 HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
-//			 }
-//			 forCounter++;
-//		  }
-//		   counter = 0;
-//		   HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_2);
-//	  }
+
 	  HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_2);
-	  MPUReadAll(&allData[counter][0], &allData[counter][1], &allData[counter][2], &allData[counter][3], &allData[counter][4], &allData[counter][5]);
-	  //counter++;
 
-	  forCounter = 0;
-	  		  while(forCounter < 3)
-	  		  {
-	  			 HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_2);
-	  			  //MPUData[forCounter] = MPUData[forCounter] / counter;
-	  			  if(forCounter < 3)
-	  			  {
-	  			  	  current = (float)allData[0][forCounter] / 2048.0;
-	  			  } else
-	  			  {
-	  			   	  current = (float)allData[0][forCounter] / 16.4;
-	  			  }
-	  			  allData[0][forCounter] = 0;
+	  stap();
 
-	  			  if(forCounter == 2 && current > previous[forCounter] + 0.8)
-	  			  {
-					  HAL_UART_Transmit(&huart1, "STAP", sizeof(numbers), HAL_MAX_DELAY);
-					  forCounter = 2;
-				  }
-//	  			  else
-//	  			  {
-//					  sprintf(numbers, "%.3f", current);
-//					  HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
-//	  			  }
-//
-//	  			  if(forCounter != 2)
-//	  			 {
-//	  				 HAL_UART_Transmit(&huart1, ", ", sizeof(", "), HAL_MAX_DELAY);
-//	  			 }
-	  			 if(forCounter == 2)
-	  			 {
-	  				HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+	  MPUReadAll(&allData[0][0], &allData[0][1], &allData[0][2], &allData[0][3], &allData[0][4], &allData[0][5]);
 
-	  			 }
-	  			 previous[forCounter] = current;
-	  			 forCounter++;
-	  		  }
+	  forceCounter = 0;
+	  while(forceCounter < 6)
+	  {
+		sprintf(numberss, "%d", allData[0][forceCounter]);
+		HAL_UART_Transmit(&huart1, numberss, sizeof(numberss), HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart1, "\t", sizeof("\t"), HAL_MAX_DELAY);
+		forceCounter++;
+	  }
+	  HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+
+	  //HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
 	  HAL_Delay(250);
     /* USER CODE END WHILE */
 
@@ -275,6 +236,41 @@ void getMPUData()
 	HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
 	HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
 	MPUReadAll(&MPURTCData[currTime.Seconds][counter][0], &MPURTCData[currTime.Seconds][counter][1], &MPURTCData[currTime.Seconds][counter][2], &MPURTCData[currTime.Seconds][counter][3], &MPURTCData[currTime.Seconds][counter][4], &MPURTCData[currTime.Seconds][counter][5]);
+}
+
+void stap()
+{
+//	uint8_t forCounter = 0;
+//	char numbers[6];
+	int16_t data[3];
+
+	MPU6050ReadAccel(&data[0], &data[1], &data[2]);
+/*
+	sprintf(numbers, "%d", data[0]);
+	HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, "_", sizeof("_"), HAL_MAX_DELAY);
+	sprintf(numbers, "%d", data[1]);
+	HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, "_", sizeof("_"), HAL_MAX_DELAY);
+	sprintf(numbers, "%d", data[2]);
+	HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, "_", sizeof("_"), HAL_MAX_DELAY);*/
+	if(orientationLeg[1] == 0)
+	{
+		if(data[orientationLeg[0]] > (previous + 2000))
+		{
+			HAL_UART_Transmit(&huart1, "STAP", sizeof("STAP"), HAL_MAX_DELAY);
+		 }
+	} else
+	{
+		if(data[orientationLeg[0]] < (previous - 2000))
+		{
+		 	HAL_UART_Transmit(&huart1, "STAP", sizeof("STAP"), HAL_MAX_DELAY);
+		}
+	}
+	previous = data[orientationLeg[0]];
+	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_2);
+	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
 }
 
 /* USER CODE END 4 */
