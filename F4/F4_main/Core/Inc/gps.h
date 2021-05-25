@@ -44,14 +44,16 @@ typedef struct{
 	float course_m; // magnetic
 	char course_m_unit;
 	char speed_k_unit;
-	float speed_km; // speek km/hr
+	float speed_km; // speed km/hr
 	char speed_km_unit;
 
 	uint8_t		rxBuffer[512];
 	uint16_t	rxIndex;
 	uint8_t		rxTmp;
 	uint32_t	LastTime;
-	uint8_t 	currentActivity;
+
+	enum 		Activity{noMovement = 0, walking = 1, running = 2, unknown = 3};
+	enum 		Activity currentActivity;
 
 } GPS_t;
 
