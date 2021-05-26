@@ -88,7 +88,7 @@ void receiver::tick()
 	{
 		counter++;
 		// For seeing how many counts a bit is
-		//HAL_GPIO_TogglePin(GREEN_GPIO_Port,GREEN_Pin);
+		//HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin);
 	}
 	else if(on && !isCounting)
 	{
@@ -101,9 +101,9 @@ void receiver::tick()
 		{
 			if((START_MIN < counter) && (counter < START_MAX))
 			{
-				HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_SET);
 				// Remember that there has been a start bit
 				started = true;
+				HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_SET);
 			}
 		}
 		else
@@ -128,7 +128,6 @@ void receiver::tick()
 				// start bit is found (the stop bit), put
 				// the buffer in the message queue
 				clearBuffer();
-
 				HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
 			}
 		}
