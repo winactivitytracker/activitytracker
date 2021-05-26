@@ -62,6 +62,20 @@ uint8_t transmitter::getNextBit()
 	return retVal;
 }
 
+void transmitter::pin(uint8_t high)
+{
+	if(high)
+	{
+		HAL_GPIO_WritePin(RADIO_SEND_GPIO_Port,RADIO_SEND_Pin,GPIO_PIN_SET);
+		HAL_GPIO_WritePin(LED_RED_GPIO_Port,LED_RED_Pin,GPIO_PIN_SET);
+	}
+	else
+	{
+		HAL_GPIO_WritePin(RADIO_SEND_GPIO_Port,RADIO_SEND_Pin,GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(LED_RED_GPIO_Port,LED_RED_Pin,GPIO_PIN_RESET);
+	}
+}
+
 // The send function adds a message to the queue.
 // The interrupt handler will notice and start sending this message bit by bit.
 void transmitter::send(string message)
@@ -86,14 +100,12 @@ void transmitter::tick()
 		switch(state)
 		{
 			case START_HIGH:
-				RADIO_SEND_HIGH;
-				LED_RED_HIGH;
+				pin(1);
 				holdFor = LENGTH_START;
 				state = START_LOW;
 				break;
 			case START_LOW:
-				RADIO_SEND_LOW;
-				LED_RED_LOW;
+				pin(0);
 				holdFor = LENGTH_START;
 				state = MSG_HIGH;
 				// Fill the buffer with the message to be sent
@@ -103,45 +115,38 @@ void transmitter::tick()
 				switch(getNextBit())
 				{
 					case 0:
-						RADIO_SEND_HIGH;
-						LED_RED_HIGH;
+						pin(1);
 						holdFor = LENGTH_ZERO;
 						state = MSG_LOW;
 						break;
 					case 1:
-						RADIO_SEND_HIGH;
-						LED_RED_HIGH;
+						pin(1);
 						holdFor = LENGTH_ONE;
 						state = MSG_LOW;
 						break;
 					// When getNextBit() returns this, the message is done and the next one can be selected
 					case NO_NEW_BITS:
-						RADIO_SEND_LOW;
-						LED_RED_LOW;
+						pin(0);
 						state = STOP_LOW;
 						break;
 				}
 				break;
 			case MSG_LOW:
-				RADIO_SEND_LOW;
-				LED_RED_LOW;
+				pin(0);
 				state = MSG_HIGH;
 				break;
 			case STOP_LOW:
-				RADIO_SEND_LOW;
-				LED_RED_LOW;
+				pin(0);
 				holdFor = LENGTH_STOP;
 				state = STOP_HIGH;
 				break;
 			case STOP_HIGH:
-				RADIO_SEND_HIGH;
-				LED_RED_HIGH;
+				pin(1);
 				holdFor = LENGTH_STOP;
 				state = IDLE;
 				break;
 			case IDLE:
-				RADIO_SEND_LOW;
-				LED_RED_LOW;
+				pin(0);
 				if(messages.empty())
 				{
 					disable();

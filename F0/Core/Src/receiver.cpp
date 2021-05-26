@@ -79,7 +79,7 @@ string receiver::popMessage()
 
 void receiver::tick()
 {
-	bool on = RADIO_RECEIVE;
+	bool on = HAL_GPIO_ReadPin(RADIO_RECEIVE_GPIO_Port,RADIO_RECEIVE_Pin);
 	static bool started = false;
 	static bool isCounting = false;
 	static uint16_t counter = 0;
@@ -101,7 +101,7 @@ void receiver::tick()
 		{
 			if((START_MIN < counter) && (counter < START_MAX))
 			{
-				LED_GREEN_HIGH;
+				HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_SET);
 				// Remember that there has been a start bit
 				started = true;
 			}
@@ -120,7 +120,6 @@ void receiver::tick()
 			}
 			else if((STOP_MIN < counter) && (counter < STOP_MAX))
 			{
-				LED_GREEN_LOW;
 				// Forget the start bit so we can wait
 				// for the next message
 				started = false;
@@ -129,6 +128,8 @@ void receiver::tick()
 				// start bit is found (the stop bit), put
 				// the buffer in the message queue
 				clearBuffer();
+
+				HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
 			}
 		}
 

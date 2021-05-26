@@ -33,10 +33,6 @@ using namespace std;
 #define STOP_MIN		350
 #define STOP_MAX		430
 
-#define RADIO_RECEIVE	(GPIOB->IDR & GPIO_IDR_1)
-#define LED_GREEN_HIGH	(GPIOB->BSRR = GPIO_BSRR_BS_2)
-#define LED_GREEN_LOW	(GPIOB->BSRR = GPIO_BSRR_BR_2)
-
 class receiver
 {
 private:

@@ -47,6 +47,7 @@ private:
 	void disable();
 	void fillBuffer();
 	uint8_t getNextBit();
+	void pin(uint8_t high);
 
 public:
 

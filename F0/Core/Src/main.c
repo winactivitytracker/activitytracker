@@ -28,9 +28,10 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-#include "mpu.h"
 #include <stdio.h>
 #include <stdbool.h>
+#include "mpu.h"
+#include "radioAPI.h"
 
 /* USER CODE END Includes */
 
@@ -57,7 +58,7 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-float editMPUData();
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -103,15 +104,16 @@ int main(void)
   MPU6050Init();
   MPUSetAccel(MPU_A16G);
   MPUSetGyro(MPU_G2000G);
-  MPUToUsartInit();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	MPUToUsartLoop();
-	HAL_Delay(250);
+	radioSend("hi");
+	HAL_Delay(1000);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
