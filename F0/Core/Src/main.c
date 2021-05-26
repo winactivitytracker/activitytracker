@@ -103,29 +103,36 @@ int main(void)
   MPUSetAccel(MPU_A16G);
   MPUSetGyro(MPU_G2000G);
 
+  bool sending = false;
+  char * msge;
+
+  if(!sending) radioEnableReceiver();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	MPUReadAll(
+	if(sending)
+	{
+		MPUReadAll(
 			&MPUData[0],
 			&MPUData[1],
 			&MPUData[2],
 			&MPUData[3],
 			&MPUData[4],
 			&MPUData[5]
-	);
+		);
 
-	// "accel:(|||||)"	: 13 chars
-	//			6 * 5	= 30 chars
-	// 					  --
-	//					  43
+		// "accel:(|||||)"	: 13 chars
+		//			6 * 5	= 30 chars
+		// 					  --
+		//					  43
 
-	char MPUDataString[45] = "";
+		char MPUDataString[45] = "";
 
-	sprintf(MPUDataString,
+		sprintf(MPUDataString,
 			"accel:(%d|%d|%d|%d|%d|%d)",
 			MPUData[0],
 			MPUData[1],
@@ -133,10 +140,19 @@ int main(void)
 			MPUData[3],
 			MPUData[4],
 			MPUData[5]
-	);
+		);
 
-	radioSend(MPUDataString);
-	HAL_Delay(1000);
+		radioSend(MPUDataString);
+		HAL_Delay(2000);
+	}
+	else
+	{
+		char* incoming = "";
+		if(radioReceive(&incoming))
+		{
+			msge = incoming;
+		}
+	}
 
     /* USER CODE END WHILE */
 
