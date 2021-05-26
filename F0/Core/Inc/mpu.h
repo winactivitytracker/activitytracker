@@ -2,6 +2,8 @@
 #define __MPU_H_
 
 #include "i2c.h"
+#include "usart.h"
+#include "rtc.h"
 #include "stdbool.h"
 
 #define MPU6050_ADDR 0xD0
@@ -16,14 +18,14 @@
 #define PWR_MGMT_1_REG 0x6B
 #define WHO_AM_I_REG 0x75
 
-#define MPU_A2G		0x00
-#define MPU_A4G		0x08 //0b00001000
-#define MPU_A8G		0x10 //0b00010000
-#define MPU_A16G	0x18 //0b00011000
-#define MPU_G250G	0x00
-#define MPU_G500G	0x08 //0b00001000
-#define MPU_G1000G	0x10 //0b00010000
-#define MPU_G2000G	0x18 //0b00011000
+#define MPU_A2G		0x00 // 00000000
+#define MPU_A4G		0x08 // 00001000
+#define MPU_A8G		0x10 // 00010000
+#define MPU_A16G	0x18 // 00011000
+#define MPU_G250G	0x00 // 00000000
+#define MPU_G500G	0x08 // 00001000
+#define MPU_G1000G	0x10 // 00010000
+#define MPU_G2000G	0x18 // 00011000
 
 bool MPU6050Init(void);
 void MPU6050ReadAccel(int16_t *aXRaw, int16_t *aYRaw, int16_t *aZRaw);
