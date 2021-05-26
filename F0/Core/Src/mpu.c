@@ -1,12 +1,11 @@
 #include "mpu.h"
 
-uint8_t currentAccelScale, currentGyroScale;
-int32_t MPUData[6];
-int16_t allData[20][6];
-int16_t MPURTCData[40][4][6];
 uint8_t counter = 0;
 char* nameArray[6] = {"aX", "aY", "aZ", "gX", "gY", "gZ"};
 RTC_TimeTypeDef currTime, currDate = {0};
+
+uint8_t currentAccelScale, currentGyroScale;
+int16_t MPUData[6];
 uint8_t orientationLeg[2];
 int16_t previous;
 uint8_t forceCounter;
@@ -145,7 +144,7 @@ void getMPUData()
 {
 	HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
 	HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
-	MPUReadAll(&MPURTCData[currTime.Seconds][counter][0], &MPURTCData[currTime.Seconds][counter][1], &MPURTCData[currTime.Seconds][counter][2], &MPURTCData[currTime.Seconds][counter][3], &MPURTCData[currTime.Seconds][counter][4], &MPURTCData[currTime.Seconds][counter][5]);
+	//MPUReadAll(&MPURTCData[currTime.Seconds][counter][0], &MPURTCData[currTime.Seconds][counter][1], &MPURTCData[currTime.Seconds][counter][2], &MPURTCData[currTime.Seconds][counter][3], &MPURTCData[currTime.Seconds][counter][4], &MPURTCData[currTime.Seconds][counter][5]);
 }
 
 void stap()
@@ -232,12 +231,12 @@ void MPUToUsartLoop()
 	char numberss[6];
 	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_2);
 	stap();
-	MPUReadAll(&allData[0][0], &allData[0][1], &allData[0][2], &allData[0][3], &allData[0][4], &allData[0][5]);
+	MPUReadAll(&MPUData[0], &MPUData[1], &MPUData[2], &MPUData[3], &MPUData[4], &MPUData[5]);
 	forceCounter = 0;
 
 	while(forceCounter < 6)
 	{
-		sprintf(numberss, "%d", allData[0][forceCounter]);
+		sprintf(numberss, "%d", MPUData[forceCounter]);
 		HAL_UART_Transmit(&huart1, numberss, sizeof(numberss), HAL_MAX_DELAY);
 		HAL_UART_Transmit(&huart1, "\t", sizeof("\t"), HAL_MAX_DELAY);
 		forceCounter++;

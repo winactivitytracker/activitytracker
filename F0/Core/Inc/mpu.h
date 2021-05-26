@@ -1,13 +1,14 @@
 #ifndef __MPU_H_
 #define __MPU_H_
 
+#include <stdio.h>
+#include <stdbool.h>
+
 #include "i2c.h"
 #include "usart.h"
 #include "rtc.h"
-#include "stdbool.h"
 
 #define MPU6050_ADDR 0xD0
-
 
 #define SMPLRT_DIV_REG 0x19
 #define GYRO_CONFIG_REG 0x1B
@@ -26,6 +27,12 @@
 #define MPU_G500G	0x08 // 00001000
 #define MPU_G1000G	0x10 // 00010000
 #define MPU_G2000G	0x18 // 00011000
+
+extern uint8_t currentAccelScale, currentGyroScale;
+extern int16_t MPUData[6];
+extern uint8_t orientationLeg[2];
+extern int16_t previous;
+extern uint8_t forceCounter;
 
 bool MPU6050Init(void);
 void MPU6050ReadAccel(int16_t *aXRaw, int16_t *aYRaw, int16_t *aZRaw);

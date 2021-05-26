@@ -28,8 +28,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-#include <stdio.h>
-#include <stdbool.h>
 #include "mpu.h"
 #include "radioAPI.h"
 
@@ -111,7 +109,33 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	radioSend("hi");
+	MPUReadAll(
+			&MPUData[0],
+			&MPUData[1],
+			&MPUData[2],
+			&MPUData[3],
+			&MPUData[4],
+			&MPUData[5]
+	);
+
+	// "accel:(|||||)"	: 13 chars
+	//			6 * 5	= 30 chars
+	// 					  --
+	//					  43
+
+	char MPUDataString[45] = "";
+
+	sprintf(MPUDataString,
+			"accel:(%d|%d|%d|%d|%d|%d)",
+			MPUData[0],
+			MPUData[1],
+			MPUData[2],
+			MPUData[3],
+			MPUData[4],
+			MPUData[5]
+	);
+
+	radioSend(MPUDataString);
 	HAL_Delay(1000);
 
     /* USER CODE END WHILE */
