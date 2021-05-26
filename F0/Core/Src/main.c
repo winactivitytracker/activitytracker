@@ -99,14 +99,9 @@ int main(void)
   MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
 
-  //MPU6050Init();
-  //MPUSetAccel(MPU_A16G);
-  //MPUSetGyro(MPU_G2000G);
-
-  bool r = true;
-
-  // Enable the receiver
-  if(r) radioEnableReceiver();
+  MPU6050Init();
+  MPUSetAccel(MPU_A16G);
+  MPUSetGyro(MPU_G2000G);
 
   /* USER CODE END 2 */
 
@@ -114,36 +109,23 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	if(r)
-	{
-		// pretend you're F4 and receive accel data
-		char * incoming = "";
-
-		if(radioReceive(&incoming))
-		{
-			// handle the incoming data
-		}
-	}
-	else
-	{
-		// Send accelerometer data every second
-		MPUReadAll(
+	MPUReadAll(
 			&MPUData[0],
 			&MPUData[1],
 			&MPUData[2],
 			&MPUData[3],
 			&MPUData[4],
 			&MPUData[5]
-		);
+	);
 
-		// "accel:(|||||)"	: 13 chars
-		//			6 * 5	= 30 chars
-		// 					  --
-		//					  43
+	// "accel:(|||||)"	: 13 chars
+	//			6 * 5	= 30 chars
+	// 					  --
+	//					  43
 
-		char MPUDataString[45] = "";
+	char MPUDataString[45] = "";
 
-		sprintf(MPUDataString,
+	sprintf(MPUDataString,
 			"accel:(%d|%d|%d|%d|%d|%d)",
 			MPUData[0],
 			MPUData[1],
@@ -151,12 +133,10 @@ int main(void)
 			MPUData[3],
 			MPUData[4],
 			MPUData[5]
-		);
+	);
 
-		radioSend(MPUDataString);
-		HAL_Delay(1000);
-	}
-
+	radioSend(MPUDataString);
+	HAL_Delay(1000);
 
     /* USER CODE END WHILE */
 

@@ -24,14 +24,14 @@ using namespace std;
 #define STOP_HIGH		5
 #define IDLE			6
 
-#define ZERO_MIN		6
-#define ZERO_MAX		10
-#define ONE_MIN			19
-#define ONE_MAX			23
-#define START_MIN		33
-#define START_MAX		37
-#define STOP_MIN		40
-#define STOP_MAX		44
+#define ZERO_MIN		50
+#define ZERO_MAX		130
+#define ONE_MIN			150
+#define ONE_MAX			230
+#define START_MIN		250
+#define START_MAX		330
+#define STOP_MIN		350
+#define STOP_MAX		430
 
 class receiver
 {
