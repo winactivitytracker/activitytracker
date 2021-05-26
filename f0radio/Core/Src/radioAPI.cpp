@@ -3,32 +3,60 @@
 
 using namespace std;
 
-#include "radio.h"
+#include <cstring>
+
+#include "transmitter.h"
+#include "receiver.h"
 #include "radioAPI.h"
 
-radio r;
+transmitter t;
+receiver r;
 
-void radioSend(char * message, uint8_t length)
+void radioSend(char * message)
 {
 	// Convert C char pointer to C++ string
-	string messageString(message, message + length);
+	string messageString(message);
 
-	return r.send(messageString);
+	t.send(messageString);
 }
 
-void radioInterrupt()
+// Get a message from the message queue.
+// str should be a char*, and it must be initialized
+bool radioReceive(char* *str)
 {
-	// Use this version if you don't want Manchester encoding
-	return r.interrupt();
-	//return r.interruptManchester();
+	if(r.checkMessage())
+	{
+		// Get the filled up message object
+		string message = r.popMessage();
+
+		// Here be dragons
+		*str = const_cast<char*>(message.c_str());
+
+		return true;
+	}
+	else
+	{
+		// There is no message in the queue
+		return false;
+	}
 }
 
-void radioEdge()
+void radioEnableReceiver()
 {
-	return r.edge();
+	r.enable();
 }
 
-void radioCount()
+void radioDisableReceiver()
 {
-	return r.count();
+	r.disable();
+}
+
+void radioSendTick()
+{
+	t.tick();
+}
+
+void radioReceiveTick()
+{
+	r.tick();
 }

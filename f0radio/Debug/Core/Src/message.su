@@ -1,4 +1,0 @@
-gthr-default.h:229:1:int __gthread_key_delete(__gthread_key_t)	16	static
-message.cpp:11:9:uint8_t message::mirrorByte(uint8_t)	16	static
-message.cpp:21:1:message::message(std::string)	16	static
-message.cpp:80:9:uint8_t message::setNextBit()	48	static
