@@ -58,6 +58,7 @@ typedef struct{
 	uint8_t		length; 	//active minutes
 	uint8_t		lastActiveMinute;
 	uint8_t 	activityPM[254];
+	uint8_t 	previousLength;
 
 	enum 		Activity{noMovement = 1, walking = 2, running = 3, unknown = 0};
 	enum 		Activity currentActivity;

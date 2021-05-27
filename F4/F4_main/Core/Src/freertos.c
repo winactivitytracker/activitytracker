@@ -348,6 +348,7 @@ void StartActivityTask(void *argument)
 	  				//lengte van de activiteit toevoegen
 	  				SDString = activityToString(CurrentActivity.totalActivity);
 	  				activityToSD("MinuteActivity.txt", SDString);
+	  				CurrentActivity.previousLength = CurrentActivity.length;
 	  				CurrentActivity.length = 0;
 	  				counterPM = 0;
 	  			}
