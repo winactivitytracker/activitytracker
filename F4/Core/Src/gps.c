@@ -32,7 +32,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <usart.h>
+#include "usart.h"
 #include "gps.h"
 
 #if (GPS_DEBUG == 1)
@@ -51,6 +51,10 @@ void GPS_print(char *data){
 
 void GPS_Init()
 {
+	// Turn on the uart's interrupt
+	__HAL_UART_ENABLE_IT(&huart1, UART_FLAG_RXNE);
+
+	// Initial receiving of data
 	HAL_UART_Receive_IT(GPS_USART, &GPS.rxTmp, 1);
 }
 

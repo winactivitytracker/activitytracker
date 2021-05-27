@@ -27,14 +27,14 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include <stdlib.h>
 #include "ssd1306.h"
 #include "fonts.h"
-#include "test.h"
 #include "stdio.h"
 #include "gps.h"
 #include "usart.h"
 #include "adc.h"
-#include <stdlib.h>
+#include "radioAPI.h"
 
 /* USER CODE END Includes */
 
@@ -92,6 +92,20 @@ const osThreadAttr_t readBattery_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
+/* Definitions for rSendTask */
+osThreadId_t rSendTaskHandle;
+const osThreadAttr_t rSendTask_attributes = {
+  .name = "rSendTask",
+  .stack_size = 64 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
+/* Definitions for rReceiveTask */
+osThreadId_t rReceiveTaskHandle;
+const osThreadAttr_t rReceiveTask_attributes = {
+  .name = "rReceiveTask",
+  .stack_size = 64 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal1,
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -105,6 +119,8 @@ void StartDefaultTask(void *argument);
 void StartDrawing(void *argument);
 void StartActivityTask(void *argument);
 void StartReadBattery(void *argument);
+void StartRadioSendTask(void *argument);
+void StartRadioReceiveTask(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -146,6 +162,12 @@ void MX_FREERTOS_Init(void) {
 
   /* creation of readBattery */
   readBatteryHandle = osThreadNew(StartReadBattery, NULL, &readBattery_attributes);
+
+  /* creation of rSendTask */
+  rSendTaskHandle = osThreadNew(StartRadioSendTask, NULL, &rSendTask_attributes);
+
+  /* creation of rReceiveTask */
+  rReceiveTaskHandle = osThreadNew(StartRadioReceiveTask, NULL, &rReceiveTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -334,6 +356,46 @@ void StartReadBattery(void *argument)
     osDelay(5000);
   }
   /* USER CODE END StartReadBattery */
+}
+
+/* USER CODE BEGIN Header_StartRadioSendTask */
+/**
+* @brief Function implementing the rSendTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartRadioSendTask */
+void StartRadioSendTask(void *argument)
+{
+  /* USER CODE BEGIN StartRadioSendTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    // Send a test message
+	char * msg = "yo";
+	radioSend(msg);
+
+	osDelay(2000);
+  }
+  /* USER CODE END StartRadioSendTask */
+}
+
+/* USER CODE BEGIN Header_StartRadioReceiveTask */
+/**
+* @brief Function implementing the rReceiveTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartRadioReceiveTask */
+void StartRadioReceiveTask(void *argument)
+{
+  /* USER CODE BEGIN StartRadioReceiveTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartRadioReceiveTask */
 }
 
 /* Private application code --------------------------------------------------*/

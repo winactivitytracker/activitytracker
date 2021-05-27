@@ -24,6 +24,7 @@
 #include "fatfs.h"
 #include "i2c.h"
 #include "spi.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -103,21 +104,23 @@ int main(void)
   MX_USART1_UART_Init();
   MX_ADC1_Init();
   MX_FATFS_Init();
+  MX_TIM10_Init();
+  MX_TIM11_Init();
 
   /* Initialize interrupts */
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
+
   GPS_Init();
   SSD1306_Init();
   SSD1306_Clear();
   SSD1306_UpdateScreen();
-
   initSdCard();
 
-  __HAL_UART_ENABLE_IT(&huart1, UART_FLAG_RXNE);
+  // Enable the ADC interrupt for measuring battery
   __HAL_ADC_ENABLE_IT(&hadc1, ADC_FLAG_EOC);
-
   HAL_ADC_Start_IT(&hadc1);
+
   /* USER CODE END 2 */
 
   /* Init scheduler */
