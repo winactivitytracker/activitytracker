@@ -40,6 +40,7 @@
 #endif
 
 GPS_t GPS;
+Activity_T CurrentActivity;
 
 #if (GPS_DEBUG == 1)
 void GPS_print(char *data){

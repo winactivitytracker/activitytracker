@@ -52,10 +52,18 @@ typedef struct{
 	uint8_t		rxTmp;
 	uint32_t	LastTime;
 
-	enum 		Activity{noMovement = 0, walking = 1, running = 2, unknown = 3};
-	enum 		Activity currentActivity;
-
 } GPS_t;
+
+typedef struct{
+	uint8_t		length; 	//active minutes
+	uint8_t		lastActiveMinute;
+	uint8_t 	activityPM[254];
+
+	enum 		Activity{noMovement = 1, walking = 2, running = 3, unknown = 0};
+	enum 		Activity currentActivity;
+	enum 		Activity totalActivity;
+
+}Activity_T;
 
 #if (GPS_DEBUG == 1)
 void GPS_print(char *data);

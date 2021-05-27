@@ -64,6 +64,7 @@
 
 extern uint16_t ADCValue;
 extern GPS_t GPS;
+extern Activity_T CurrentActivity;
 float batteryPer = 0, batteryVol = 0;
 
 /* USER CODE END Variables */
@@ -208,16 +209,25 @@ void StartDrawing(void *argument)
 	SSD1306_Puts ("km/u", &Font_7x10, 1);
 
 	SSD1306_GotoXY (0,10);
-	SSD1306_Puts(getActivity(), &Font_7x10, 1);
+	//SSD1306_Puts(getActivity(), &Font_7x10, 1);
+	SSD1306_Puts(activityToString(CurrentActivity.lastActiveMinute), &Font_7x10, 1);
 
 	currentTime = getTime();
 	SSD1306_GotoXY (0, 45);
 	SSD1306_Puts(currentTime, &Font_7x10, 1);
+
 	free(currentTime);
+
+	SSD1306_GotoXY (90,45);
+	SSD1306_Puts ("ADM:", &Font_7x10, 1);
+
+	SSD1306_GotoXY (115, 45);
+	sprintf(numbers, "%d", CurrentActivity.length);
+	SSD1306_Puts(numbers, &Font_7x10, 1);
 
 	SSD1306_UpdateScreen();
 
-    osDelay(100);
+    osDelay(1000);
   }
   /* USER CODE END StartDrawing */
 }
@@ -233,7 +243,7 @@ void StartActivityTask(void *argument)
 {
   /* USER CODE BEGIN StartActivityTask */
 	static float time;
-	static uint8_t activityPM[20];
+	//static uint8_t activityPM[20];
 	static uint8_t counter = 0, counterPM = 0, counterPauze = 0;
 	static uint8_t trackActivity[4];
 	char* SDString = "";
@@ -248,7 +258,7 @@ void StartActivityTask(void *argument)
 
 	  		if(counter < 60)
 	  		{
-	  			switch (GPS.currentActivity) {
+	  			switch (CurrentActivity.currentActivity) {
 	  				case noMovement:
 	  					trackActivity[noMovement]++;
 	  					break;
@@ -267,7 +277,7 @@ void StartActivityTask(void *argument)
 	  		}
 	  		else
 	  		{
-	  			uint8_t current = 0, index = 0;
+	  			uint8_t current = 0; //index = 0;
 
 	  			for(int i = 0; i < 4; i++)
 	  			{
@@ -275,42 +285,43 @@ void StartActivityTask(void *argument)
 	  				{
 	  					current = trackActivity[i];
 	  					trackActivity[i] = 0;
-	  					index = i;
+	  					CurrentActivity.lastActiveMinute = i;
 	  				}
 	  			}
 
-	  			if(counterPM < 20)
+	  			if(counterPM < sizeof(CurrentActivity.activityPM))
 	  			{
-	  				if(counterPM == 0 && (index == walking || index == running))
+	  				if(counterPM == 0 && (CurrentActivity.lastActiveMinute == walking || CurrentActivity.lastActiveMinute == running))
 	  				{
-	  					activityPM[counterPM] = index;
-	  					//possibility to write the activity of the last active minute to sd!!
-	  					//not implemented
+	  					CurrentActivity.activityPM[counterPM] = CurrentActivity.lastActiveMinute;
+	  					CurrentActivity.length++;
 	  					counterPM++;
 	  				}
-	  				else if(counterPM != 0 && (index == noMovement || index == unknown))
+	  				else if(counterPM != 0 && (CurrentActivity.lastActiveMinute == noMovement || CurrentActivity.lastActiveMinute == unknown))
 	  				{
 	  					if(counterPauze < 2)
 	  					{
+	  						CurrentActivity.activityPM[counterPM] = CurrentActivity.lastActiveMinute;
 	  						counterPauze++;
 	  						counterPM++;
 	  					}
 	  					else
 	  					{
-	  						counterPM = 20;
+	  						counterPM = sizeof(CurrentActivity.activityPM);
 	  						counterPauze = 0;
 	  					}
 	  				}
 	  				else if(counterPM > 0)
 	  				{
-	  					activityPM[counterPM] = index;
-						//possibility to write the activity of the last active minute to sd!!
-						//not implemented
+	  					CurrentActivity.activityPM[counterPM] = CurrentActivity.lastActiveMinute;
+
+	  					CurrentActivity.length++;
 						counterPM++;
 	  				}
 	  				if(counterPM != 0)
 	  				{
-	  					SDString = activityToString(index);
+	  					//write the activity of the last active minute to sd
+	  					SDString = activityToString(CurrentActivity.lastActiveMinute);
 						activityToSD("MinuteActivity.txt", SDString);
 	  				}
 	  			}
@@ -318,8 +329,26 @@ void StartActivityTask(void *argument)
 	  			{
 	  				//calculate the avarage for total activity
 	  				//and write total activity to sd
-	  				//not implemented
 
+	  				for (int i = 0; i < counterPM; ++i) {
+	  					trackActivity[CurrentActivity.activityPM[i]]++;
+					}
+
+	  				for(int i = 0; i < sizeof(trackActivity); i++)
+					{
+						if(current < trackActivity[i])
+						{
+							current = trackActivity[i];
+							trackActivity[i] = 0;
+							CurrentActivity.totalActivity = i;
+						}
+					}
+
+	  				writeFile("MinuteActivity.txt", "Einde activiteit: /n");
+	  				//lengte van de activiteit toevoegen
+	  				SDString = activityToString(CurrentActivity.totalActivity);
+	  				activityToSD("MinuteActivity.txt", SDString);
+	  				CurrentActivity.length = 0;
 	  				counterPM = 0;
 	  			}
 	  			counter = 0;
@@ -370,6 +399,11 @@ char* getTime()
 	float time = GPS.utc_time + 20000; //make it CET
 	sprintf(toArray, "%f", time );
 
+	if(GPS.utc_time == 0)
+	{
+		CurrentActivity.length = 0;
+	}
+
 	if(time < 100000)
 		sprintf(toArray, "%c:%c%c:%c%c", toArray[0], toArray[1], toArray[2], toArray[3], toArray[4]);
 	else
@@ -387,22 +421,22 @@ char * getActivity()
 	if(GPS.speed_km < 3.0)
 		{
 			activity = "Geen beweging";
-			GPS.currentActivity = walking;
+			CurrentActivity.currentActivity = noMovement;
 		}
 		else if(GPS.speed_km >= 2.0 && GPS.speed_km < 7.0)
 		{
 			activity = "Wandelen     ";
-			GPS.currentActivity = noMovement;
+			CurrentActivity.currentActivity = walking;
 		}
 		else if(GPS.speed_km >= 7.0 && GPS.speed_km < 15.0)
 		{
 			activity = "Hardlopen    ";
-			GPS.currentActivity = running;
+			CurrentActivity.currentActivity = running;
 		}
 		else
 		{
 			activity = "onbekend     ";
-			GPS.currentActivity =  unknown;
+			CurrentActivity.currentActivity =  unknown;
 		}
 
 	return activity;
@@ -448,7 +482,7 @@ bool activityToSD(char* fileName, char* string)
 {
 	char *sTime;
 	sTime = getTime();
-	//strcat(string, sTime);
+	writeFile(fileName, "\n");
 	if(writeFile(fileName, strcat(string, sTime)))
 	{
 		free(sTime);
