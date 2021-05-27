@@ -16,8 +16,10 @@ using namespace std;
 #include "tim.h"
 #include "main.h"
 
-#define TRANSMITTER_TIMER	&htim10
-//#define TRANSMITTER_TIMER	&htim15
+// F4
+//#define TRANSMITTER_TIMER	&htim10
+// F0
+#define TRANSMITTER_TIMER	&htim15
 
 #define NO_NEW_BITS			2
 

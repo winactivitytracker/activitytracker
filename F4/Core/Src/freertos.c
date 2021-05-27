@@ -372,8 +372,8 @@ void StartRadioSendTask(void *argument)
   for(;;)
   {
     // Send a test message
-	char * msg = "yo";
-	radioSend(msg);
+	//char * msg = "yo";
+	//radioSend(msg);
 
 	osDelay(2000);
   }
@@ -390,10 +390,19 @@ void StartRadioSendTask(void *argument)
 void StartRadioReceiveTask(void *argument)
 {
   /* USER CODE BEGIN StartRadioReceiveTask */
+
+	radioEnableReceiver();
+
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	// Receive messages
+	char * incoming = "";
+	if(radioReceive(&incoming))
+	{
+		// Handle the received message
+	}
+    //osDelay(1);
   }
   /* USER CODE END StartRadioReceiveTask */
 }

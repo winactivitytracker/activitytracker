@@ -16,8 +16,10 @@ using namespace std;
 #include "tim.h"
 #include "main.h"
 
-//#define RECEIVER_TIMER	&htim16
-#define RECEIVER_TIMER	&htim11
+// F4
+//#define RECEIVER_TIMER	&htim11
+// F0
+#define RECEIVER_TIMER	&htim16
 
 #define START_HIGH		0
 #define START_LOW		1
