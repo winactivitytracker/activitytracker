@@ -35,6 +35,10 @@ extern "C" {
 
 #include <string.h>
 
+// F0 Radio timers
+#define SEND_TIMER		&htim15
+#define RECEIVE_TIMER	&htim16
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

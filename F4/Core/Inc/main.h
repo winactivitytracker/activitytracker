@@ -33,6 +33,10 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+// F4 Radio timers
+#define SEND_TIMER		&htim10
+#define RECEIVE_TIMER	&htim11
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

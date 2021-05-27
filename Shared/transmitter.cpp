@@ -10,12 +10,12 @@
 
 void transmitter::enable()
 {
-	HAL_TIM_Base_Start_IT(TRANSMITTER_TIMER);
+	HAL_TIM_Base_Start_IT(SEND_TIMER);
 }
 
 void transmitter::disable()
 {
-	HAL_TIM_Base_Stop_IT(TRANSMITTER_TIMER);
+	HAL_TIM_Base_Stop_IT(SEND_TIMER);
 }
 
 // Pop the next message from the outbound queue

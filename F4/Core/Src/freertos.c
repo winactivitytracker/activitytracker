@@ -392,6 +392,7 @@ void StartRadioReceiveTask(void *argument)
   /* USER CODE BEGIN StartRadioReceiveTask */
 
 	radioEnableReceiver();
+	char * msge;
 
   /* Infinite loop */
   for(;;)
@@ -401,6 +402,7 @@ void StartRadioReceiveTask(void *argument)
 	if(radioReceive(&incoming))
 	{
 		// Handle the received message
+		msge = incoming;
 	}
     //osDelay(1);
   }

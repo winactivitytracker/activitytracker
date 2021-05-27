@@ -10,13 +10,13 @@
 // Turn on the timer to start listening for messages
 void receiver::enable()
 {
-	HAL_TIM_Base_Start_IT(RECEIVER_TIMER);
+	HAL_TIM_Base_Start_IT(RECEIVE_TIMER);
 }
 
 // Turn off the timer to stop listening for messages
 void receiver::disable()
 {
-	HAL_TIM_Base_Stop_IT(RECEIVER_TIMER);
+	HAL_TIM_Base_Stop_IT(RECEIVE_TIMER);
 }
 
 // Get the contents of the inbound buffer

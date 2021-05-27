@@ -16,25 +16,20 @@ using namespace std;
 #include "tim.h"
 #include "main.h"
 
-// F4
-//#define TRANSMITTER_TIMER	&htim10
-// F0
-#define TRANSMITTER_TIMER	&htim15
+#define NO_NEW_BITS		2
 
-#define NO_NEW_BITS			2
+#define START_HIGH		0
+#define START_LOW		1
+#define MSG_HIGH		2
+#define MSG_LOW			3
+#define STOP_LOW		4
+#define STOP_HIGH		5
+#define IDLE			6
 
-#define START_HIGH			0
-#define START_LOW			1
-#define MSG_HIGH			2
-#define MSG_LOW				3
-#define STOP_LOW			4
-#define STOP_HIGH			5
-#define IDLE				6
-
-#define LENGTH_START		3
-#define LENGTH_ZERO			1
-#define LENGTH_ONE			2
-#define LENGTH_STOP			4
+#define LENGTH_START	3
+#define LENGTH_ZERO		1
+#define LENGTH_ONE		2
+#define LENGTH_STOP		4
 
 class transmitter
 {
