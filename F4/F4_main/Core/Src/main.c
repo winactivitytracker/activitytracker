@@ -112,7 +112,6 @@ int main(void)
   SSD1306_Init();
   SSD1306_Clear();
   SSD1306_UpdateScreen();
-  HAL_Delay(1000);
   if(initSdCard())
   {
 	  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, SET);
@@ -128,9 +127,7 @@ int main(void)
 
   HAL_ADC_Start_IT(&hadc1);
 
-  writeFile("testFile.txt", "HELLO WORLD!");
   HAL_Delay(1000);
-  activityToSD("TESTTIME.txt", "Hello there!");
     /* USER CODE END 2 */
 
   /* Init scheduler */

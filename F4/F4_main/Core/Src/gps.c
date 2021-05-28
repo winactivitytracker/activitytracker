@@ -35,13 +35,15 @@
 #include <usart.h>
 #include <stdlib.h>
 #include "gps.h"
+#include "activity.h"
 
 #if (GPS_DEBUG == 1)
 #include <usbd_cdc_if.h>
 #endif
 
 GPS_t GPS;
-Activity_T CurrentActivity;
+extern Activity_T CurrentActivity;
+
 
 #if (GPS_DEBUG == 1)
 void GPS_print(char *data){
@@ -183,7 +185,7 @@ char* getTime()
 
 	if(GPS.utc_time == 0)
 	{
-		CurrentActivity.length = 0;
+		CurrentActivity.activeDailyMinutes = 0;
 	}
 
 	if(time < 100000)

@@ -1,8 +1,0 @@
-sdCard.c:15:6:initSdCard	8	static
-sdCard.c:28:6:writeFile	24	static
-sdCard.c:58:6:openFileRead	16	static
-sdCard.c:70:7:readFile	24	static
-sdCard.c:91:6:makeNewFile	16	static
-sdCard.c:103:6:activityToSD	24	static
-sdCard.c:122:6:totalActivityToSD	32	static
-sdCard.c:137:6:writeStartToSD	24	static
