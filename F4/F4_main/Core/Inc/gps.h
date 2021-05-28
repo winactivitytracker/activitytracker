@@ -77,3 +77,5 @@ void GPS_UART_CallBack();
 int GPS_validate(char *nmeastr);
 void GPS_parse(char *GPSstrParse);
 float GPS_nmea_to_dec(float deg_coord, char nsew);
+char* getTime();
+

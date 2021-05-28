@@ -86,7 +86,7 @@ const osThreadAttr_t DrawOnOledTask_attributes = {
 osThreadId_t ActivityTaskHandle;
 const osThreadAttr_t ActivityTask_attributes = {
   .name = "ActivityTask",
-  .stack_size = 256 * 4,
+  .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for readBattery */
@@ -100,11 +100,9 @@ const osThreadAttr_t readBattery_attributes = {
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 
-char* getTime();
 char* getActivity();
 float calculateBattery(uint8_t whatCalculation);
 char* activityToString(uint8_t activity);
-bool activityToSD(char* fileName, char* string);
 
 /* USER CODE END FunctionPrototypes */
 
@@ -211,6 +209,7 @@ void StartDrawing(void *argument)
 	SSD1306_GotoXY (0,10);
 	//SSD1306_Puts(getActivity(), &Font_7x10, 1);
 	SSD1306_Puts(activityToString(CurrentActivity.lastActiveMinute), &Font_7x10, 1);
+	SSD1306_Puts("          ",&Font_7x10, 1);
 
 	currentTime = getTime();
 	SSD1306_GotoXY (0, 45);
@@ -256,7 +255,7 @@ void StartActivityTask(void *argument)
 	  	{
 	  		time = GPS.utc_time;
 
-	  		if(counter < 60)
+	  		if(counter < 60)	//one minute
 	  		{
 	  			switch (CurrentActivity.currentActivity) {
 	  				case noMovement:
@@ -293,8 +292,14 @@ void StartActivityTask(void *argument)
 	  			{
 	  				if(counterPM == 0 && (CurrentActivity.lastActiveMinute == walking || CurrentActivity.lastActiveMinute == running))
 	  				{
+	  					writeStartToSD("MinActi.txt");
 	  					CurrentActivity.activityPM[counterPM] = CurrentActivity.lastActiveMinute;
 	  					CurrentActivity.length++;
+	  					SDString = activityToString(CurrentActivity.lastActiveMinute);
+						if(!activityToSD("MinActi.txt", SDString))
+						{
+							HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, SET);
+						}
 	  					counterPM++;
 	  				}
 	  				else if(counterPM != 0 && (CurrentActivity.lastActiveMinute == noMovement || CurrentActivity.lastActiveMinute == unknown))
@@ -312,18 +317,18 @@ void StartActivityTask(void *argument)
 	  					}
 	  				}
 	  				else if(counterPM > 0)
-	  				{
-	  					CurrentActivity.activityPM[counterPM] = CurrentActivity.lastActiveMinute;
+					{
+						CurrentActivity.activityPM[counterPM] = CurrentActivity.lastActiveMinute;
 
-	  					CurrentActivity.length++;
+						CurrentActivity.length++;
 						counterPM++;
-	  				}
-	  				if(counterPM != 0)
-	  				{
-	  					//write the activity of the last active minute to sd
-	  					SDString = activityToString(CurrentActivity.lastActiveMinute);
-						activityToSD("MinuteActivity.txt", SDString);
-	  				}
+					}
+					if(counterPM != 0)
+					{
+						//write the activity of the last active minute to sd
+						SDString = activityToString(CurrentActivity.lastActiveMinute);
+						activityToSD("MinActi.txt", SDString);
+					}
 	  			}
 	  			else
 	  			{
@@ -334,6 +339,7 @@ void StartActivityTask(void *argument)
 	  					trackActivity[CurrentActivity.activityPM[i]]++;
 					}
 
+	  				current = 0;
 	  				for(int i = 0; i < sizeof(trackActivity); i++)
 					{
 						if(current < trackActivity[i])
@@ -343,14 +349,16 @@ void StartActivityTask(void *argument)
 							CurrentActivity.totalActivity = i;
 						}
 					}
+	  				char numbers[10];
+					sprintf(numbers, "%d", CurrentActivity.length);
+					SDString = activityToString(CurrentActivity.totalActivity);
+	  				totalActivityToSD("MinActi.txt", numbers, SDString);
 
-	  				writeFile("MinuteActivity.txt", "Einde activiteit: /n");
 	  				//lengte van de activiteit toevoegen
-	  				SDString = activityToString(CurrentActivity.totalActivity);
-	  				activityToSD("MinuteActivity.txt", SDString);
 	  				CurrentActivity.previousLength = CurrentActivity.length;
 	  				CurrentActivity.length = 0;
 	  				counterPM = 0;
+	  				counterPauze = 0;
 	  			}
 	  			counter = 0;
 	  		}
@@ -391,29 +399,7 @@ void StartReadBattery(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-char* getTime()
-{
 
-	char *toArray;
-
-	toArray = malloc (sizeof (char) * 10);
-	float time = GPS.utc_time + 20000; //make it CET
-	sprintf(toArray, "%f", time );
-
-	if(GPS.utc_time == 0)
-	{
-		CurrentActivity.length = 0;
-	}
-
-	if(time < 100000)
-		sprintf(toArray, "%c:%c%c:%c%c", toArray[0], toArray[1], toArray[2], toArray[3], toArray[4]);
-	else
-		sprintf(toArray, "%c%c:%c%c:%c%c", toArray[0], toArray[1], toArray[2], toArray[3], toArray[4], toArray[5]);
-
-	return toArray;
-
-
-}
 
 char * getActivity()
 {
@@ -422,12 +408,12 @@ char * getActivity()
 	if(GPS.speed_km < 3.0)
 		{
 			activity = "Geen beweging";
-			CurrentActivity.currentActivity = noMovement;
+			CurrentActivity.currentActivity = noMovement;	//nomovement
 		}
 		else if(GPS.speed_km >= 2.0 && GPS.speed_km < 7.0)
 		{
 			activity = "Wandelen     ";
-			CurrentActivity.currentActivity = walking;
+			CurrentActivity.currentActivity = walking;	//walking
 		}
 		else if(GPS.speed_km >= 7.0 && GPS.speed_km < 15.0)
 		{
@@ -460,7 +446,7 @@ float calculateBattery(uint8_t whatCalculation)
 
 char* activityToString(uint8_t activity)
 {
-	char* string;
+	char* string = "";
 
 	switch (activity) {
 		case noMovement:
@@ -479,22 +465,7 @@ char* activityToString(uint8_t activity)
 	return string;
 }
 
-bool activityToSD(char* fileName, char* string)
-{
-	char *sTime;
-	sTime = getTime();
-	writeFile(fileName, "\n");
-	if(writeFile(fileName, strcat(string, sTime)))
-	{
-		free(sTime);
-		return true;
-	} else
-	{
-		free(sTime);
-		return false;
-	}
 
-}
 /* USER CODE END Application */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

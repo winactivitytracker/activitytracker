@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <usart.h>
+#include <stdlib.h>
 #include "gps.h"
 
 #if (GPS_DEBUG == 1)
@@ -170,3 +171,28 @@ float GPS_nmea_to_dec(float deg_coord, char nsew) {
     }
     return decimal;
 }
+
+char* getTime()
+{
+
+	char *toArray;
+
+	toArray = malloc (sizeof (char) * 10);
+	float time = GPS.utc_time + 20000; //make it CET
+	sprintf(toArray, "%f", time );
+
+	if(GPS.utc_time == 0)
+	{
+		CurrentActivity.length = 0;
+	}
+
+	if(time < 100000)
+		sprintf(toArray, "%c:%c%c:%c%c", toArray[0], toArray[1], toArray[2], toArray[3], toArray[4]);
+	else
+		sprintf(toArray, "%c%c:%c%c:%c%c", toArray[0], toArray[1], toArray[2], toArray[3], toArray[4], toArray[5]);
+
+	return toArray;
+
+
+}
+
