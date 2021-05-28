@@ -192,7 +192,7 @@ void TIM1_UP_TIM10_IRQHandler(void)
   HAL_TIM_IRQHandler(&htim10);
   /* USER CODE BEGIN TIM1_UP_TIM10_IRQn 1 */
 
-  radioSendTick();
+  transmitterTick();
 
   /* USER CODE END TIM1_UP_TIM10_IRQn 1 */
 }
@@ -208,7 +208,7 @@ void TIM1_TRG_COM_TIM11_IRQHandler(void)
   HAL_TIM_IRQHandler(&htim11);
   /* USER CODE BEGIN TIM1_TRG_COM_TIM11_IRQn 1 */
 
-  radioReceiveTick();
+  receiverTick();
 
   /* USER CODE END TIM1_TRG_COM_TIM11_IRQn 1 */
 }

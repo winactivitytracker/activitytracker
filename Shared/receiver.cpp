@@ -77,6 +77,45 @@ string receiver::popMessage()
 	return retVal;
 }
 
+// Check incoming messages until an ACK is read
+// If no ACK is read, time out and return false
+bool receiver::waitForAck(uint16_t milliseconds)
+{
+	bool retVal = false;
+
+	string ack;
+	ack[0] = ((char) 6);
+
+	enable();
+
+	while(milliseconds >= 0)
+	{
+		if(!messages.empty())
+		{
+			// Message received, check for ack
+			if(messages.front() == ack)
+			{
+				retVal = true;
+				break;
+			}
+			else
+			{
+				// Message is not an ack, discard it
+				messages.pop_front();
+			}
+		}
+		else
+		{
+			// Can't use osDelay here because the F0 doesn't have FreeRTOS
+			HAL_Delay(1);
+			milliseconds--;
+		}
+	}
+
+	disable();
+	return retVal;
+}
+
 void receiver::tick()
 {
 	bool on = HAL_GPIO_ReadPin(RADIO_RECEIVE_GPIO_Port,RADIO_RECEIVE_Pin);

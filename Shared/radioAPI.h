@@ -1,9 +1,5 @@
-/*
- * radioAPI.h
- *
- *  Created on: Apr 30, 2021
- *      Author: arteeh
- */
+// C API for radio and message functions.
+// This makes it possible for functions in C (like main and the interrupt handler) to call C++ code.
 
 #ifndef INC_RADIOAPI_H_
 #define INC_RADIOAPI_H_
@@ -15,13 +11,18 @@ extern "C"
 
 #include <stdbool.h>
 
-void radioSend(char * message);
-bool radioReceive(char* *str);
-void radioEnableReceiver();
-void radioDisableReceiver();
-void radioSendTick();
-void radioReceiveTick();
+// Transmitter class public functions
+void transmitterSend(char * message);
+void transmitterSendAck();
+void transmitterTick();
 
+// Receiver class public functions
+void receiverEnable();
+void receiverDisable();
+bool receiverCheckMessage();
+void receiverPopMessage(char* *str);
+bool receiverWaitForAck(uint16_t milliseconds);
+void receiverTick();
 
 #ifdef __cplusplus
 }

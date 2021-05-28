@@ -12,51 +12,60 @@ using namespace std;
 transmitter t;
 receiver r;
 
-void radioSend(char * message)
+// Transmitter class public functions
+
+void transmitterSend(char * message)
 {
 	// Convert C char pointer to C++ string
 	string messageString(message);
 
-	t.send(messageString);
+	return t.send(messageString);
+}
+
+void transmitterSendAck()
+{
+	return t.sendAck();
+}
+
+void transmitterTick()
+{
+	return t.tick();
+}
+
+// Receiver class public functions
+
+void receiverEnable()
+{
+	return r.enable();
+}
+
+void receiverDisable()
+{
+	return r.disable();
+}
+
+bool receiverCheckMessage()
+{
+	return r.checkMessage();
 }
 
 // Get a message from the message queue.
 // str should be a char*, and it must be initialized
-bool radioReceive(char* *str)
+void receiverPopMessage(char* *str)
 {
-	if(r.checkMessage())
-	{
-		// Get the filled up message object
-		string message = r.popMessage();
+	// Get the filled up message object
+	string message = r.popMessage();
 
-		// Here be dragons
-		*str = const_cast<char*>(message.c_str());
-
-		return true;
-	}
-	else
-	{
-		// There is no message in the queue
-		return false;
-	}
+	// Here be dragons
+	*str = const_cast<char*>(message.c_str());
 }
 
-void radioEnableReceiver()
+bool receiverWaitForAck(uint16_t milliseconds)
 {
-	r.enable();
+	return r.waitForAck(milliseconds);
 }
 
-void radioDisableReceiver()
+void receiverTick()
 {
-	r.disable();
-}
-
-void radioSendTick()
-{
-	t.tick();
-}
-
-void radioReceiveTick()
-{
-	r.tick();
+	return r.tick();
 }

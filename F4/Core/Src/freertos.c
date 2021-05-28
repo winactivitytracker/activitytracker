@@ -67,44 +67,44 @@ float batteryPer = 0, batteryVol = 0;
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
-  .name = "defaultTask",
-  .stack_size = 64 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
+		.name = "defaultTask",
+		.stack_size = 64 * 4,
+		.priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for DrawOnOledTask */
 osThreadId_t DrawOnOledTaskHandle;
 const osThreadAttr_t DrawOnOledTask_attributes = {
-  .name = "DrawOnOledTask",
-  .stack_size = 512 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+		.name = "DrawOnOledTask",
+		.stack_size = 512 * 4,
+		.priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for ActivityTask */
 osThreadId_t ActivityTaskHandle;
 const osThreadAttr_t ActivityTask_attributes = {
-  .name = "ActivityTask",
-  .stack_size = 256 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+		.name = "ActivityTask",
+		.stack_size = 256 * 4,
+		.priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for readBattery */
 osThreadId_t readBatteryHandle;
 const osThreadAttr_t readBattery_attributes = {
-  .name = "readBattery",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+		.name = "readBattery",
+		.stack_size = 128 * 4,
+		.priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for rSendTask */
 osThreadId_t rSendTaskHandle;
 const osThreadAttr_t rSendTask_attributes = {
-  .name = "rSendTask",
-  .stack_size = 64 * 4,
-  .priority = (osPriority_t) osPriorityBelowNormal,
+		.name = "rSendTask",
+		.stack_size = 64 * 4,
+		.priority = (osPriority_t) osPriorityBelowNormal,
 };
 /* Definitions for rReceiveTask */
 osThreadId_t rReceiveTaskHandle;
 const osThreadAttr_t rReceiveTask_attributes = {
-  .name = "rReceiveTask",
-  .stack_size = 64 * 4,
-  .priority = (osPriority_t) osPriorityBelowNormal1,
+		.name = "rReceiveTask",
+		.stack_size = 64 * 4,
+		.priority = (osPriority_t) osPriorityBelowNormal1,
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -125,57 +125,57 @@ void StartRadioReceiveTask(void *argument);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /**
-  * @brief  FreeRTOS initialization
-  * @param  None
-  * @retval None
-  */
+ * @brief  FreeRTOS initialization
+ * @param  None
+ * @retval None
+ */
 void MX_FREERTOS_Init(void) {
-  /* USER CODE BEGIN Init */
+	/* USER CODE BEGIN Init */
 
-  /* USER CODE END Init */
+	/* USER CODE END Init */
 
-  /* USER CODE BEGIN RTOS_MUTEX */
+	/* USER CODE BEGIN RTOS_MUTEX */
 	/* add mutexes, ... */
-  /* USER CODE END RTOS_MUTEX */
+	/* USER CODE END RTOS_MUTEX */
 
-  /* USER CODE BEGIN RTOS_SEMAPHORES */
+	/* USER CODE BEGIN RTOS_SEMAPHORES */
 	/* add semaphores, ... */
-  /* USER CODE END RTOS_SEMAPHORES */
+	/* USER CODE END RTOS_SEMAPHORES */
 
-  /* USER CODE BEGIN RTOS_TIMERS */
+	/* USER CODE BEGIN RTOS_TIMERS */
 	/* start timers, add new ones, ... */
-  /* USER CODE END RTOS_TIMERS */
+	/* USER CODE END RTOS_TIMERS */
 
-  /* USER CODE BEGIN RTOS_QUEUES */
+	/* USER CODE BEGIN RTOS_QUEUES */
 	/* add queues, ... */
-  /* USER CODE END RTOS_QUEUES */
+	/* USER CODE END RTOS_QUEUES */
 
-  /* Create the thread(s) */
-  /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+	/* Create the thread(s) */
+	/* creation of defaultTask */
+	defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
-  /* creation of DrawOnOledTask */
-  DrawOnOledTaskHandle = osThreadNew(StartDrawing, NULL, &DrawOnOledTask_attributes);
+	/* creation of DrawOnOledTask */
+	DrawOnOledTaskHandle = osThreadNew(StartDrawing, NULL, &DrawOnOledTask_attributes);
 
-  /* creation of ActivityTask */
-  ActivityTaskHandle = osThreadNew(StartActivityTask, NULL, &ActivityTask_attributes);
+	/* creation of ActivityTask */
+	ActivityTaskHandle = osThreadNew(StartActivityTask, NULL, &ActivityTask_attributes);
 
-  /* creation of readBattery */
-  readBatteryHandle = osThreadNew(StartReadBattery, NULL, &readBattery_attributes);
+	/* creation of readBattery */
+	readBatteryHandle = osThreadNew(StartReadBattery, NULL, &readBattery_attributes);
 
-  /* creation of rSendTask */
-  rSendTaskHandle = osThreadNew(StartRadioSendTask, NULL, &rSendTask_attributes);
+	/* creation of rSendTask */
+	rSendTaskHandle = osThreadNew(StartRadioSendTask, NULL, &rSendTask_attributes);
 
-  /* creation of rReceiveTask */
-  rReceiveTaskHandle = osThreadNew(StartRadioReceiveTask, NULL, &rReceiveTask_attributes);
+	/* creation of rReceiveTask */
+	rReceiveTaskHandle = osThreadNew(StartRadioReceiveTask, NULL, &rReceiveTask_attributes);
 
-  /* USER CODE BEGIN RTOS_THREADS */
+	/* USER CODE BEGIN RTOS_THREADS */
 	/* add threads, ... */
-  /* USER CODE END RTOS_THREADS */
+	/* USER CODE END RTOS_THREADS */
 
-  /* USER CODE BEGIN RTOS_EVENTS */
+	/* USER CODE BEGIN RTOS_EVENTS */
 	/* add events, ... */
-  /* USER CODE END RTOS_EVENTS */
+	/* USER CODE END RTOS_EVENTS */
 
 }
 
@@ -188,13 +188,13 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
-  /* USER CODE BEGIN StartDefaultTask */
+	/* USER CODE BEGIN StartDefaultTask */
 	/* Infinite loop */
 	for(;;)
 	{
 		osDelay(1);
 	}
-  /* USER CODE END StartDefaultTask */
+	/* USER CODE END StartDefaultTask */
 }
 
 /* USER CODE BEGIN Header_StartDrawing */
@@ -206,7 +206,7 @@ void StartDefaultTask(void *argument)
 /* USER CODE END Header_StartDrawing */
 void StartDrawing(void *argument)
 {
-  /* USER CODE BEGIN StartDrawing */
+	/* USER CODE BEGIN StartDrawing */
 	/* Infinite loop */
 	for(;;)
 	{
@@ -231,7 +231,7 @@ void StartDrawing(void *argument)
 
 		osDelay(100);
 	}
-  /* USER CODE END StartDrawing */
+	/* USER CODE END StartDrawing */
 }
 
 /* USER CODE BEGIN Header_StartActivityTask */
@@ -243,7 +243,7 @@ void StartDrawing(void *argument)
 /* USER CODE END Header_StartActivityTask */
 void StartActivityTask(void *argument)
 {
-  /* USER CODE BEGIN StartActivityTask */
+	/* USER CODE BEGIN StartActivityTask */
 	static float time;
 	static uint8_t activityPM[20];
 	static uint8_t counter = 0, counterPM = 0, counterPauze = 0;
@@ -328,7 +328,7 @@ void StartActivityTask(void *argument)
 
 		osDelay(100);
 	}
-  /* USER CODE END StartActivityTask */
+	/* USER CODE END StartActivityTask */
 }
 
 /* USER CODE BEGIN Header_StartReadBattery */
@@ -340,7 +340,7 @@ void StartActivityTask(void *argument)
 /* USER CODE END Header_StartReadBattery */
 void StartReadBattery(void *argument)
 {
-  /* USER CODE BEGIN StartReadBattery */
+	/* USER CODE BEGIN StartReadBattery */
 	/* Infinite loop */
 	for(;;)
 	{
@@ -355,7 +355,7 @@ void StartReadBattery(void *argument)
 		}
 		osDelay(5000);
 	}
-  /* USER CODE END StartReadBattery */
+	/* USER CODE END StartReadBattery */
 }
 
 /* USER CODE BEGIN Header_StartRadioSendTask */
@@ -367,17 +367,21 @@ void StartReadBattery(void *argument)
 /* USER CODE END Header_StartRadioSendTask */
 void StartRadioSendTask(void *argument)
 {
-  /* USER CODE BEGIN StartRadioSendTask */
-	/* Infinite loop */
+	/* USER CODE BEGIN StartRadioSendTask */
 	for(;;)
 	{
 		// Send a test message
-		//char * msg = "yo";
-		//radioSend(msg);
+		char * msg = "yo";
+		transmitterSend(msg);
+		if(!receiverWaitForAck(100))
+		{
+			// If no ack, resend
+			transmitterSend(msg);
+		}
 
 		osDelay(2000);
 	}
-  /* USER CODE END StartRadioSendTask */
+	/* USER CODE END StartRadioSendTask */
 }
 
 /* USER CODE BEGIN Header_StartRadioReceiveTask */
@@ -389,23 +393,21 @@ void StartRadioSendTask(void *argument)
 /* USER CODE END Header_StartRadioReceiveTask */
 void StartRadioReceiveTask(void *argument)
 {
-  /* USER CODE BEGIN StartRadioReceiveTask */
+	/* USER CODE BEGIN StartRadioReceiveTask */
 
-	radioEnableReceiver();
-	char * msge;
+	receiverEnable();
 
 	/* Infinite loop */
 	for(;;)
 	{
-		// Receive messages
-		char * incoming = "";
-		if(radioReceive(&incoming))
+		if(receiverCheckMessage())
 		{
-			// Handle the received message
-			msge = incoming;
+			char * incoming = "";
+			receiverPopMessage(&incoming);
+			receiverDisable();
 		}
 	}
-  /* USER CODE END StartRadioReceiveTask */
+	/* USER CODE END StartRadioReceiveTask */
 }
 
 /* Private application code --------------------------------------------------*/

@@ -79,8 +79,17 @@ void transmitter::pin(uint8_t high)
 // The interrupt handler will notice and start sending this message bit by bit.
 void transmitter::send(string message)
 {
-	enable();
 	messages.push_back(message);
+	enable();
+}
+
+void transmitter::sendAck()
+{
+	// The 6th character in the ASCII table is
+	// the official symbol for acknowledgements
+	string ack;
+	ack[0] = ((char) 6);
+	send(ack);
 }
 
 // Function to be called by the interrupt handler.

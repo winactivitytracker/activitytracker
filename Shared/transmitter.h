@@ -47,6 +47,7 @@ private:
 public:
 
 	void send(string message);
+	void sendAck();
 	void tick();
 
 };
