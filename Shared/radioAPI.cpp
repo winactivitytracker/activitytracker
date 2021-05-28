@@ -22,6 +22,14 @@ void transmitterSend(char * message)
 	return t.send(messageString);
 }
 
+void transmitterSendBlocking(char * message)
+{
+	// Convert C char pointer to C++ string
+	string messageString(message);
+
+	return t.sendBlocking(messageString);
+}
+
 void transmitterSendAck()
 {
 	return t.sendAck();

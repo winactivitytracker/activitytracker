@@ -13,6 +13,7 @@ extern "C"
 
 // Transmitter class public functions
 void transmitterSend(char * message);
+void transmitterSendBlocking(char * message);
 void transmitterSendAck();
 void transmitterTick();
 

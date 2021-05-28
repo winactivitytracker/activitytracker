@@ -371,15 +371,15 @@ void StartRadioSendTask(void *argument)
 	for(;;)
 	{
 		// Send a test message
-		char * msg = "yo";
-		transmitterSend(msg);
-		if(!receiverWaitForAck(100))
-		{
-			// If no ack, resend
-			transmitterSend(msg);
-		}
+		//char * msg = "yo";
 
-		osDelay(2000);
+		//do
+		//{
+		//	transmitterSend(msg);
+		//}
+		//while(!receiverWaitForAck(100));
+
+		osDelay(5000);
 	}
 	/* USER CODE END StartRadioSendTask */
 }
@@ -404,7 +404,7 @@ void StartRadioReceiveTask(void *argument)
 		{
 			char * incoming = "";
 			receiverPopMessage(&incoming);
-			receiverDisable();
+			transmitterSendAck();
 		}
 	}
 	/* USER CODE END StartRadioReceiveTask */

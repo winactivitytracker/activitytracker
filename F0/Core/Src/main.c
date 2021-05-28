@@ -103,56 +103,45 @@ int main(void)
 	MPUSetAccel(MPU_A16G);
 	MPUSetGyro(MPU_G2000G);
 
-	bool sending = false;
-	char * msge;
-
-	if(!sending) radioEnableReceiver();
-
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		if(sending)
+		MPUReadAll(
+				&MPUData[0],
+				&MPUData[1],
+				&MPUData[2],
+				&MPUData[3],
+				&MPUData[4],
+				&MPUData[5]
+		);
+
+		// "accel:(|||||)"	: 13 chars
+		//			6 * 5	= 30 chars
+		// 					  --
+		//					  43
+
+		char MPUDataString[45] = "";
+
+		sprintf(MPUDataString,
+				"accel:(%d|%d|%d|%d|%d|%d)",
+				MPUData[0],
+				MPUData[1],
+				MPUData[2],
+				MPUData[3],
+				MPUData[4],
+				MPUData[5]
+		);
+
+		do
 		{
-			MPUReadAll(
-					&MPUData[0],
-					&MPUData[1],
-					&MPUData[2],
-					&MPUData[3],
-					&MPUData[4],
-					&MPUData[5]
-			);
-
-			// "accel:(|||||)"	: 13 chars
-			//			6 * 5	= 30 chars
-			// 					  --
-			//					  43
-
-			char MPUDataString[45] = "";
-
-			sprintf(MPUDataString,
-					"accel:(%d|%d|%d|%d|%d|%d)",
-					MPUData[0],
-					MPUData[1],
-					MPUData[2],
-					MPUData[3],
-					MPUData[4],
-					MPUData[5]
-			);
-
-			radioSend(MPUDataString);
-			HAL_Delay(2000);
+			transmitterSendBlocking(MPUDataString);
 		}
-		else
-		{
-			char* incoming = "";
-			if(radioReceive(&incoming))
-			{
-				msge = incoming;
-			}
-		}
+		while(!receiverWaitForAck(500));
+
+		HAL_Delay(5000);
 
 		/* USER CODE END WHILE */
 

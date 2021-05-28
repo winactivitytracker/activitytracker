@@ -1,10 +1,10 @@
 
 /*
-* gps.h
-*
-*  Created on: Nov 15, 2019
-*      Author: Bulanov Konstantin
-*/
+ * gps.h
+ *
+ *  Created on: Nov 15, 2019
+ *      Author: Bulanov Konstantin
+ */
 
 #define GPS_DEBUG	0
 #define	GPS_USART	&huart1

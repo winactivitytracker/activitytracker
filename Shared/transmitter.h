@@ -35,6 +35,7 @@ class transmitter
 {
 private:
 
+	bool messageSent = false;
 	deque<string> messages;
 	deque<bitset<8>> buffer;
 	uint8_t bitPointer;
@@ -47,7 +48,9 @@ private:
 public:
 
 	void send(string message);
+	void sendBlocking(string message);
 	void sendAck();
+
 	void tick();
 
 };

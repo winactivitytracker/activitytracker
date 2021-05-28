@@ -78,17 +78,17 @@ string receiver::popMessage()
 }
 
 // Check incoming messages until an ACK is read
-// If no ACK is read, time out and return false
+// If no ACK is read before timeout, return false
 bool receiver::waitForAck(uint16_t milliseconds)
 {
 	bool retVal = false;
 
-	string ack;
-	ack[0] = ((char) 6);
+	string ack = " ";
+	ack[0] = (char) 6;
 
 	enable();
 
-	while(milliseconds >= 0)
+	while(milliseconds >= 1)
 	{
 		if(!messages.empty())
 		{
@@ -128,7 +128,6 @@ void receiver::tick()
 		counter++;
 		// For seeing how many counts a bit is
 		//HAL_GPIO_TogglePin(LED_RED_GPIO_Port,LED_RED_Pin);
-		HAL_GPIO_TogglePin(RADIO_SEND_GPIO_Port,RADIO_SEND_Pin);
 	}
 	else if(on && !isCounting)
 	{

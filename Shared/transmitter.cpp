@@ -83,12 +83,22 @@ void transmitter::send(string message)
 	enable();
 }
 
+// Send a message, but wait until sending is complete
+void transmitter::sendBlocking(string message)
+{
+	send(message);
+
+	// Wait until the message has been sent
+	while(!messageSent);
+	messageSent = false;
+}
+
 void transmitter::sendAck()
 {
 	// The 6th character in the ASCII table is
 	// the official symbol for acknowledgements
-	string ack;
-	ack[0] = ((char) 6);
+	string ack = " ";
+	ack[0] = (char) 6;
 	send(ack);
 }
 
@@ -155,6 +165,9 @@ void transmitter::tick()
 				break;
 			case IDLE:
 				pin(0);
+				// Notify that the message has been sent,
+				// for sendBlocking()
+				messageSent = true;
 				if(messages.empty())
 				{
 					disable();
