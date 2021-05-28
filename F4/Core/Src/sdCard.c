@@ -16,10 +16,10 @@ bool initSdCard()
 	fres = f_mount(&FatFs, "", 1); //1=mount now
 	if (fres != FR_OK)
 	{
-	   	return false;
+		return false;
 	} else
 	{
-	   	return true;
+		return true;
 	}
 }
 
@@ -39,18 +39,18 @@ bool writeFile(char* fileName, char* string)
 	if(fres == FR_OK) {
 		//Copy in a string
 		uint16_t stringLength = strlen(string);
-	    strncpy((char*)internalString, string, stringLength);
-	    UINT bytesWrote;
-	    fres = f_write(&fil, internalString, stringLength, &bytesWrote);
-	    if(fres == FR_OK) {
-	    	f_close(&fil);
-	    	return true;
-	    } else {
-	    	f_close(&fil);
-	    	return false;
-	    }
+		strncpy((char*)internalString, string, stringLength);
+		UINT bytesWrote;
+		fres = f_write(&fil, internalString, stringLength, &bytesWrote);
+		if(fres == FR_OK) {
+			f_close(&fil);
+			return true;
+		} else {
+			f_close(&fil);
+			return false;
+		}
 	} else {
-	   	return false;
+		return false;
 	}
 }
 
@@ -58,11 +58,11 @@ bool openFileRead(char* fileName)
 {
 	fres = f_open(&fil, fileName, FA_READ);
 	if (fres != FR_OK) {
-	    return false;
-    } else
-    {
-    	return true;
-    }
+		return false;
+	} else
+	{
+		return true;
+	}
 }
 
 
@@ -76,10 +76,10 @@ char* readFile(char* fileName, uint16_t amountOfBytesToRead)
 		if(rres != 0) {
 			f_close(&fil);
 			return readBuff;
-	    } else {
-	    	f_close(&fil);
-	      	return "reading error";
-	    }
+		} else {
+			f_close(&fil);
+			return "reading error";
+		}
 	} else
 	{
 		f_close(&fil);
@@ -95,6 +95,6 @@ bool makeNewFile(char* fileName)
 		f_close(&fil);
 		return true;
 	} else {
-	   	return false;
+		return false;
 	}
 }

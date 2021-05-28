@@ -88,7 +88,8 @@ void receiver::tick()
 	{
 		counter++;
 		// For seeing how many counts a bit is
-		//HAL_GPIO_TogglePin(GREEN_GPIO_Port,GREEN_Pin);
+		//HAL_GPIO_TogglePin(LED_RED_GPIO_Port,LED_RED_Pin);
+		HAL_GPIO_TogglePin(RADIO_SEND_GPIO_Port,RADIO_SEND_Pin);
 	}
 	else if(on && !isCounting)
 	{

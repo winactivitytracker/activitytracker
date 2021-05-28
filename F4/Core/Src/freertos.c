@@ -1,21 +1,21 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * File Name          : freertos.c
-  * Description        : Code for freertos applications
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * File Name          : freertos.c
+ * Description        : Code for freertos applications
+ ******************************************************************************
+ * @attention
+ *
+ * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+ * All rights reserved.</center></h2>
+ *
+ * This software component is licensed by ST under Ultimate Liberty license
+ * SLA0044, the "License"; You may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at:
+ *                             www.st.com/SLA0044
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
@@ -135,19 +135,19 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
+	/* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
+	/* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
+	/* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
+	/* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -170,76 +170,76 @@ void MX_FREERTOS_Init(void) {
   rReceiveTaskHandle = osThreadNew(StartRadioReceiveTask, NULL, &rReceiveTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
+	/* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
-  /* add events, ... */
+	/* add events, ... */
   /* USER CODE END RTOS_EVENTS */
 
 }
 
 /* USER CODE BEGIN Header_StartDefaultTask */
 /**
-  * @brief  Function implementing the defaultTask thread.
-  * @param  argument: Not used
-  * @retval None
-  */
+ * @brief  Function implementing the defaultTask thread.
+ * @param  argument: Not used
+ * @retval None
+ */
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
+	/* Infinite loop */
+	for(;;)
+	{
+		osDelay(1);
+	}
   /* USER CODE END StartDefaultTask */
 }
 
 /* USER CODE BEGIN Header_StartDrawing */
 /**
-* @brief Function implementing the DrawOnOledTask thread.
-* @param argument: Not used
-* @retval None
-*/
+ * @brief Function implementing the DrawOnOledTask thread.
+ * @param argument: Not used
+ * @retval None
+ */
 /* USER CODE END Header_StartDrawing */
 void StartDrawing(void *argument)
 {
   /* USER CODE BEGIN StartDrawing */
-  /* Infinite loop */
-  for(;;)
-  {
-	char numbers[10];
+	/* Infinite loop */
+	for(;;)
+	{
+		char numbers[10];
 
-	SSD1306_GotoXY (0,0);
-	sprintf(numbers, "batt: %.0f", batteryPer);
-	SSD1306_Puts (numbers, &Font_7x10, 1);
+		SSD1306_GotoXY (0,0);
+		sprintf(numbers, "batt: %.0f", batteryPer);
+		SSD1306_Puts (numbers, &Font_7x10, 1);
 
-	SSD1306_GotoXY (0, 30);
-	sprintf(numbers, "%.2f", GPS.speed_km);
-	SSD1306_Puts(numbers, &Font_11x18, 1);
-	SSD1306_GotoXY (50,36);
-	SSD1306_Puts ("km/u", &Font_7x10, 1);
+		SSD1306_GotoXY (0, 30);
+		sprintf(numbers, "%.2f", GPS.speed_km);
+		SSD1306_Puts(numbers, &Font_11x18, 1);
+		SSD1306_GotoXY (50,36);
+		SSD1306_Puts ("km/u", &Font_7x10, 1);
 
-	getTime();
+		getTime();
 
-	SSD1306_GotoXY (0,10);
-	SSD1306_Puts(getActivity(), &Font_7x10, 1);
+		SSD1306_GotoXY (0,10);
+		SSD1306_Puts(getActivity(), &Font_7x10, 1);
 
-	SSD1306_UpdateScreen();
+		SSD1306_UpdateScreen();
 
-    osDelay(100);
-  }
+		osDelay(100);
+	}
   /* USER CODE END StartDrawing */
 }
 
 /* USER CODE BEGIN Header_StartActivityTask */
 /**
-* @brief Function implementing the ActivityTask thread.
-* @param argument: Not used
-* @retval None
-*/
+ * @brief Function implementing the ActivityTask thread.
+ * @param argument: Not used
+ * @retval None
+ */
 /* USER CODE END Header_StartActivityTask */
 void StartActivityTask(void *argument)
 {
@@ -248,144 +248,144 @@ void StartActivityTask(void *argument)
 	static uint8_t activityPM[20];
 	static uint8_t counter = 0, counterPM = 0, counterPauze = 0;
 	static uint8_t trackActivity[4];
-  /* Infinite loop */
-  for(;;)
-  {
-	  getActivity();
+	/* Infinite loop */
+	for(;;)
+	{
+		getActivity();
 
-	  	if(time != GPS.utc_time)
-	  	{
-	  		time = GPS.utc_time;
+		if(time != GPS.utc_time)
+		{
+			time = GPS.utc_time;
 
-	  		if(counter < 60)
-	  		{
-	  			switch (GPS.currentActivity) {
-	  				case noMovement:
-	  					trackActivity[noMovement]++;
-	  					break;
-	  				case walking:
-	  					trackActivity[walking]++;
-	  					break;
-	  				case running:
-	  					trackActivity[running]++;
-	  					break;
-	  				default:
-	  					trackActivity[unknown]++;
-	  					break;
-	  			}
+			if(counter < 60)
+			{
+				switch (GPS.currentActivity) {
+				case noMovement:
+					trackActivity[noMovement]++;
+					break;
+				case walking:
+					trackActivity[walking]++;
+					break;
+				case running:
+					trackActivity[running]++;
+					break;
+				default:
+					trackActivity[unknown]++;
+					break;
+				}
 
-	  			counter++;
-	  		}
-	  		else
-	  		{
-	  			uint8_t current = 0, index = 0;
+				counter++;
+			}
+			else
+			{
+				uint8_t current = 0, index = 0;
 
-	  			for(int i = 0; i < 4; i++)
-	  			{
-	  				if(current < trackActivity[i])
-	  				{
-	  					current = trackActivity[i];
-	  					trackActivity[i] = 0;
-	  					index = i;
-	  				}
-	  			}
+				for(int i = 0; i < 4; i++)
+				{
+					if(current < trackActivity[i])
+					{
+						current = trackActivity[i];
+						trackActivity[i] = 0;
+						index = i;
+					}
+				}
 
-	  			if(counterPM < 20)
-	  			{
-	  				if(counterPM == 0 && index == walking || index == running)
-	  				{
-	  					activityPM[counterPM] = index;
-	  					//possibility to write the activity of the last active minute to sd!!
-	  					//not implemented
-	  					counterPM++;
-	  				}
-	  				else if(counterPM != 0 && index == noMovement || index == unknown)
-	  				{
-	  					if(counterPauze < 2)
-	  					{
-	  						counterPauze++;
-	  						counterPM++;
-	  					}
-	  					else
-	  					{
-	  						counterPM = 20;
-	  						counterPauze = 0;
-	  					}
-	  				}
-	  			}
-	  			else
-	  			{
-	  				//calculate the avarage for total activity
-	  				//and write total activity to sd
-	  				//not implemented
+				if(counterPM < 20)
+				{
+					if(counterPM == 0 && index == walking || index == running)
+					{
+						activityPM[counterPM] = index;
+						//possibility to write the activity of the last active minute to sd!!
+						//not implemented
+						counterPM++;
+					}
+					else if(counterPM != 0 && index == noMovement || index == unknown)
+					{
+						if(counterPauze < 2)
+						{
+							counterPauze++;
+							counterPM++;
+						}
+						else
+						{
+							counterPM = 20;
+							counterPauze = 0;
+						}
+					}
+				}
+				else
+				{
+					//calculate the avarage for total activity
+					//and write total activity to sd
+					//not implemented
 
-	  				counterPM = 0;
-	  			}
-	  			counter = 0;
-	  		}
+					counterPM = 0;
+				}
+				counter = 0;
+			}
 
-	  	}
+		}
 
-	      osDelay(100);
-  }
+		osDelay(100);
+	}
   /* USER CODE END StartActivityTask */
 }
 
 /* USER CODE BEGIN Header_StartReadBattery */
 /**
-* @brief Function implementing the readBattery thread.
-* @param argument: Not used
-* @retval None
-*/
+ * @brief Function implementing the readBattery thread.
+ * @param argument: Not used
+ * @retval None
+ */
 /* USER CODE END Header_StartReadBattery */
 void StartReadBattery(void *argument)
 {
   /* USER CODE BEGIN StartReadBattery */
-  /* Infinite loop */
-  for(;;)
-  {
-	batteryPer = calculateBattery(CALCULATEPERCENTAGE);
-	batteryVol = calculateBattery(CALCULATEVOLTAGE);
-	if(batteryVol < 3.2)
+	/* Infinite loop */
+	for(;;)
 	{
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, SET);
-	} else
-	{
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, RESET);
+		batteryPer = calculateBattery(CALCULATEPERCENTAGE);
+		batteryVol = calculateBattery(CALCULATEVOLTAGE);
+		if(batteryVol < 3.2)
+		{
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, SET);
+		} else
+		{
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, RESET);
+		}
+		osDelay(5000);
 	}
-    osDelay(5000);
-  }
   /* USER CODE END StartReadBattery */
 }
 
 /* USER CODE BEGIN Header_StartRadioSendTask */
 /**
-* @brief Function implementing the rSendTask thread.
-* @param argument: Not used
-* @retval None
-*/
+ * @brief Function implementing the rSendTask thread.
+ * @param argument: Not used
+ * @retval None
+ */
 /* USER CODE END Header_StartRadioSendTask */
 void StartRadioSendTask(void *argument)
 {
   /* USER CODE BEGIN StartRadioSendTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    // Send a test message
-	//char * msg = "yo";
-	//radioSend(msg);
+	/* Infinite loop */
+	for(;;)
+	{
+		// Send a test message
+		//char * msg = "yo";
+		//radioSend(msg);
 
-	osDelay(2000);
-  }
+		osDelay(2000);
+	}
   /* USER CODE END StartRadioSendTask */
 }
 
 /* USER CODE BEGIN Header_StartRadioReceiveTask */
 /**
-* @brief Function implementing the rReceiveTask thread.
-* @param argument: Not used
-* @retval None
-*/
+ * @brief Function implementing the rReceiveTask thread.
+ * @param argument: Not used
+ * @retval None
+ */
 /* USER CODE END Header_StartRadioReceiveTask */
 void StartRadioReceiveTask(void *argument)
 {
@@ -394,18 +394,17 @@ void StartRadioReceiveTask(void *argument)
 	radioEnableReceiver();
 	char * msge;
 
-  /* Infinite loop */
-  for(;;)
-  {
-	// Receive messages
-	char * incoming = "";
-	if(radioReceive(&incoming))
+	/* Infinite loop */
+	for(;;)
 	{
-		// Handle the received message
-		msge = incoming;
+		// Receive messages
+		char * incoming = "";
+		if(radioReceive(&incoming))
+		{
+			// Handle the received message
+			msge = incoming;
+		}
 	}
-    //osDelay(1);
-  }
   /* USER CODE END StartRadioReceiveTask */
 }
 
@@ -433,25 +432,25 @@ char * getActivity()
 	char * activity;
 
 	if(GPS.speed_km < 3.0)
-		{
-			activity = "Geen beweging";
-			GPS.currentActivity = noMovement;
-		}
-		else if(GPS.speed_km >= 2.0 && GPS.speed_km < 7.0)
-		{
-			activity = "Wandelen     ";
-			GPS.currentActivity = walking;
-		}
-		else if(GPS.speed_km >= 7.0 && GPS.speed_km < 15.0)
-		{
-			activity = "Hardlopen    ";
-			GPS.currentActivity = running;
-		}
-		else
-		{
-			activity = "onbekend     ";
-			GPS.currentActivity =  unknown;
-		}
+	{
+		activity = "Geen beweging";
+		GPS.currentActivity = noMovement;
+	}
+	else if(GPS.speed_km >= 2.0 && GPS.speed_km < 7.0)
+	{
+		activity = "Wandelen     ";
+		GPS.currentActivity = walking;
+	}
+	else if(GPS.speed_km >= 7.0 && GPS.speed_km < 15.0)
+	{
+		activity = "Hardlopen    ";
+		GPS.currentActivity = running;
+	}
+	else
+	{
+		activity = "onbekend     ";
+		GPS.currentActivity =  unknown;
+	}
 
 	return activity;
 }

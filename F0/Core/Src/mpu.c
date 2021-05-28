@@ -123,19 +123,19 @@ void MPUOrientation(uint8_t *orientationAxis, uint8_t *orientationNegative)
 	while(forceCounter < 3)
 	{
 		if(axisData[forceCounter] < 0)
-	  	{
-	  		axisData[forceCounter] = axisData[forceCounter]*-1;
-	  		negative = 1;
-	  	}else
-	  	{
-	  		negative = 0;
-	  	}
-	  	if(highestData < axisData[forceCounter])
-	  	{
-	  		highestData = axisData[forceCounter];
-	  		*orientationAxis = forceCounter;
-	  		*orientationNegative = negative;
-	  	}
+		{
+			axisData[forceCounter] = axisData[forceCounter]*-1;
+			negative = 1;
+		}else
+		{
+			negative = 0;
+		}
+		if(highestData < axisData[forceCounter])
+		{
+			highestData = axisData[forceCounter];
+			*orientationAxis = forceCounter;
+			*orientationNegative = negative;
+		}
 		forceCounter++;
 	}
 }
@@ -166,7 +166,7 @@ void stap()
 	sprintf(numbers, "%d", data[2]);
 	HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart1, "_", sizeof("_"), HAL_MAX_DELAY);
-	*/
+	 */
 
 	if(orientationLeg[1] == 0)
 	{

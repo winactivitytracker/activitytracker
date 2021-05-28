@@ -7,7 +7,6 @@
 
 #include "transmitter.h"
 
-
 void transmitter::enable()
 {
 	HAL_TIM_Base_Start_IT(SEND_TIMER);
@@ -99,38 +98,38 @@ void transmitter::tick()
 	{
 		switch(state)
 		{
-			case START_HIGH:
+		case START_HIGH:
+			pin(1);
+			holdFor = LENGTH_START;
+			state = START_LOW;
+			break;
+		case START_LOW:
+			pin(0);
+			holdFor = LENGTH_START;
+			state = MSG_HIGH;
+			// Fill the buffer with the message to be sent
+			fillBuffer();
+			break;
+		case MSG_HIGH:
+			switch(getNextBit())
+			{
+			case 0:
 				pin(1);
-				holdFor = LENGTH_START;
-				state = START_LOW;
+				holdFor = LENGTH_ZERO;
+				state = MSG_LOW;
 				break;
-			case START_LOW:
+			case 1:
+				pin(1);
+				holdFor = LENGTH_ONE;
+				state = MSG_LOW;
+				break;
+				// When getNextBit() returns this, the message is done and the next one can be selected
+			case NO_NEW_BITS:
 				pin(0);
-				holdFor = LENGTH_START;
-				state = MSG_HIGH;
-				// Fill the buffer with the message to be sent
-				fillBuffer();
+				state = STOP_LOW;
 				break;
-			case MSG_HIGH:
-				switch(getNextBit())
-				{
-					case 0:
-						pin(1);
-						holdFor = LENGTH_ZERO;
-						state = MSG_LOW;
-						break;
-					case 1:
-						pin(1);
-						holdFor = LENGTH_ONE;
-						state = MSG_LOW;
-						break;
-					// When getNextBit() returns this, the message is done and the next one can be selected
-					case NO_NEW_BITS:
-						pin(0);
-						state = STOP_LOW;
-						break;
-				}
-				break;
+			}
+			break;
 			case MSG_LOW:
 				pin(0);
 				state = MSG_HIGH;
