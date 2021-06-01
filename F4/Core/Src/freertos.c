@@ -442,17 +442,55 @@ void StartRadioSendTask(void *argument)
 void StartRadioReceiveTask(void *argument)
 {
   /* USER CODE BEGIN StartRadioReceiveTask */
+
+	// Start listening on the receiver
 	receiverEnable();
+
 	for(;;)
 	{
+		// See if there are messages in the queue
 		if(receiverCheckMessage())
 		{
+			bool doAck = false;
+
+			// Get the first message from the queue
 			char * incoming = "";
 			receiverPopMessage(&incoming);
-			receiverDisable();
-			transmitterSendAck();
+
+			// Read the contents of the file
+
+			if(strncmp(incoming, "accel:(", 6))
+			{
+				// Read accelero/gyro data
+				int MPUData[6];
+				sscanf(incoming,
+					"accel:(%d|%d|%d|%d|%d|%d)",
+					&MPUData[0],
+					&MPUData[1],
+					&MPUData[2],
+					&MPUData[3],
+					&MPUData[4],
+					&MPUData[5]
+				);
+
+				// TODO: Handle accelero/gyro data
+
+				doAck = true;
+			}
+			else if(strncmp(incoming, "step", 4))
+			{
+				// TODO: Handle step
+
+				doAck = true;
+			}
+
+			if(doAck)
+			{
+				receiverDisable();
+				transmitterSendAck();
+				receiverEnable();
+			}
 		}
-		receiverEnable();
 
 		// If there is no delay here, other tasks will never run
 		osDelay(50);
