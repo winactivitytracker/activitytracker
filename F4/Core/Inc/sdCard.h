@@ -24,6 +24,9 @@ bool writeFile(char* fileName, char* string);
 bool openFileRead(char* fileName);
 char* readFile(char* fileName, uint16_t amountOfBytesToRead);
 bool makeNewFile(char* fileName);
+bool activityToSD(char* fileName, char* string);
+void totalActivityToSD(char* fileName, char* firstString, char* secondString);
+void writeStartToSD(char* fileName);
 
 
 
