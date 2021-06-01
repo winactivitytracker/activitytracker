@@ -103,14 +103,14 @@ osThreadId_t rSendTaskHandle;
 const osThreadAttr_t rSendTask_attributes = {
   .name = "rSendTask",
   .stack_size = 64 * 4,
-  .priority = (osPriority_t) osPriorityBelowNormal,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for rReceiveTask */
 osThreadId_t rReceiveTaskHandle;
 const osThreadAttr_t rReceiveTask_attributes = {
   .name = "rReceiveTask",
   .stack_size = 64 * 4,
-  .priority = (osPriority_t) osPriorityBelowNormal1,
+  .priority = (osPriority_t) osPriorityHigh,
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -416,46 +416,35 @@ void StartReadBattery(void *argument)
 
 /* USER CODE BEGIN Header_StartRadioSendTask */
 /**
- * @brief Function implementing the rSendTask thread.
- * @param argument: Not used
- * @retval None
- */
+* @brief Function implementing the rSendTask thread.
+* @param argument: Not used
+* @retval None
+*/
 /* USER CODE END Header_StartRadioSendTask */
 void StartRadioSendTask(void *argument)
 {
   /* USER CODE BEGIN StartRadioSendTask */
-	for(;;)
-	{
-		// Send a test message
-		//char * msg = "yo";
-
-		//do
-		//{
-		//	transmitterSend(msg);
-		//}
-		//while(!receiverWaitForAck(100));
-
-		osDelay(5000);
-	}
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
   /* USER CODE END StartRadioSendTask */
 }
 
 /* USER CODE BEGIN Header_StartRadioReceiveTask */
 /**
- * @brief Function implementing the rReceiveTask thread.
- * @param argument: Not used
- * @retval None
- */
+* @brief Function implementing the rReceiveTask thread.
+* @param argument: Not used
+* @retval None
+*/
 /* USER CODE END Header_StartRadioReceiveTask */
 void StartRadioReceiveTask(void *argument)
 {
   /* USER CODE BEGIN StartRadioReceiveTask */
-
-	/* Infinite loop */
-	/*
+	receiverEnable();
 	for(;;)
 	{
-		receiverEnable();
 		if(receiverCheckMessage())
 		{
 			char * incoming = "";
@@ -463,8 +452,11 @@ void StartRadioReceiveTask(void *argument)
 			receiverDisable();
 			transmitterSendAck();
 		}
+		receiverEnable();
+
+		// If there is no delay here, other tasks will never run
+		osDelay(50);
 	}
-	*/
   /* USER CODE END StartRadioReceiveTask */
 }
 
