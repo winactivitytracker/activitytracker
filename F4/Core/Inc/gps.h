@@ -1,10 +1,10 @@
 
 /*
- * gps.h
- *
- *  Created on: Nov 15, 2019
- *      Author: Bulanov Konstantin
- */
+* gps.h
+*
+*  Created on: Nov 15, 2019
+*      Author: Bulanov Konstantin
+*/
 
 #define GPS_DEBUG	0
 #define	GPS_USART	&huart1
@@ -52,10 +52,8 @@ typedef struct{
 	uint8_t		rxTmp;
 	uint32_t	LastTime;
 
-	enum 		Activity{noMovement = 0, walking = 1, running = 2, unknown = 3};
-	enum 		Activity currentActivity;
-
 } GPS_t;
+
 
 #if (GPS_DEBUG == 1)
 void GPS_print(char *data);
@@ -68,3 +66,4 @@ void GPS_UART_CallBack();
 int GPS_validate(char *nmeastr);
 void GPS_parse(char *GPSstrParse);
 float GPS_nmea_to_dec(float deg_coord, char nsew);
+char* getTime();
