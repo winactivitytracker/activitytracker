@@ -106,6 +106,8 @@
                                     <listOptionValue builtIn="false" value="../Middlewares/Third_Party/FatFs/src"/>
                                     									
                                     <listOptionValue builtIn="false" value="&quot;C:\git\activitytracker\Shared&quot;"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="&quot;C:\Users\joel-\Documents\activitytracker\Shared&quot;"/>
                                     								
                                 </option>
                                 								
@@ -142,6 +144,8 @@
                                     <listOptionValue builtIn="false" value="../FATFS/App"/>
                                     									
                                     <listOptionValue builtIn="false" value="../Middlewares/Third_Party/FatFs/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="&quot;C:\Users\joel-\Documents\activitytracker\Shared&quot;"/>
                                     								
                                 </option>
                                 								
@@ -211,15 +215,15 @@
                     					
                     <sourceEntries>
                         						
-                        <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Shared"/>
-                        						
                         <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
+                        						
+                        <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
                         						
                         <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="FATFS"/>
                         						
                         <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Middlewares"/>
                         						
-                        <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
+                        <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Shared"/>
                         					
                     </sourceEntries>
                     				
@@ -461,7 +465,21 @@
     	
     <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
     	
-    <storageModule moduleId="refreshScope"/>
+    <storageModule moduleId="refreshScope" versionNumber="2">
+        		
+        <configuration configurationName="Debug">
+            			
+            <resource resourceType="PROJECT" workspacePath="/F4"/>
+            		
+        </configuration>
+        		
+        <configuration configurationName="Release">
+            			
+            <resource resourceType="PROJECT" workspacePath="/F4"/>
+            		
+        </configuration>
+        	
+    </storageModule>
     	
     <storageModule moduleId="scannerConfiguration">
         		

@@ -97,7 +97,7 @@
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Core/Src}&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;C:\git\activitytracker\Shared&quot;"/>
+                                    <listOptionValue builtIn="false" value="&quot;C:\Users\joel-\Documents\activitytracker\Shared&quot;"/>
                                     								
                                 </option>
                                 								
@@ -135,7 +135,7 @@
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/Core/Src}&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;C:\git\activitytracker\Shared&quot;"/>
+                                    <listOptionValue builtIn="false" value="&quot;C:\Users\joel-\Documents\activitytracker\Shared&quot;"/>
                                     								
                                 </option>
                                 								
@@ -181,11 +181,11 @@
                     					
                     <sourceEntries>
                         						
+                        <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Shared"/>
+                        						
                         <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Core"/>
                         						
                         <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Drivers"/>
-                        						
-                        <entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Shared"/>
                         					
                     </sourceEntries>
                     				
