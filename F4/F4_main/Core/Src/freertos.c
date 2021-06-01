@@ -261,7 +261,7 @@ void StartActivityTask(void *argument)
 	  	{
 	  		time = GPS.utc_time;
 
-	  		if(counter < 5)	//one minute
+	  		if(counter < 60)	//one minute
 	  		{
 	  			switch (CurrentActivity.currentActivity) {
 	  				case noMovement:
