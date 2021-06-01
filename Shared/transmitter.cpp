@@ -99,7 +99,7 @@ void transmitter::sendAck()
 	// the official symbol for acknowledgements
 	string ack = " ";
 	ack[0] = (char) 6;
-	send(ack);
+	sendBlocking(ack);
 }
 
 // Function to be called by the interrupt handler.

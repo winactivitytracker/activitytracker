@@ -103,14 +103,14 @@ osThreadId_t rSendTaskHandle;
 const osThreadAttr_t rSendTask_attributes = {
   .name = "rSendTask",
   .stack_size = 64 * 4,
-  .priority = (osPriority_t) osPriorityAboveNormal,
+  .priority = (osPriority_t) osPriorityHigh,
 };
 /* Definitions for rReceiveTask */
 osThreadId_t rReceiveTaskHandle;
 const osThreadAttr_t rReceiveTask_attributes = {
   .name = "rReceiveTask",
-  .stack_size = 64 * 4,
-  .priority = (osPriority_t) osPriorityHigh,
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityRealtime,
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -446,15 +446,17 @@ void StartRadioReceiveTask(void *argument)
 	// Start listening on the receiver
 	receiverEnable();
 
+	bool doAck = false;
+	char * incoming = "";
+
 	for(;;)
 	{
+		doAck = false;
+
 		// See if there are messages in the queue
 		if(receiverCheckMessage())
 		{
-			bool doAck = false;
-
 			// Get the first message from the queue
-			char * incoming = "";
 			receiverPopMessage(&incoming);
 
 			// Read the contents of the file
@@ -462,7 +464,8 @@ void StartRadioReceiveTask(void *argument)
 			if(strncmp(incoming, "accel:(", 6) == 0)
 			{
 				// Read accelero/gyro data
-				int MPUData[6];
+				int MPUData[6] = {0,0,0,0,0,0};
+
 				sscanf(incoming,
 					"accel:(%d|%d|%d|%d|%d|%d)",
 					&MPUData[0],
@@ -484,6 +487,7 @@ void StartRadioReceiveTask(void *argument)
 				doAck = true;
 			}
 
+			doAck = true;
 			if(doAck)
 			{
 				receiverDisable();
@@ -492,8 +496,10 @@ void StartRadioReceiveTask(void *argument)
 			}
 		}
 
+		incoming = "";
+
 		// If there is no delay here, other tasks will never run
-		osDelay(50);
+		osDelay(100);
 	}
   /* USER CODE END StartRadioReceiveTask */
 }

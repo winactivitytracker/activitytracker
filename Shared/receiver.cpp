@@ -96,11 +96,12 @@ bool receiver::waitForAck(uint16_t milliseconds)
 			if(messages.front() == ack)
 			{
 				retVal = true;
+				messages.pop_front();
 				break;
 			}
 			else
 			{
-				// Message is not an ack, discard it
+				// Not the message we're looking for, discard
 				messages.pop_front();
 			}
 		}

@@ -197,12 +197,6 @@ static void MX_NVIC_Init(void)
   /* ADC_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(ADC_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(ADC_IRQn);
-  /* TIM1_UP_TIM10_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(TIM1_UP_TIM10_IRQn, 5, 0);
-  HAL_NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
-  /* TIM1_TRG_COM_TIM11_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(TIM1_TRG_COM_TIM11_IRQn, 5, 0);
-  HAL_NVIC_EnableIRQ(TIM1_TRG_COM_TIM11_IRQn);
 }
 
 /* USER CODE BEGIN 4 */
