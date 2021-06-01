@@ -381,7 +381,8 @@ void StartReadBattery(void *argument)
 	if(batteryVol < 3.0)
 	{
 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, SET);
-	} else
+	}
+	else
 	{
 		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, RESET);
 	}
