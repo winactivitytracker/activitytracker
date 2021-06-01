@@ -35,7 +35,7 @@
 		<link>
 			<name>Shared</name>
 			<type>2</type>
-			<location>C:/Users/joel-/Documents/activitytracker/Shared</location>
+			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/Shared</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

@@ -395,15 +395,15 @@ void StartRadioReceiveTask(void *argument)
 {
   /* USER CODE BEGIN StartRadioReceiveTask */
 
-	receiverEnable();
-
 	/* Infinite loop */
 	for(;;)
 	{
+		receiverEnable();
 		if(receiverCheckMessage())
 		{
 			char * incoming = "";
 			receiverPopMessage(&incoming);
+			receiverDisable();
 			transmitterSendAck();
 		}
 	}
