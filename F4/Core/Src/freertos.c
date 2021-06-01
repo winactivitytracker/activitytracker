@@ -459,7 +459,7 @@ void StartRadioReceiveTask(void *argument)
 
 			// Read the contents of the file
 
-			if(strncmp(incoming, "accel:(", 6))
+			if(strncmp(incoming, "accel:(", 6) == 0)
 			{
 				// Read accelero/gyro data
 				int MPUData[6];
@@ -477,7 +477,7 @@ void StartRadioReceiveTask(void *argument)
 
 				doAck = true;
 			}
-			else if(strncmp(incoming, "step", 4))
+			else if(strncmp(incoming, "step", 4) == 0)
 			{
 				// TODO: Handle step
 
