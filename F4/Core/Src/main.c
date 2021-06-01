@@ -116,6 +116,7 @@ int main(void)
 	SSD1306_Clear();
 	SSD1306_UpdateScreen();
 	initSdCard();
+	__HAL_UART_ENABLE_IT(&huart1, UART_FLAG_RXNE);
 
 	// Enable the ADC interrupt for measuring battery
 	__HAL_ADC_ENABLE_IT(&hadc1, ADC_FLAG_EOC);
@@ -191,11 +192,17 @@ void SystemClock_Config(void)
 static void MX_NVIC_Init(void)
 {
   /* USART1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(USART1_IRQn, 5, 0);
+  HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(USART1_IRQn);
   /* ADC_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(ADC_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(ADC_IRQn);
+  /* TIM1_UP_TIM10_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(TIM1_UP_TIM10_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
+  /* TIM1_TRG_COM_TIM11_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(TIM1_TRG_COM_TIM11_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(TIM1_TRG_COM_TIM11_IRQn);
 }
 
 /* USER CODE BEGIN 4 */
