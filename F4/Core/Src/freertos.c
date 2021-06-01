@@ -103,7 +103,7 @@ osThreadId_t rSendTaskHandle;
 const osThreadAttr_t rSendTask_attributes = {
   .name = "rSendTask",
   .stack_size = 64 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityAboveNormal,
 };
 /* Definitions for rReceiveTask */
 osThreadId_t rReceiveTaskHandle;
