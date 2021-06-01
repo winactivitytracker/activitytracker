@@ -1,3 +1,0 @@
-activity.c:16:6:getActivity	4	static
-activity.c:38:7:activityToString	24	static
-activity.c:59:6:CalculateActivityAverage	16	static
