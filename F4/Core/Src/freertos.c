@@ -414,6 +414,7 @@ void StartReadBattery(void *argument)
 		}
 		osDelay(5000);
 	}
+  }
   /* USER CODE END StartReadBattery */
 }
 

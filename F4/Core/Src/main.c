@@ -125,7 +125,7 @@ int main(void)
   HAL_ADC_Start_IT(&hadc1);
 
   HAL_Delay(1000);
-    /* USER CODE END 2 */
+  /* USER CODE END 2 */
 
   /* Init scheduler */
   osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */

@@ -19,8 +19,8 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f0xx_hal.h"
-#include "stm32f0xx_hal_tim.h"
+#include "stm32f4xx_hal.h"
+#include "stm32f4xx_hal_tim.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -57,7 +57,7 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
   HAL_RCC_GetClockConfig(&clkconfig, &pFLatency);
 
   /* Compute TIM3 clock */
-  uwTimclock = HAL_RCC_GetPCLK1Freq();
+  uwTimclock = 2*HAL_RCC_GetPCLK1Freq();
   /* Compute the prescaler value to have TIM3 counter clock equal to 1MHz */
   uwPrescalerValue = (uint32_t) ((uwTimclock / 1000000U) - 1U);
 
