@@ -31,10 +31,11 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "sdCard.h"
 #include "ssd1306.h"
 #include "fonts.h"
 #include "gps.h"
-#include "sdCard.h"
+#include "FreeRTOS.h"
 
 /* USER CODE END Includes */
 
@@ -121,6 +122,9 @@ int main(void)
 	__HAL_ADC_ENABLE_IT(&hadc1, ADC_FLAG_EOC);
 	HAL_ADC_Start_IT(&hadc1);
 
+  HAL_ADC_Start_IT(&hadc1);
+
+  HAL_Delay(1000);
   /* USER CODE END 2 */
 
   /* Init scheduler */

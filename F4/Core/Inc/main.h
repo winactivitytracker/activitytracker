@@ -1,22 +1,22 @@
 /* USER CODE BEGIN Header */
 /**
- ******************************************************************************
- * @file           : main.h
- * @brief          : Header for main.c file.
- *                   This file contains the common defines of the application.
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under Ultimate Liberty license
- * SLA0044, the "License"; You may not use this file except in compliance with
- * the License. You may obtain a copy of the License at:
- *                             www.st.com/SLA0044
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file           : main.h
+  * @brief          : Header for main.c file.
+  *                   This file contains the common defines of the application.
+  ******************************************************************************
+  * @attention
+  *
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
+  *
+  * This software component is licensed by ST under Ultimate Liberty license
+  * SLA0044, the "License"; You may not use this file except in compliance with
+  * the License. You may obtain a copy of the License at:
+  *                             www.st.com/SLA0044
+  *
+  ******************************************************************************
+  */
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -32,11 +32,8 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
-// F4 Radio timers
-#define SEND_TIMER		&htim10
-#define RECEIVE_TIMER	&htim11
-
+#define SEND_TIMER    &htim10
+#define RECEIVE_TIMER    &htim11
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -84,6 +81,8 @@ void Error_Handler(void);
 #define SWD_IO_GPIO_Port GPIOA
 #define SWD_CLOCK_Pin GPIO_PIN_14
 #define SWD_CLOCK_GPIO_Port GPIOA
+#define SD_CD_Pin GPIO_PIN_3
+#define SD_CD_GPIO_Port GPIOB
 #define I2C_CLOCK_Pin GPIO_PIN_6
 #define I2C_CLOCK_GPIO_Port GPIOB
 #define I2C_DATA_Pin GPIO_PIN_7
@@ -93,6 +92,8 @@ void Error_Handler(void);
 #define LED_RED_Pin GPIO_PIN_9
 #define LED_RED_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
+
+#define SD_SPI_HANDLE hspi1
 
 /* USER CODE END Private defines */
 
