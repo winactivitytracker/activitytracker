@@ -10,6 +10,7 @@ uint8_t orientationLeg[2];
 int16_t previous;
 uint8_t forceCounter;
 
+//wake the sensor up and give it some basic configs.
 bool MPU6050Init(void)
 {
 	uint8_t check;
@@ -30,13 +31,11 @@ bool MPU6050Init(void)
 		HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, SMPLRT_DIV_REG, 1, &data, 1, 1000);
 
 		// Set accelerometer configuration in ACCEL_CONFIG Register
-		// XA_ST=0,YA_ST=0,ZA_ST=0, FS_SEL=0 -> � 2g
 		data = MPU_A2G;
 		currentAccelScale = data;
 		HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, ACCEL_CONFIG_REG, 1, &data, 1, 1000);
 
 		// Set Gyroscopic configuration in GYRO_CONFIG Register
-		// XG_ST=0,YG_ST=0,ZG_ST=0, FS_SEL=0 -> � 250 �/s
 		data = MPU_G250G;
 		currentGyroScale = data;
 		HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, GYRO_CONFIG_REG, 1, &data, 1, 1000);
@@ -48,6 +47,7 @@ bool MPU6050Init(void)
 
 }
 
+//read the accelerometer register
 void MPU6050ReadAccel(int16_t *aXRaw, int16_t *aYRaw, int16_t *aZRaw)
 {
 	uint8_t RecData[6];
@@ -70,6 +70,7 @@ void MPU6050ReadAccel(int16_t *aXRaw, int16_t *aYRaw, int16_t *aZRaw)
 	//Az = Accel_Z_RAW/16384.0;
 }
 
+//read the gyro register
 void MPU6050ReadGyro(int16_t *gXRaw, int16_t *gYRaw, int16_t *gZRaw)
 {
 	uint8_t RecData[6];
@@ -92,6 +93,7 @@ void MPU6050ReadGyro(int16_t *gXRaw, int16_t *gYRaw, int16_t *gZRaw)
 	//Gz = Gyro_Z_RAW/131.0;
 }
 
+//read the accelero and the gyro
 void MPUReadAll(int16_t *aXRaw, int16_t *aYRaw, int16_t *aZRaw, int16_t *gXRaw, int16_t *gYRaw, int16_t *gZRaw)
 {
 	MPU6050ReadAccel(aXRaw, aYRaw, aZRaw);

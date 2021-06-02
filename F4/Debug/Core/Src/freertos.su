@@ -1,0 +1,8 @@
+freertos.c:137:6:MX_FREERTOS_Init	8	static
+freertos.c:194:6:StartDefaultTask	16	static
+freertos.c:212:6:StartDrawing	32	static
+freertos.c:270:6:StartActivityTask	48	static
+freertos.c:396:6:StartReadBattery	16	static
+freertos.c:426:6:StartRadioSendTask	16	static
+freertos.c:444:6:StartRadioReceiveTask	64	static
+freertos.c:512:7:calculateBattery	24	static

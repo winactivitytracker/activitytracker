@@ -36,6 +36,7 @@ extern "C" {
 // F4 Radio timers
 #define SEND_TIMER		&htim10
 #define RECEIVE_TIMER	&htim11
+#define SD_SPI_HANDLE hspi1
 
 /* USER CODE END Includes */
 

@@ -396,12 +396,14 @@ void StartActivityTask(void *argument)
 void StartReadBattery(void *argument)
 {
   /* USER CODE BEGIN StartReadBattery */
+
 	/* Infinite loop */
 	  for(;;)
 	  {
 		batteryPer = calculateBattery(CALCULATEPERCENTAGE);
 		batteryVol = calculateBattery(CALCULATEVOLTAGE);
-		if(batteryVol < 3.0)
+		//at around 20% battery remaining, turn on the red LED
+		if(batteryVol < 3.2)
 		{
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, SET);
 		}
