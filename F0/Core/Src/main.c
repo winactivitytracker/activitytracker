@@ -67,7 +67,6 @@ void sendGyroZ()
 	// Get the time
 	RTC_TimeTypeDef currTime;
 	RTC_DateTypeDef currDate;
-	char currentTime[8] = "";
 	HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
 	HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
 
@@ -98,8 +97,8 @@ void sendGyroZ()
 	{
 		// Pure ALOHA: when no ACK is received, wait a random amount of time.
 		// For us this is between 200 and 500.
-		uint16_t rand = 200 + (rand() % 300);
-		HAL_Delay(rand);
+		uint16_t r = 200 + (rand() % 300);
+		HAL_Delay(r);
 	}
 
 	HAL_Delay(5000);

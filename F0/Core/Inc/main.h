@@ -33,13 +33,14 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include <stdlib.h>
 #include <string.h>
 
 // F0 Radio timers
 #define SEND_TIMER		&htim15
 #define RECEIVE_TIMER	&htim16
 
-// 0 voor pols, 1 voor enkel
+// 0 for wrist, 1 for ankle
 #define IDENTIFIER		0
 
 /* USER CODE END Includes */
