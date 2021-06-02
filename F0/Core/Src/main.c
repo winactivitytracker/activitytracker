@@ -65,26 +65,28 @@ void SystemClock_Config(void);
 void sendGyroZ()
 {
 	// Get the time
-	RTC_TimeTypeDef currTime = {0};
+	RTC_TimeTypeDef currTime;
+	RTC_DateTypeDef currDate;
 	char currentTime[8] = "";
 	HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
+	HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
 
 	// Get the gyro Z axis
 	int16_t gXRaw, gYRaw, gZRaw;
+	uint8_t sec, min, hour;
 	MPU6050ReadGyro(&gXRaw,&gYRaw,&gZRaw);
-	char MPUString[60] = "";
 
-	// Convert it
-	int h = (int) currTime.Hours;
-	int m = (int) currTime.Minutes;
-	int s = (int) currTime.Seconds;
+	char MPUString[60] = "";
+	hour = currTime.Hours;
+	min = currTime.Minutes;
+	sec = currTime.Seconds;
 
 	sprintf(MPUString,
-		"z:%d,%d,%d,%d,%d",
+		"z,%u,%u,%u,%u,%d",
 		IDENTIFIER,
-		h,
-		m,
-		s,
+		hour,
+		min,
+		sec,
 		gZRaw
 	);
 
