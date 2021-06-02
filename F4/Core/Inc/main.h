@@ -37,6 +37,9 @@ extern "C" {
 #define SEND_TIMER		&htim10
 #define RECEIVE_TIMER	&htim11
 
+//sd card
+#define SD_SPI_HANDLE hspi1
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

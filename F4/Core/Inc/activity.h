@@ -24,6 +24,7 @@ typedef struct{
 void CalculateActivityAverage(uint8_t lastActiveMinute);
 void getActivity();
 char* activityToString(uint8_t activity);
+void ActivityTotal();
 
 #endif /* INC_ACTIVITY_H_ */
 
