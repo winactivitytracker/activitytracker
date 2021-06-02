@@ -13,7 +13,7 @@
 // The encryption key used on all devices
 const char key[64] = "u7x!A%C*F-JaNdRgUkXp2s5v8y/B?E(G+KbPeShVmYq3t6w9z$C&F)J@McQfTjWn";
 
-AES_ctx ctx;
+struct AES_ctx ctx;
 
 void aesInit();
 void aesEncrypt(char * message);
