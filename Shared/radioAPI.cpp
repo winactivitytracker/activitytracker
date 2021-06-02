@@ -59,13 +59,17 @@ bool receiverCheckMessage()
 
 // Get a message from the message queue.
 // str should be a char*, and it must be initialized
-void receiverPopMessage(char* *str)
+void receiverPopMessage(char *str)
 {
 	// Get the filled up message object
 	string message = r.popMessage();
 
+	char * tmp = const_cast<char*>(message.c_str());
+
 	// Here be dragons
-	*str = const_cast<char*>(message.c_str());
+	//str = const_cast<char*>(message.c_str());
+
+	strncpy(str,tmp,60);
 }
 
 bool receiverWaitForAck(uint16_t milliseconds)

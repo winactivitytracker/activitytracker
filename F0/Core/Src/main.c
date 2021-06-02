@@ -75,10 +75,12 @@ void sendGyroZ()
 	int16_t gXRaw, gYRaw, gZRaw;
 	uint8_t sec, min, hour;
 	MPU6050ReadGyro(&gXRaw,&gYRaw,&gZRaw);
-	char MPUString[50] = "";
+
+	char MPUString[60] = "";
 	hour = currTime.Hours;
 	min = currTime.Minutes;
 	sec = currTime.Seconds;
+
 
 	sprintf(MPUString,
 		"z,%u,%u,%u,%u,%d",
