@@ -356,116 +356,52 @@ void StartRadioReceiveTask(void *argument)
 			// Get the first message from the queue
 			receiverPopMessage(incoming);
 
-			// Read the contents of the file
-			char z = '?';
-			unsigned int id,hours,minutes,seconds;
-			int gyroZ;
-			id = hours = minutes = seconds = 0;
-			gyroZ = -1;
+			if(strncmp(incoming, "z,",2) == 0)
+			{
+				//// Read the contents of the file
+				char z = '?';
+				unsigned int id,hours,minutes,seconds;
+				int gyroZ;
+				id = hours = minutes = seconds = 0;
+				gyroZ = -1;
 
-			int rv = sscanf(incoming,
-				"z,%u,%u,%u,%u,%d",
-				&id,
-				&hours,
-				&minutes,
-				&seconds,
-				&gyroZ
-			);
+				int rv = sscanf(incoming,
+						"z,%u,%u,%u,%u,%d",
+						&id,
+						&hours,
+						&minutes,
+						&seconds,
+						&gyroZ
+				);
 
-//			uint8_t toWriteTo = 0;
-//			const char s[2] = ",";
-//			char *token;
-//			do
-//			{
-//				token = strtok(incoming, s);
-//
-//				switch(toWriteTo)
-//				{
-//				case 0:
-//					break;
-//				case 1:
-//					id = atoi(token);
-//					break;
-//				case 2:
-//					hours = atoi(token);
-//					break;
-//				case 3:
-//					minutes = atoi(token);
-//					break;
-//				case 4:
-//					seconds = atoi(token);
-//					break;
-//				case 5:
-//					gyroZ = atoi(token);
-//					break;
-//				}
-//				toWriteTo++;
-//			}
-//			while(token != NULL);
+				doAck = true;
+			}
 
-//			for(uint8_t i = 0; i < sizeof(incoming); i++)
-//			{
-//				char c = incoming[i];
-//
-//				bool write = false;
-//				char number[6] = "";
-//				uint8_t numberPointer = 0;
-//
-//				switch(c)
-//				{
-//				case 'z':
-//					break;
-//				case ' ':
-//					numberPointer = 0;
-//					write = true;
-//					break;
-//				case '-':
-//					number[numberPointer] = '-';
-//					numberPointer++;
-//					break;
-//				case '\n':
-//					// Leave the for loop
-//					i = sizeof(incoming) + 1;
-//					break;
-//				case default:
-//					number[numberPointer] = c;
-//					numberPointer++;
-//					break;
-//				}
-//			}
+			else if(strncmp(incoming, "a,", 2) == 0)
+			{
+				// Read accelero/gyro data
+				int MPUData[6] = {0,0,0,0,0,0};
 
-			doAck = true;
+				sscanf(incoming,
+						"a:%d,%d,%d,%d,%d,%d",
+						&MPUData[0],
+						&MPUData[1],
+						&MPUData[2],
+						&MPUData[3],
+						&MPUData[4],
+						&MPUData[5]
+				);
 
-//			if(strncmp(incoming, "z:",2) == 0)
-//			{
-//
-//			}
-//
-//			else if(strncmp(incoming, "a:", 2) == 0)
-//			{
-//				// Read accelero/gyro data
-//				int MPUData[6] = {0,0,0,0,0,0};
-//
-//				sscanf(incoming,
-//					"a:%d,%d,%d,%d,%d,%d",
-//					&MPUData[0],
-//					&MPUData[1],
-//					&MPUData[2],
-//					&MPUData[3],
-//					&MPUData[4],
-//					&MPUData[5]
-//				);
-//
-//				// TODO: Handle accelero/gyro data
-//
-//				doAck = true;
-//			}
-//			else if(strncmp(incoming, "s:", 2) == 0)
-//			{
-//				// TODO: Handle step
-//
-//				doAck = true;
-//			}
+				// TODO: Handle accelero/gyro data
+
+				doAck = true;
+			}
+			else if(strncmp(incoming, "s,", 2) == 0)
+			{
+				// TODO: Handle step
+
+				doAck = true;
+			}
 
 			if(doAck)
 			{
@@ -474,8 +410,6 @@ void StartRadioReceiveTask(void *argument)
 				receiverEnable();
 			}
 		}
-
-		//incoming = "";
 
 		// If there is no delay here, other tasks will never run
 		osDelay(100);

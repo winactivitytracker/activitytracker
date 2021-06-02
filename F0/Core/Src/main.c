@@ -74,6 +74,7 @@ void sendGyroZ()
 	MPU6050ReadGyro(&gXRaw,&gYRaw,&gZRaw);
 	char MPUString[60] = "";
 
+	// Convert it
 	int h = (int) currTime.Hours;
 	int m = (int) currTime.Minutes;
 	int s = (int) currTime.Seconds;
@@ -87,14 +88,19 @@ void sendGyroZ()
 		gZRaw
 	);
 
-	// Send it
-	do
-	{
-		transmitterSendBlocking(MPUString);
-	}
-	while(!receiverWaitForAck(500));
+	// Send the initial message
+	transmitterSendBlocking(MPUString);
 
-	HAL_Delay(2000);
+	// Wait for an ACK
+	while(!receiverWaitForAck((200)))
+	{
+		// Pure ALOHA: when no ACK is received, wait a random amount of time.
+		// For us this is between 200 and 500.
+		uint16_t rand = 200 + (rand() % 300);
+		HAL_Delay(rand);
+	}
+
+	HAL_Delay(5000);
 }
 
 void sendAccelFull()
@@ -127,9 +133,10 @@ void sendAccelFull()
 
 	do
 	{
+		// Send the data
 		transmitterSendBlocking(MPUDataString);
 	}
-	while(!receiverWaitForAck(500));
+	while(!receiverWaitForAck((200 + (rand() % 200))));
 
 	HAL_Delay(5000);
 }
