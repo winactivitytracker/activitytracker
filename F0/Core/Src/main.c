@@ -72,7 +72,7 @@ void sendGyroZ()
 	// Get the gyro Z axis
 	int16_t gXRaw, gYRaw, gZRaw;
 	MPU6050ReadGyro(&gXRaw,&gYRaw,&gZRaw);
-	char MPUString[50] = "";
+	char MPUString[60] = "";
 
 	int h = (int) currTime.Hours;
 	int m = (int) currTime.Minutes;
