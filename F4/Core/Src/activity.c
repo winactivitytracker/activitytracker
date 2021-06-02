@@ -18,7 +18,6 @@ extern GPS_t GPS;
 
 void getActivity()
 {
-
 		if(0 < GPS.speed_km && GPS.speed_km < 2.5)
 		{
 			CurrentActivity.currentActivity = noMovement;	//nomovement
@@ -35,7 +34,6 @@ void getActivity()
 		{
 			CurrentActivity.currentActivity =  unknown;
 		}
-
 }
 
 char* activityToString(uint8_t activity)
@@ -133,6 +131,7 @@ void ActivityTotal()
 					CurrentActivity.length++;
 					CurrentActivity.activeDailyMinutes++;
 					SDString = activityToString(CurrentActivity.lastActiveMinute);
+					activityToSD("MinActi.txt", SDString);
 
 					counterPM++;
 				}
@@ -153,6 +152,7 @@ void ActivityTotal()
 			}
 			else
 			{
+				//end of activity
 				//calculate the avarage for total activity
 				//and write total activity to sd
 
