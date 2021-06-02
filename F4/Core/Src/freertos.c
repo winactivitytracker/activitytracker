@@ -374,6 +374,9 @@ void StartRadioReceiveTask(void *argument)
 						&gyroZ
 				);
 
+				RadioToBuffer(id, hours, minutes, seconds, gyroZ);
+
+
 				doAck = true;
 			}
 

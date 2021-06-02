@@ -22,10 +22,22 @@ typedef struct{
 
 }Activity_T;
 
+
 void CalculateActivityAverage(uint8_t lastActiveMinute);
 void getActivity();
 char* activityToString(uint8_t activity);
 void ActivityTotal();
+void step(int16_t *legData[4], int16_t *armData[4]);
+void dataTimeCheckFifo();
+void moveBuffFifo(uint8_t buff);
+void RadioToBuffer(unsigned int id, unsigned int hours, unsigned int minutes, unsigned int seconds, int gyroZ);
+
+//defines
+#define MAX_SECONDS 59
+#define BUFF_LEG 0
+#define BUFF_ARM 1
+#define BUFF_ALL 2
+#define BUFF_SIZE 20
 
 #endif /* INC_ACTIVITY_H_ */
 
