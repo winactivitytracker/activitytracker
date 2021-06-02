@@ -461,13 +461,19 @@ void StartRadioReceiveTask(void *argument)
 
 			// Read the contents of the file
 
-			if(strncmp(incoming, "accel:(", 6) == 0)
+			if(strncmp(incoming, "z:",2) == 0)
+			{
+				int gyroZ = -1;
+				sscanf(incoming,"z:%d",gyroZ);
+				doAck = true;
+			}
+			else if(strncmp(incoming, "a:", 6) == 0)
 			{
 				// Read accelero/gyro data
 				int MPUData[6] = {0,0,0,0,0,0};
 
 				sscanf(incoming,
-					"accel:(%d|%d|%d|%d|%d|%d)",
+					"a:%d,%d,%d,%d,%d,%d",
 					&MPUData[0],
 					&MPUData[1],
 					&MPUData[2],
@@ -480,14 +486,13 @@ void StartRadioReceiveTask(void *argument)
 
 				doAck = true;
 			}
-			else if(strncmp(incoming, "step", 4) == 0)
+			else if(strncmp(incoming, "s", 4) == 0)
 			{
 				// TODO: Handle step
 
 				doAck = true;
 			}
 
-			doAck = true;
 			if(doAck)
 			{
 				receiverDisable();

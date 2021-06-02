@@ -62,6 +62,59 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+void sendGyroZ()
+{
+	int16_t gXRaw, gYRaw, gZRaw;
+	MPU6050ReadGyro(&gXRaw,&gYRaw,&gZRaw);
+	char MPUString[8] = "";
+	sprintf(MPUString,"z:%d",gZRaw);
+
+	do
+	{
+		transmitterSendBlocking(MPUString);
+	}
+	while(!receiverWaitForAck(500));
+
+	HAL_Delay(1000);
+}
+
+void sendAccelFull()
+{
+	MPUReadAll(
+		&MPUData[0],
+		&MPUData[1],
+		&MPUData[2],
+		&MPUData[3],
+		&MPUData[4],
+		&MPUData[5]
+	);
+
+	// "a:,,,,,"	:  7 chars
+	//		6 * 5	= 30 chars
+	// 				  --
+	//				  37
+
+	char MPUDataString[38] = "";
+
+	sprintf(MPUDataString,
+		"a:%d,%d,%d,%d,%d,%d",
+		MPUData[0],
+		MPUData[1],
+		MPUData[2],
+		MPUData[3],
+		MPUData[4],
+		MPUData[5]
+	);
+
+	do
+	{
+		transmitterSendBlocking(MPUDataString);
+	}
+	while(!receiverWaitForAck(500));
+
+	HAL_Delay(5000);
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -109,39 +162,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		MPUReadAll(
-				&MPUData[0],
-				&MPUData[1],
-				&MPUData[2],
-				&MPUData[3],
-				&MPUData[4],
-				&MPUData[5]
-		);
 
-		// "accel:(|||||)"	: 13 chars
-		//			6 * 5	= 30 chars
-		// 					  --
-		//					  43
-
-		char MPUDataString[45] = "";
-
-		sprintf(MPUDataString,
-				"accel:(%d|%d|%d|%d|%d|%d)",
-				MPUData[0],
-				MPUData[1],
-				MPUData[2],
-				MPUData[3],
-				MPUData[4],
-				MPUData[5]
-		);
-
-		do
-		{
-			transmitterSendBlocking(MPUDataString);
-		}
-		while(!receiverWaitForAck(500));
-
-		HAL_Delay(5000);
 
     /* USER CODE END WHILE */
 
@@ -169,7 +190,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL12;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL6;
   RCC_OscInitStruct.PLL.PREDIV = RCC_PREDIV_DIV1;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
@@ -183,7 +204,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
   {
     Error_Handler();
   }
