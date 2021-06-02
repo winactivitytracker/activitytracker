@@ -25,14 +25,14 @@ using namespace std;
 #define IDLE			6
 
 // See "Radio bit lengtes.xlsx"
-#define ZERO_MIN		90
-#define ZERO_MAX		100
-#define ONE_MIN			190
-#define ONE_MAX			200
-#define START_MIN		290
-#define START_MAX		300
-#define STOP_MIN		390
-#define STOP_MAX		400
+#define ZERO_MIN		80
+#define ZERO_MAX		110
+#define ONE_MIN			180
+#define ONE_MAX			210
+#define START_MIN		280
+#define START_MAX		310
+#define STOP_MIN		380
+#define STOP_MAX		410
 
 class receiver
 {

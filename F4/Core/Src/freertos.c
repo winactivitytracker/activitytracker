@@ -109,7 +109,7 @@ const osThreadAttr_t rSendTask_attributes = {
 osThreadId_t rReceiveTaskHandle;
 const osThreadAttr_t rReceiveTask_attributes = {
   .name = "rReceiveTask",
-  .stack_size = 256 * 4,
+  .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityRealtime,
 };
 
@@ -344,7 +344,7 @@ void StartRadioReceiveTask(void *argument)
 	receiverEnable();
 
 	bool doAck = false;
-	char * incoming = "";
+	char incoming[100];
 
 	for(;;)
 	{
@@ -354,37 +354,55 @@ void StartRadioReceiveTask(void *argument)
 		if(receiverCheckMessage())
 		{
 			// Get the first message from the queue
-			receiverPopMessage(&incoming);
+			receiverPopMessage(incoming);
 
-			// Read the contents of the file
+			if(strncmp(incoming, "z,",2) == 0)
+			{
+				//// Read the contents of the file
+				char z = '?';
+				unsigned int id,hours,minutes,seconds;
+				int gyroZ;
+				id = hours = minutes = seconds = 0;
+				gyroZ = -1;
 
-			if(strncmp(incoming, "accel:(", 6) == 0)
+				int rv = sscanf(incoming,
+						"z,%u,%u,%u,%u,%d",
+						&id,
+						&hours,
+						&minutes,
+						&seconds,
+						&gyroZ
+				);
+
+				doAck = true;
+			}
+
+			else if(strncmp(incoming, "a,", 2) == 0)
 			{
 				// Read accelero/gyro data
 				int MPUData[6] = {0,0,0,0,0,0};
 
 				sscanf(incoming,
-					"accel:(%d|%d|%d|%d|%d|%d)",
-					&MPUData[0],
-					&MPUData[1],
-					&MPUData[2],
-					&MPUData[3],
-					&MPUData[4],
-					&MPUData[5]
+						"a:%d,%d,%d,%d,%d,%d",
+						&MPUData[0],
+						&MPUData[1],
+						&MPUData[2],
+						&MPUData[3],
+						&MPUData[4],
+						&MPUData[5]
 				);
 
 				// TODO: Handle accelero/gyro data
 
 				doAck = true;
 			}
-			else if(strncmp(incoming, "step", 4) == 0)
+			else if(strncmp(incoming, "s,", 2) == 0)
 			{
 				// TODO: Handle step
 
 				doAck = true;
 			}
 
-			doAck = true;
 			if(doAck)
 			{
 				receiverDisable();
@@ -392,8 +410,6 @@ void StartRadioReceiveTask(void *argument)
 				receiverEnable();
 			}
 		}
-
-		incoming = "";
 
 		// If there is no delay here, other tasks will never run
 		osDelay(100);

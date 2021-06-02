@@ -21,7 +21,7 @@ void transmitterTick();
 void receiverEnable();
 void receiverDisable();
 bool receiverCheckMessage();
-void receiverPopMessage(char* *str);
+void receiverPopMessage(char *str);
 bool receiverWaitForAck(uint16_t milliseconds);
 void receiverTick();
 

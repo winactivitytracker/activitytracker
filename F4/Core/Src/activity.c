@@ -16,6 +16,11 @@
 Activity_T CurrentActivity;
 extern GPS_t GPS;
 
+void handleGyroZ(uint8_t id)
+{
+
+}
+
 void getActivity()
 {
 		if(0 < GPS.speed_km && GPS.speed_km < 2.5)
