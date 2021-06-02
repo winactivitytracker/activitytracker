@@ -1,0 +1,11 @@
+mpu.c:13:6:MPU6050Init	32	static
+mpu.c:51:6:MPU6050ReadAccel	56	static
+mpu.c:73:6:MPU6050ReadGyro	56	static
+mpu.c:95:6:MPUReadAll	24	static
+mpu.c:101:6:MPUSetAccel	32	static
+mpu.c:108:6:MPUSetGyro	32	static
+mpu.c:114:6:MPUOrientation	40	static
+mpu.c:143:6:getMPUData	8	static
+mpu.c:150:6:stap	16	static
+mpu.c:191:6:MPUToUsartInit	16	static
+mpu.c:229:6:MPUToUsartLoop	32	static

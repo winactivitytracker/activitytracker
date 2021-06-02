@@ -509,17 +509,19 @@ void StartRadioReceiveTask(void *argument)
 
 float calculateBattery(uint8_t whatCalculation)
 {
+	float result = -1.0;
 	uint16_t localADC = ADCValue;	//grab the last conversion value
 	HAL_ADC_Start_IT(&hadc1);		//start a new conversion already so it's ready for the next time the function is called
+
 	if(whatCalculation == CALCULATEPERCENTAGE)
 	{
-		return 71.428571428571 * ((localADC / (float)4095) * 4.2) - 200;
-		//return (localADC / (float)4095) * 100;
-	} else if(whatCalculation == CALCULATEVOLTAGE)
-	{
-		return (localADC / (float)4095) * 4.2;
+		result = 71.428571428571 * calculateBattery(CALCULATEVOLTAGE) - 200;
 	}
-	return -1.0;
+	else if(whatCalculation == CALCULATEVOLTAGE)
+	{
+		result = (localADC / (float)4095) * 4.2;
+	}
+	return result;
 }
 
 /* USER CODE END Application */
