@@ -77,13 +77,17 @@ void CalculateActivityAverage(uint8_t lastActiveMinute)
 
 void ActivityTotal()
 {
-	static float time;
+	static float time = 0.0;
 	static uint8_t counter = 0, counterPM = 0, counterPauze = 0;
 	static uint8_t trackActivity[4];
 	char* SDString = "";
 
 	if(time != GPS.utc_time)
 	{
+		if(time == 0.0)
+		{
+			CurrentActivity.ActivityStartTime = GPS.utc_time;
+		}
 		time = GPS.utc_time;
 
 		if(counter < 60)	//one minute
@@ -107,7 +111,7 @@ void ActivityTotal()
 		}
 		else
 		{
-			uint8_t current = 0; //index = 0;
+			uint8_t current = 0;
 
 			for(int i = 0; i < 4; i++)
 			{
@@ -126,6 +130,7 @@ void ActivityTotal()
 					if(counterPM == 0)
 					{
 						writeStartToSD("MinActi.txt");
+
 					}
 					CalculateActivityAverage(CurrentActivity.lastActiveMinute);
 					CurrentActivity.length++;
@@ -177,6 +182,8 @@ void ActivityTotal()
 				counterPM = 0;
 				counterPauze = 0;
 			}
+
+
 			counter = 0;
 		}
 
