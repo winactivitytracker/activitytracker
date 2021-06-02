@@ -360,11 +360,20 @@ void StartRadioReceiveTask(void *argument)
 
 			if(strncmp(incoming, "z:",2) == 0)
 			{
-				int gyroZ = -1;
-				sscanf(incoming,"z:%d",gyroZ);
+				int id,hours,minutes,seconds,gyroZ;
+				id = hours = minutes = seconds = gyroZ = -1;
+
+				int rv = sscanf(incoming,
+					"z:%d,%d,%d,%d,%d",
+					&id,
+					&hours,
+					&minutes,
+					&seconds,
+					&gyroZ
+				);
 				doAck = true;
 			}
-			else if(strncmp(incoming, "a:", 6) == 0)
+			else if(strncmp(incoming, "a:", 2) == 0)
 			{
 				// Read accelero/gyro data
 				int MPUData[6] = {0,0,0,0,0,0};
@@ -383,7 +392,7 @@ void StartRadioReceiveTask(void *argument)
 
 				doAck = true;
 			}
-			else if(strncmp(incoming, "s", 4) == 0)
+			else if(strncmp(incoming, "s:", 2) == 0)
 			{
 				// TODO: Handle step
 

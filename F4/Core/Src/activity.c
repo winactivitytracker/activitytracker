@@ -16,6 +16,11 @@
 Activity_T CurrentActivity;
 extern GPS_t GPS;
 
+void handleGyroZ(uint8_t id)
+{
+
+}
+
 void getActivity()
 {
 

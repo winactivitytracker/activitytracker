@@ -64,18 +64,37 @@ void SystemClock_Config(void);
 
 void sendGyroZ()
 {
+	// Get the time
+	RTC_TimeTypeDef currTime = {0};
+	char currentTime[8] = "";
+	HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
+
+	// Get the gyro Z axis
 	int16_t gXRaw, gYRaw, gZRaw;
 	MPU6050ReadGyro(&gXRaw,&gYRaw,&gZRaw);
-	char MPUString[8] = "";
-	sprintf(MPUString,"z:%d",gZRaw);
+	char MPUString[50] = "";
 
+	int h = (int) currTime.Hours;
+	int m = (int) currTime.Minutes;
+	int s = (int) currTime.Seconds;
+
+	sprintf(MPUString,
+		"z:%d,%d,%d,%d,%d",
+		IDENTIFIER,
+		h,
+		m,
+		s,
+		gZRaw
+	);
+
+	// Send it
 	do
 	{
 		transmitterSendBlocking(MPUString);
 	}
 	while(!receiverWaitForAck(500));
 
-	HAL_Delay(1000);
+	HAL_Delay(2000);
 }
 
 void sendAccelFull()
@@ -162,7 +181,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	while (1)
 	{
-
+		sendGyroZ();
+		//sendAccelFull();
 
     /* USER CODE END WHILE */
 
