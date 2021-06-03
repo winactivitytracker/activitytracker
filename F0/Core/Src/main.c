@@ -63,7 +63,7 @@
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 
-void alohaTimer();
+void alohaWait();
 
 /* USER CODE END PFP */
 
@@ -151,10 +151,17 @@ void sendAccelFull()
 	HAL_Delay(5000);
 }
 
-void askForTime()
+void alohaWait()
 {
-	char timeAskString[4] = "";
+	uint16_t r = 200 + (rand() % 300);
+	HAL_Delay(r);
+}
+
+void askTime()
+{
 	uint8_t timeoutCounter = MAXTIMEOUT;
+
+	char timeAskString[4] = "";
 	sprintf(timeAskString,
 		"t,%u",
 		IDENTIFIER
@@ -163,48 +170,37 @@ void askForTime()
 	// Send the data
 	transmitterSendBlocking(timeAskString);
 
-	while(!receiverWaitForAck((200)) && timeoutCounter != 0)
+	while(!receiverWaitForAck(300) && timeoutCounter != 0)
 	{
-		alohaTimer();
+		alohaWait();
 		transmitterSendBlocking(timeAskString);
 		timeoutCounter--;
 	}
 }
 
-// Pure ALOHA: when no ACK is received, wait a random amount of time.
-// For us this is between 200 and 500ms.
-void alohaTimer()
+bool getTime()
 {
-	uint16_t r = 200 + (rand() % 300);
-	HAL_Delay(r);
-}
-
-bool receiveData()
-{
-	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_SET);
 	unsigned int inputArray[3];
-	char localString[15] = "";
-	if(receiverCheckMessage())
+	char incoming[100];
+
+	for(;;)
 	{
-		receiverPopMessage(localString);
-		if(strncmp(localString, "tt", 2) == 0)
+		if(receiverCheckMessage())
 		{
-			transmitterSendAck();
-			sscanf(localString, "tt,%u:%u:%u", &inputArray[0], &inputArray[1], &inputArray[3]);
-			RTC_SetTime(inputArray[0], inputArray[1], inputArray[2]);
-			return true;
-		}
-		else
-		{
-			//HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
-			return false;
+			receiverPopMessage(incoming);
+
+			if(strncmp(incoming, "tt,", 3) == 0)
+			{
+				sscanf(incoming, "tt,%u:%u:%u", &inputArray[0], &inputArray[1], &inputArray[3]);
+				RTC_SetTime(inputArray[0], inputArray[1], inputArray[2]);
+
+				transmitterSendAck();
+
+				return true;
+			}
 		}
 
-	}
-	else
-	{
-		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
-		return false;
+		HAL_Delay(50);
 	}
 }
 
@@ -262,9 +258,8 @@ int main(void)
 	{
 		if(!hasTime)
 		{
-			askForTime();
-			//HAL_Delay(800);
-			if(receiveData())
+			askTime();
+			if(getTime())
 			{
 				hasTime = true;
 			}
