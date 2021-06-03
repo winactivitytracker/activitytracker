@@ -161,16 +161,12 @@ void askForTime()
 	);
 
 	// Send the data
-	receiverDisable();
 	transmitterSendBlocking(timeAskString);
-	receiverEnable();
 
 	while(!receiverWaitForAck((200)) && timeoutCounter != 0)
 	{
 		alohaTimer();
-		receiverDisable();
 		transmitterSendBlocking(timeAskString);
-		receiverEnable();
 		timeoutCounter--;
 	}
 }
@@ -193,9 +189,7 @@ bool receiveData()
 		receiverPopMessage(localString);
 		if(strncmp(localString, "tt", 2) == 0)
 		{
-			receiverDisable();
 			transmitterSendAck();
-			receiverEnable();
 			sscanf(localString, "tt,%u:%u:%u", &inputArray[0], &inputArray[1], &inputArray[3]);
 			RTC_SetTime(inputArray[0], inputArray[1], inputArray[2]);
 			return true;
@@ -256,6 +250,8 @@ int main(void)
 	MPU6050Init();
 	MPUSetAccel(MPU_A16G);
 	MPUSetGyro(MPU_G2000G);
+
+	// Start listening for messages
 	receiverEnable();
 
   /* USER CODE END 2 */
@@ -266,20 +262,17 @@ int main(void)
 	{
 		if(!hasTime)
 		{
-			sendGyroZ();
-//			askForTime();
-//			HAL_Delay(800);
-//			if(receiveData())
-//			{
-//				hasTime = true;
-//			}
+			askForTime();
+			HAL_Delay(800);
+			if(receiveData())
+			{
+				hasTime = true;
+			}
 		}
 		else
 		{
 			sendGyroZ();
 		}
-
-		//sendAccelFull();
 
 	/* USER CODE END WHILE */
 

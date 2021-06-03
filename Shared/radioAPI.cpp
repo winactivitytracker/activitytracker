@@ -16,23 +16,41 @@ receiver r;
 
 void transmitterSend(char * message)
 {
+	// Stop listening
+	r.disable();
+
 	// Convert C char pointer to C++ string
 	string messageString(message);
 
-	return t.send(messageString);
+	t.send(messageString);
+
+	// Start listening again
+	r.enable();
 }
 
 void transmitterSendBlocking(char * message)
 {
+	// Stop listening
+	r.disable();
+
 	// Convert C char pointer to C++ string
 	string messageString(message);
 
-	return t.sendBlocking(messageString);
+	t.sendBlocking(messageString);
+
+	// Start listening again
+	r.enable();
 }
 
 void transmitterSendAck()
 {
-	return t.sendAck();
+	// Stop listening
+	r.disable();
+
+	t.sendAck();
+
+	// Start listening again
+	r.enable();
 }
 
 void transmitterTick()

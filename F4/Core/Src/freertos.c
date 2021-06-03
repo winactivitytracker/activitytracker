@@ -360,7 +360,6 @@ void StartRadioReceiveTask(void *argument)
 			if(strncmp(incoming, "t,",2) == 0)
 			{
 				// First, ACK
-				receiverDisable();
 				transmitterSendAck();
 
 				char * t = getTime();
@@ -369,8 +368,6 @@ void StartRadioReceiveTask(void *argument)
 				free(t);
 
 				transmitterSendBlocking(m);
-
-				receiverEnable();
 			}
 			// Message is ID + time + gyro z axis
 			else if(strncmp(incoming, "z,",2) == 0)
@@ -424,9 +421,7 @@ void StartRadioReceiveTask(void *argument)
 			// Send an ACK
 			if(doAck)
 			{
-				receiverDisable();
 				transmitterSendAck();
-				receiverEnable();
 			}
 		}
 
