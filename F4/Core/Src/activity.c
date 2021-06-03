@@ -27,17 +27,21 @@ bool stepBlock = false;
 
 void getActivity()
 {
-		if(0 < GPS.speed_km && GPS.speed_km < 2.5)
+		if(0 < GPS.speed_km && GPS.speed_km < 2.5 && prevSteps < 35)
 		{
 			CurrentActivity.currentActivity = noMovement;	//nomovement
 		}
-		else if(GPS.speed_km >= 2.5 && GPS.speed_km < 7.0)
+		else if(GPS.speed_km >= 2.5 && GPS.speed_km < 7.0 && prevSteps >= 35)
 		{
 			CurrentActivity.currentActivity = walking;	//walking
 		}
-		else if(GPS.speed_km >= 7.0 && GPS.speed_km < 15.0)
+		else if(GPS.speed_km >= 7.0 && GPS.speed_km < 15.0 && prevSteps >= 35)
 		{
 			CurrentActivity.currentActivity = running;
+		}
+		else if(GPS.speed_km == 0 && prevSteps > 35)
+		{
+			CurrentActivity.currentActivity = unknownIndoor;
 		}
 		else
 		{
@@ -59,6 +63,9 @@ char* activityToString(uint8_t activity)
 		case running:
 			string = "Hardlopen";
 			break;
+		case unknownIndoor:
+			string = "Indoor Activiteit";
+			break;
 		default:
 			string = "onbekend";
 			break;
@@ -78,6 +85,9 @@ void CalculateActivityAverage(uint8_t lastActiveMinute)
 		case running:
 			CurrentActivity.activityTotal[running]++;
 			break;
+		case unknownIndoor:
+			CurrentActivity.activityTotal[unknownIndoor]++;
+			break;
 		default:
 			CurrentActivity.activityTotal[unknown]++;
 			break;
@@ -88,7 +98,7 @@ void ActivityTotal()
 {
 	static float time = 0.0;
 	static uint8_t counter = 0, counterPM = 0, counterPauze = 0;
-	static uint8_t trackActivity[4];
+	static uint8_t trackActivity[5];
 	char* SDString = "";
 
 	if(time != GPS.utc_time)
@@ -111,6 +121,9 @@ void ActivityTotal()
 				case running:
 					trackActivity[running]++;
 					break;
+				case unknownIndoor:
+					trackActivity[unknownIndoor]++;
+					break;
 				default:
 					trackActivity[unknown]++;
 					break;
@@ -122,7 +135,7 @@ void ActivityTotal()
 		{
 			uint8_t current = 0;
 
-			for(int i = 0; i < 4; i++)
+			for(int i = 0; i < 5; i++)
 			{
 				if(current <= trackActivity[i])
 				{
@@ -134,7 +147,7 @@ void ActivityTotal()
 
 			if(counterPM < maxAcitivitySize)
 			{
-				if((CurrentActivity.lastActiveMinute == walking || CurrentActivity.lastActiveMinute == running) && prevSteps > 35)
+				if(CurrentActivity.lastActiveMinute == walking || CurrentActivity.lastActiveMinute == running || CurrentActivity.lastActiveMinute == unknownIndoor) //activity measured
 				{
 					if(counterPM == 0)
 					{
@@ -304,6 +317,7 @@ void step(int16_t *legData[4], int16_t *armData[4])
     {
         //add 1 to the counter
         steps++;
+        CurrentActivity.totalDailySteps++;
         stepBlock = true;
     }
 

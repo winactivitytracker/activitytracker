@@ -186,6 +186,7 @@ char* getTime()
 	if(GPS.utc_time == 0)
 	{
 		CurrentActivity.activeDailyMinutes = 0;
+		CurrentActivity.totalDailySteps = 0;
 	}
 
 	if(time < 100000)

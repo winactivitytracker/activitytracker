@@ -12,11 +12,12 @@ typedef struct{
 	uint8_t		length;
 	uint8_t		activeDailyMinutes;
 	uint8_t		lastActiveMinute;
-	uint8_t 	activityTotal[4];
+	uint8_t 	activityTotal[5];
 	uint8_t 	previousLength;
 	uint8_t 	ActivityStartTime;
+	uint8_t		totalDailySteps;
 
-	enum 		Activity{noMovement = 1, walking = 2, running = 3, unknown = 0};
+	enum 		Activity{unknown = 0, noMovement = 1, walking = 2, running = 3, unknownIndoor = 4};
 	enum 		Activity currentActivity;
 	enum 		Activity totalActivity;
 

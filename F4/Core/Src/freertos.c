@@ -229,6 +229,13 @@ void StartDrawing(void *argument)
 		sprintf(numbers, "%d", CurrentActivity.activeDailyMinutes);
 		SSD1306_Puts(numbers, &Font_7x10, 1);
 
+		SSD1306_GotoXY (80,20);
+		SSD1306_Puts ("TDS:", &Font_7x10, 1);
+
+		SSD1306_GotoXY (110, 20);
+		sprintf(numbers, "%d", CurrentActivity.totalDailySteps);
+		SSD1306_Puts(numbers, &Font_7x10, 1);
+
 		SSD1306_GotoXY (0, 25);
 		sprintf(numbers, "%.2f", GPS.speed_km);
 		SSD1306_Puts(numbers, &Font_11x18, 1);
@@ -240,18 +247,19 @@ void StartDrawing(void *argument)
 		SSD1306_Puts(activityToString(CurrentActivity.lastActiveMinute), &Font_7x10, 1);
 		SSD1306_Puts("          ",&Font_7x10, 1);
 
-		currentTime = getTime();
-		SSD1306_GotoXY (0, 45);
-		SSD1306_Puts(currentTime, &Font_7x10, 1);
-
-		free(currentTime);
-
 		SSD1306_GotoXY (80,10);
 		SSD1306_Puts ("AL:", &Font_7x10, 1);
 
 		SSD1306_GotoXY (110, 10);
 		sprintf(numbers, "%d", CurrentActivity.length);
 		SSD1306_Puts(numbers, &Font_7x10, 1);
+
+		currentTime = getTime();
+		SSD1306_GotoXY (0, 45);
+		SSD1306_Puts(currentTime, &Font_7x10, 1);
+
+		free(currentTime);
+
 
 		SSD1306_UpdateScreen();
 
