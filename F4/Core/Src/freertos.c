@@ -356,16 +356,33 @@ void StartRadioReceiveTask(void *argument)
 			// Get the first message from the queue
 			receiverPopMessage(incoming);
 
-			if(strncmp(incoming, "z,",2) == 0)
+			// Message is a time request
+			if(strncmp(incoming, "t,",2) == 0)
 			{
-				//// Read the contents of the file
+				// First, ACK
+				receiverDisable();
+				transmitterSendAck();
+
+				char * t = getTime();
+				char m[13] = "tt,";
+				strcat(m,t);
+				free(t);
+
+				transmitterSendBlocking(m);
+
+				receiverEnable();
+			}
+			// Message is ID + time + gyro z axis
+			else if(strncmp(incoming, "z,",2) == 0)
+			{
+				// Read the contents of the file
 				char z = '?';
 				unsigned int id,hours,minutes,seconds;
 				int gyroZ;
 				id = hours = minutes = seconds = 0;
 				gyroZ = -1;
 
-				int rv = sscanf(incoming,
+				sscanf(incoming,
 						"z,%u,%u,%u,%u,%d",
 						&id,
 						&hours,
@@ -376,7 +393,7 @@ void StartRadioReceiveTask(void *argument)
 
 				doAck = true;
 			}
-
+			// Message is full accelero/gyro data
 			else if(strncmp(incoming, "a,", 2) == 0)
 			{
 				// Read accelero/gyro data
@@ -392,10 +409,11 @@ void StartRadioReceiveTask(void *argument)
 						&MPUData[5]
 				);
 
-				// TODO: Handle accelero/gyro data
+				// TODO: Do something with the accelero/gyro data
 
 				doAck = true;
 			}
+			// Message is a step
 			else if(strncmp(incoming, "s,", 2) == 0)
 			{
 				// TODO: Handle step
@@ -403,6 +421,7 @@ void StartRadioReceiveTask(void *argument)
 				doAck = true;
 			}
 
+			// Send an ACK
 			if(doAck)
 			{
 				receiverDisable();
