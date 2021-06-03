@@ -105,7 +105,7 @@ void sendGyroZ()
 	while(!receiverWaitForAck((200)) && timeoutCounter != 0)
 	{
 		alohaTimer();
-		HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
+		//HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
 		transmitterSendBlocking(MPUString);
 		timeoutCounter--;
 	}
@@ -263,7 +263,7 @@ int main(void)
 		if(!hasTime)
 		{
 			askForTime();
-			HAL_Delay(800);
+			//HAL_Delay(800);
 			if(receiveData())
 			{
 				hasTime = true;
