@@ -121,7 +121,6 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* rtcHandle)
 void RTC_SetTime(uint8_t hour, uint8_t minutes, uint8_t seconds)
 {
   RTC_TimeTypeDef sTime = {0};
-  uint8_t newTime;
   uint8_t counter = 0;
   uint8_t time[3] = {hour, minutes, seconds};
 

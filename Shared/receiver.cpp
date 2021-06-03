@@ -141,7 +141,7 @@ void receiver::tick()
 		{
 			if((START_MIN < counter) && (counter < START_MAX))
 			{
-				HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_SET);
+				//HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_SET);
 				// Remember that there has been a start bit
 				started = true;
 			}
@@ -169,7 +169,7 @@ void receiver::tick()
 				// the buffer in the message queue
 				clearBuffer();
 
-				HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
+				//HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
 			}
 		}
 

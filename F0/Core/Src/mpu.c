@@ -2,7 +2,8 @@
 
 uint8_t counter = 0;
 char* nameArray[6] = {"aX", "aY", "aZ", "gX", "gY", "gZ"};
-RTC_TimeTypeDef currTime, currDate = {0};
+RTC_TimeTypeDef currTime;
+RTC_DateTypeDef currDate;
 
 uint8_t currentAccelScale, currentGyroScale;
 int16_t MPUData[6];

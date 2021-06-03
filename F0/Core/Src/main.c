@@ -57,8 +57,6 @@
 
 /* USER CODE BEGIN PV */
 
-uint8_t timeoutCounter;
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -74,7 +72,7 @@ void alohaTimer();
 
 void sendGyroZ()
 {
-	timeoutCounter = MAXTIMEOUT;
+	uint8_t timeoutCounter = MAXTIMEOUT;
 	// Get the time
 	RTC_TimeTypeDef currTime;
 	RTC_DateTypeDef currDate;
@@ -106,7 +104,8 @@ void sendGyroZ()
 	// Wait for an ACK
 	while(!receiverWaitForAck((200)) && timeoutCounter != 0)
 	{
-		alohaTimer(timeoutCounter);
+		alohaTimer();
+		HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
 		transmitterSendBlocking(MPUString);
 		timeoutCounter--;
 	}
@@ -154,20 +153,24 @@ void sendAccelFull()
 
 void askForTime()
 {
-	char timeAskString[3] = "";
-	timeoutCounter = MAXTIMEOUT;
+	char timeAskString[4] = "";
+	uint8_t timeoutCounter = MAXTIMEOUT;
 	sprintf(timeAskString,
 		"t,%u",
 		IDENTIFIER
 	);
 
 	// Send the data
+	receiverDisable();
 	transmitterSendBlocking(timeAskString);
+	receiverEnable();
 
-	while(!receiverWaitForAck((200)) || timeoutCounter != 0)
+	while(!receiverWaitForAck((200)) && timeoutCounter != 0)
 	{
-		alohaTimer(timeoutCounter);
+		alohaTimer();
+		receiverDisable();
 		transmitterSendBlocking(timeAskString);
+		receiverEnable();
 		timeoutCounter--;
 	}
 }
@@ -182,6 +185,7 @@ void alohaTimer()
 
 bool receiveData()
 {
+	HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_SET);
 	unsigned int inputArray[3];
 	char localString[15] = "";
 	if(receiverCheckMessage())
@@ -191,19 +195,21 @@ bool receiveData()
 		{
 			receiverDisable();
 			transmitterSendAck();
+			receiverEnable();
 			sscanf(localString, "tt,%u:%u:%u", &inputArray[0], &inputArray[1], &inputArray[3]);
 			RTC_SetTime(inputArray[0], inputArray[1], inputArray[2]);
-			receiverEnable();
 			return true;
 		}
 		else
 		{
+			//HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
 			return false;
 		}
 
 	}
 	else
 	{
+		HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin,GPIO_PIN_RESET);
 		return false;
 	}
 }
@@ -250,6 +256,7 @@ int main(void)
 	MPU6050Init();
 	MPUSetAccel(MPU_A16G);
 	MPUSetGyro(MPU_G2000G);
+	receiverEnable();
 
   /* USER CODE END 2 */
 
@@ -259,11 +266,13 @@ int main(void)
 	{
 		if(!hasTime)
 		{
-			askForTime();
-			if(receiveData())
-			{
-				hasTime = true;
-			}
+			sendGyroZ();
+//			askForTime();
+//			HAL_Delay(800);
+//			if(receiveData())
+//			{
+//				hasTime = true;
+//			}
 		}
 		else
 		{
