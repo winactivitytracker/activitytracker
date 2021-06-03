@@ -41,6 +41,8 @@ void MX_RTC_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 
+void RTC_SetTime(uint8_t hour, uint8_t minutes, uint8_t seconds);
+
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

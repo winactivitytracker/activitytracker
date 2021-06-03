@@ -118,6 +118,52 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* rtcHandle)
 
 /* USER CODE BEGIN 1 */
 
+void RTC_SetTime(uint8_t hour, uint8_t minutes, uint8_t seconds)
+{
+  RTC_TimeTypeDef sTime = {0};
+  uint8_t newTime;
+  uint8_t counter = 0;
+  uint8_t time[3] = {hour, minutes, seconds};
+
+  while(counter <= 2)
+  {
+      if((time[counter] & 0x0F) > 0x09)
+      {
+          time[counter] = time[counter] + 0x06;
+      }
+      if((time[counter] & 0xF0) > 0x90)
+      {
+          time[counter] = 0;
+      }
+      counter++;
+  }
+
+  if(time[2] >= 0x60)
+  {
+      time[2] = 0;
+      time[1]++;
+  }
+  if(time[1] >= 0x60)
+  {
+      time[1] = 0;
+      time[0]++;
+  }
+  if(time[0] >= 0x24)
+  {
+      time[0] = 0;
+  }
+
+  sTime.Hours = time[0];
+  sTime.Minutes = time[1];
+  sTime.Seconds = time[2];
+  sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+  sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

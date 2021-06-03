@@ -30,6 +30,9 @@
 
 #include "mpu.h"
 #include "radioAPI.h"
+#include <string.h>
+#include <stdbool.h>
+#include <stdint.h>
 
 /* USER CODE END Includes */
 
@@ -40,6 +43,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+#define MAXTIMEOUT 5
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -51,11 +57,15 @@
 
 /* USER CODE BEGIN PV */
 
+uint8_t timeoutCounter;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+
+void alohaTimer();
 
 /* USER CODE END PFP */
 
@@ -64,6 +74,7 @@ void SystemClock_Config(void);
 
 void sendGyroZ()
 {
+	timeoutCounter = MAXTIMEOUT;
 	// Get the time
 	RTC_TimeTypeDef currTime;
 	RTC_DateTypeDef currDate;
@@ -93,15 +104,14 @@ void sendGyroZ()
 	transmitterSendBlocking(MPUString);
 
 	// Wait for an ACK
-	while(!receiverWaitForAck((200)))
+	while(!receiverWaitForAck((200)) && timeoutCounter != 0)
 	{
-		// Pure ALOHA: when no ACK is received, wait a random amount of time.
-		// For us this is between 200 and 500.
-		uint16_t r = 200 + (rand() % 300);
-		HAL_Delay(r);
+		alohaTimer(timeoutCounter);
+		transmitterSendBlocking(MPUString);
+		timeoutCounter--;
 	}
 
-	HAL_Delay(5000);
+	HAL_Delay(250);
 }
 
 void sendAccelFull()
@@ -142,6 +152,62 @@ void sendAccelFull()
 	HAL_Delay(5000);
 }
 
+void askForTime()
+{
+	char timeAskString[3] = "";
+	timeoutCounter = MAXTIMEOUT;
+	sprintf(timeAskString,
+		"t,%u",
+		IDENTIFIER
+	);
+
+	// Send the data
+	transmitterSendBlocking(timeAskString);
+
+	while(!receiverWaitForAck((200)) || timeoutCounter != 0)
+	{
+		alohaTimer(timeoutCounter);
+		transmitterSendBlocking(timeAskString);
+		timeoutCounter--;
+	}
+}
+
+// Pure ALOHA: when no ACK is received, wait a random amount of time.
+// For us this is between 200 and 500ms.
+void alohaTimer()
+{
+	uint16_t r = 200 + (rand() % 300);
+	HAL_Delay(r);
+}
+
+bool receiveData()
+{
+	unsigned int inputArray[3];
+	char localString[15] = "";
+	if(receiverCheckMessage())
+	{
+		receiverPopMessage(localString);
+		if(strncmp(localString, "tt", 2) == 0)
+		{
+			receiverDisable();
+			transmitterSendAck();
+			sscanf(localString, "tt,%u:%u:%u", &inputArray[0], &inputArray[1], &inputArray[3]);
+			RTC_SetTime(inputArray[0], inputArray[1], inputArray[2]);
+			receiverEnable();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+
+	}
+	else
+	{
+		return false;
+	}
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -151,6 +217,8 @@ void sendAccelFull()
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+
+	bool hasTime = false;
 
   /* USER CODE END 1 */
 
@@ -189,12 +257,24 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		sendGyroZ();
+		if(!hasTime)
+		{
+			askForTime();
+			if(receiveData())
+			{
+				hasTime = true;
+			}
+		}
+		else
+		{
+			sendGyroZ();
+		}
+
 		//sendAccelFull();
 
-    /* USER CODE END WHILE */
+	/* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
+	/* USER CODE BEGIN 3 */
 	}
   /* USER CODE END 3 */
 }

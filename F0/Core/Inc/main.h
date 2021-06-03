@@ -40,7 +40,7 @@ extern "C" {
 #define SEND_TIMER		&htim15
 #define RECEIVE_TIMER	&htim16
 
-// 0 for wrist, 1 for ankle
+// 1 for wrist, 0 for ankle
 #define IDENTIFIER		0
 
 /* USER CODE END Includes */
