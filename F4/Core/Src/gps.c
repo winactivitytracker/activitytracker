@@ -180,17 +180,22 @@ char* getTime()
 	char *toArray;
 
 	toArray = malloc (sizeof (char) * 10);
-	float time = GPS.utc_time + 20000; //make it CET
-	sprintf(toArray, "%f", time );
+	float time = 0;
 
 	if(GPS.utc_time == 0)
 	{
 		CurrentActivity.activeDailyMinutes = 0;
 		CurrentActivity.totalDailySteps = 0;
 	}
+	else
+	{
+		time = GPS.utc_time + 20000; //make it CET
+	}
+
+	sprintf(toArray, "%f", time );
 
 	if(time < 100000)
-		sprintf(toArray, "%c:%c%c:%c%c", toArray[0], toArray[1], toArray[2], toArray[3], toArray[4]);
+		sprintf(toArray, "0%c:%c%c:%c%c", toArray[0], toArray[1], toArray[2], toArray[3], toArray[4]);
 	else
 		sprintf(toArray, "%c%c:%c%c:%c%c", toArray[0], toArray[1], toArray[2], toArray[3], toArray[4], toArray[5]);
 
