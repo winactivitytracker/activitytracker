@@ -367,6 +367,8 @@ void StartRadioReceiveTask(void *argument)
 				strcat(m,t);
 				free(t);
 
+				osDelay(200);
+
 				transmitterSendBlocking(m);
 			}
 			// Message is ID + time + gyro z axis
