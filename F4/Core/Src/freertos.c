@@ -367,7 +367,7 @@ void StartRadioReceiveTask(void *argument)
 				strcat(m,t);
 				free(t);
 
-				osDelay(200);
+				osDelay(100);
 
 				transmitterSendBlocking(m);
 			}
