@@ -104,7 +104,7 @@ void sendGyroZ()
 	// Wait for an ACK
 	while(!receiverWaitForAck((200)) && timeoutCounter != 0)
 	{
-		alohaTimer();
+		alohaWait();
 		//HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
 		transmitterSendBlocking(MPUString);
 		timeoutCounter--;
@@ -157,10 +157,9 @@ void alohaWait()
 	HAL_Delay(r);
 }
 
-void askTime()
+bool askTime()
 {
-	uint8_t timeoutCounter = MAXTIMEOUT;
-
+	uint8_t timeOutCounter = 20;
 	char timeAskString[4] = "";
 	sprintf(timeAskString,
 		"t,%u",
@@ -170,16 +169,12 @@ void askTime()
 	// Send the data
 	transmitterSendBlocking(timeAskString);
 
-	while(!receiverWaitForAck(300) && timeoutCounter != 0)
+	while(!receiverWaitForAck(300))
 	{
 		alohaWait();
 		transmitterSendBlocking(timeAskString);
-		timeoutCounter--;
 	}
-}
 
-bool getTime()
-{
 	unsigned int inputArray[3];
 	char incoming[100];
 
@@ -191,7 +186,7 @@ bool getTime()
 
 			if(strncmp(incoming, "tt,", 3) == 0)
 			{
-				sscanf(incoming, "tt,%u:%u:%u", &inputArray[0], &inputArray[1], &inputArray[3]);
+				sscanf(incoming, "tt,%u:%u:%u", &inputArray[0], &inputArray[1], &inputArray[2]);
 				RTC_SetTime(inputArray[0], inputArray[1], inputArray[2]);
 
 				transmitterSendAck();
@@ -199,9 +194,14 @@ bool getTime()
 				return true;
 			}
 		}
-
+		if(timeOutCounter == 0)
+		{
+			break;
+		}
+		timeOutCounter--;
 		HAL_Delay(50);
 	}
+	return false;
 }
 
 /* USER CODE END 0 */
@@ -258,9 +258,9 @@ int main(void)
 	{
 		if(!hasTime)
 		{
-			askTime();
-			if(getTime())
+			if(askTime())
 			{
+				HAL_GPIO_TogglePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin);
 				hasTime = true;
 			}
 		}
@@ -269,9 +269,9 @@ int main(void)
 			sendGyroZ();
 		}
 
-	/* USER CODE END WHILE */
+    /* USER CODE END WHILE */
 
-	/* USER CODE BEGIN 3 */
+    /* USER CODE BEGIN 3 */
 	}
   /* USER CODE END 3 */
 }
@@ -295,7 +295,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL6;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL12;
   RCC_OscInitStruct.PLL.PREDIV = RCC_PREDIV_DIV1;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
@@ -309,7 +309,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
   {
     Error_Handler();
   }

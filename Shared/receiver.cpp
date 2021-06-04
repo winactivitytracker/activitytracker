@@ -86,7 +86,7 @@ bool receiver::waitForAck(uint16_t milliseconds)
 	string ack = " ";
 	ack[0] = (char) 6;
 
-	enable();
+	//enable();
 
 	while(milliseconds >= 1)
 	{
@@ -97,7 +97,7 @@ bool receiver::waitForAck(uint16_t milliseconds)
 			{
 				retVal = true;
 				messages.pop_front();
-				break;
+				return retVal;
 			}
 			else
 			{
@@ -113,7 +113,7 @@ bool receiver::waitForAck(uint16_t milliseconds)
 		}
 	}
 
-	disable();
+	//disable();
 	return retVal;
 }
 
