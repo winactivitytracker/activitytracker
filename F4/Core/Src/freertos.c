@@ -329,11 +329,9 @@ void StartReadBattery(void *argument)
 void StartRadioSendTask(void *argument)
 {
   /* USER CODE BEGIN StartRadioSendTask */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
+
+	// This task is unused as of yet
+
   /* USER CODE END StartRadioSendTask */
 }
 
