@@ -12,6 +12,9 @@
 #include "sdCard.h"
 
 #define maxAcitivitySize 0Xff
+#define amountOfActivites 	5
+#define maxActivityPauze 	2
+#define printSize			10
 
 Activity_T CurrentActivity;
 extern GPS_t GPS;
@@ -25,6 +28,7 @@ uint8_t buffer0TailPointer = 0;
 uint8_t buffer1TailPointer = 0;
 bool stepBlock = false;
 
+//get activity based on gps speed
 void getActivity()
 {
 		if(0 < GPS.speed_km && GPS.speed_km < 2.5 && prevSteps < 35)
@@ -49,6 +53,7 @@ void getActivity()
 		}
 }
 
+//return activity name
 char* activityToString(uint8_t activity)
 {
 	char* string = "";
@@ -73,6 +78,7 @@ char* activityToString(uint8_t activity)
 	return string;
 }
 
+//adding a activity after every occurrence
 void CalculateActivityAverage(uint8_t lastActiveMinute)
 {
 	switch (lastActiveMinute) {
@@ -94,11 +100,12 @@ void CalculateActivityAverage(uint8_t lastActiveMinute)
 	}
 }
 
+//calculate the total activity and send it to the SD
 void ActivityTotal()
 {
 	static float time = 0.0;
 	static uint8_t counter = 0, counterPM = 0, counterPauze = 0;
-	static uint8_t trackActivity[5];
+	static uint8_t trackActivity[amountOfActivites];
 	char* SDString = "";
 
 	if(time != GPS.utc_time)
@@ -135,7 +142,7 @@ void ActivityTotal()
 		{
 			uint8_t current = 0;
 
-			for(int i = 0; i < 5; i++)
+			for(int i = 0; i < amountOfActivites; i++)
 			{
 				if(current <= trackActivity[i])
 				{
@@ -144,6 +151,8 @@ void ActivityTotal()
 					CurrentActivity.lastActiveMinute = i;
 				}
 			}
+
+			//if the minute has ended add the most common activity of that minute to the total activity
 
 			if(counterPM < maxAcitivitySize)
 			{
@@ -164,7 +173,8 @@ void ActivityTotal()
 				}
 				else if(counterPM != 0 && (CurrentActivity.lastActiveMinute == noMovement || CurrentActivity.lastActiveMinute == unknown))
 				{
-					if(counterPauze < 2)
+					//if there is a pauze in the activity end the activity after three minutes without movement
+					if(counterPauze < maxActivityPauze)
 					{
 						CalculateActivityAverage(CurrentActivity.lastActiveMinute);
 						counterPauze++;
@@ -193,7 +203,8 @@ void ActivityTotal()
 						CurrentActivity.totalActivity = i;
 					}
 				}
-				char numbers[10];
+				char numbers[printSize];
+
 				sprintf(numbers, "%d", CurrentActivity.length);
 				SDString = activityToString(CurrentActivity.totalActivity);
 				totalActivityToSD("MinActi.txt", numbers, SDString);
