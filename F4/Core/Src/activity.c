@@ -307,7 +307,7 @@ void dataTimeCheckFifo()
 }
 
 //step function, counts if there was a step, should be in the while loop
-void step(int16_t *legData[4], int16_t *armData[4])
+void step(int16_t *legData[BUFF_DATA], int16_t *armData[BUFF_DATA])
 {
 	static float time = 0.0;
 	static int counter = 0;
@@ -330,10 +330,10 @@ void step(int16_t *legData[4], int16_t *armData[4])
     }
 
     //the data of the arm x3 because it is less strong
-    int16_t armData3 = 3 * *armData[3];
+    int16_t armData3 = 3 * *armData[BUFF_DATA];
 
     //checks if the data is actually a step
-    if((*legData[3] + armData3) < -4500 && !stepBlock)
+    if((*legData[BUFF_DATA] + armData3) < STEP_LIMIT && !stepBlock)
     {
         //add 1 to the counter
         steps++;
@@ -342,7 +342,7 @@ void step(int16_t *legData[4], int16_t *armData[4])
     }
 
     //makes sure that the step has ended before recognizing a new one
-    if((*legData[3] + armData3) >= -2000){
+    if((*legData[BUFF_DATA] + armData3) >= STEP_RELEASE){
         stepBlock = false;
     }
 
@@ -353,18 +353,18 @@ void RadioToBuffer(unsigned int id, unsigned int hours, unsigned int minutes, un
 {
 	if(id)
 	{
-		RTCMPUData[id][buffer1TailPointer][0] = hours;
-		RTCMPUData[id][buffer1TailPointer][1] = minutes;
-		RTCMPUData[id][buffer1TailPointer][2] = seconds;
-		RTCMPUData[id][buffer1TailPointer][3] = gyroZ;
+		RTCMPUData[id][buffer1TailPointer][BUFF_HOURS] = hours;
+		RTCMPUData[id][buffer1TailPointer][BUFF_MINUTES] = minutes;
+		RTCMPUData[id][buffer1TailPointer][BUFF_SECONDS] = seconds;
+		RTCMPUData[id][buffer1TailPointer][BUFF_DATA] = gyroZ;
 		buffer1TailPointer++;
 	}
 	else
 	{
-		RTCMPUData[id][buffer0TailPointer][0] = hours;
-		RTCMPUData[id][buffer0TailPointer][1] = minutes;
-		RTCMPUData[id][buffer0TailPointer][2] = seconds;
-		RTCMPUData[id][buffer0TailPointer][3] = gyroZ;
+		RTCMPUData[id][buffer0TailPointer][BUFF_HOURS] = hours;
+		RTCMPUData[id][buffer0TailPointer][BUFF_MINUTES] = minutes;
+		RTCMPUData[id][buffer0TailPointer][BUFF_SECONDS] = seconds;
+		RTCMPUData[id][buffer0TailPointer][BUFF_DATA] = gyroZ;
 		buffer0TailPointer++;
 	}
 
