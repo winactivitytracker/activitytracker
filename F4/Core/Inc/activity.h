@@ -34,11 +34,18 @@ void moveBuffFifo(uint8_t buff);
 void RadioToBuffer(unsigned int id, unsigned int hours, unsigned int minutes, unsigned int seconds, int gyroZ);
 
 //defines
-#define MAX_SECONDS 59
-#define BUFF_LEG 0
-#define BUFF_ARM 1
-#define BUFF_ALL 2
-#define BUFF_SIZE 20
+#define MAX_SECONDS 	59
+#define BUFF_LEG 	0
+#define BUFF_ARM 	1
+#define BUFF_ALL 	2
+#define SELECT 		2
+#define BUFF_SIZE 	20
+#define DATA_ORDER 	4
+#define BUFF_HOURS 	0
+#define BUFF_MINUTES 	1
+#define BUFF_SECONDS 	2
+#define BUFF_DATA 	3
+#define BUFF_RESET	-1
 
 #endif /* INC_ACTIVITY_H_ */
 
