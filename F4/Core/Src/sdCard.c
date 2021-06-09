@@ -12,6 +12,7 @@ FATFS FatFs; 	//Fatfs handle
 FIL fil; 		//File handle
 FRESULT fres; //Result after operations
 
+//initialization for the SD card
 bool initSdCard()
 {
 	fres = f_mount(&FatFs, "", 1); //1=mount now
@@ -24,10 +25,10 @@ bool initSdCard()
 	}
 }
 
-
+//Write a string to a file, the file system will automatically append
 bool writeFile(char* fileName, char* string)
 {
-	//char* internalString = "";
+	//first of all, check if the file already exists, if it doesn't create it.
 	if(openFileRead(fileName))
 	{
 		f_close(&fil);
@@ -36,13 +37,13 @@ bool writeFile(char* fileName, char* string)
 		makeNewFile(fileName);
 	}
 
+	//open the file for writing
 	fres = f_open(&fil, fileName, FA_WRITE | FA_OPEN_EXISTING | FA_OPEN_APPEND);
 	if(fres == FR_OK) {
-		//Copy in a string
 		uint16_t stringLength = strlen(string);
-	    //strncpy((char*)internalString, string, stringLength);
 	    UINT bytesWrote;
 	    fres = f_write(&fil, string, stringLength, &bytesWrote);
+	    //be tidy and always close your files
 	    if(fres == FR_OK) {
 	    	f_close(&fil);
 	    	return true;
@@ -55,6 +56,7 @@ bool writeFile(char* fileName, char* string)
 	}
 }
 
+//open a file for reading
 bool openFileRead(char* fileName)
 {
 	fres = f_open(&fil, fileName, FA_READ);
@@ -66,7 +68,7 @@ bool openFileRead(char* fileName)
     }
 }
 
-
+//read a file for a set amount of bytes
 char* readFile(char* fileName, uint16_t amountOfBytesToRead)
 {
 	if(openFileRead(fileName))
@@ -88,6 +90,7 @@ char* readFile(char* fileName, uint16_t amountOfBytesToRead)
 	}
 }
 
+//make a new file with the name given to it
 bool makeNewFile(char* fileName)
 {
 	//Make a new file with the "fileName", make sure ".txt" is included in the fileName
@@ -100,6 +103,7 @@ bool makeNewFile(char* fileName)
 	}
 }
 
+//Write an activity to the SD card, with the time in front of it.
 bool activityToSD(char* fileName, char* string)
 {
 	char *sTime;
@@ -119,6 +123,7 @@ bool activityToSD(char* fileName, char* string)
 
 }
 
+//Write the total activity to the SD card
 void totalActivityToSD(char* fileName, char* firstString, char* secondString)
 {
 	char *sTime;
@@ -134,6 +139,7 @@ void totalActivityToSD(char* fileName, char* firstString, char* secondString)
 
 }
 
+//Write the start of an activity to the SD card
 void writeStartToSD(char* fileName)
 {
 	char *sTime;

@@ -197,6 +197,7 @@ void StartDefaultTask(void *argument)
 	/* Infinite loop */
 	for(;;)
 	{
+		//this task was left here because if we changed it weird things started to happen
 		osDelay(1);
 	}
   /* USER CODE END StartDefaultTask */
@@ -302,11 +303,12 @@ void StartReadBattery(void *argument)
 {
   /* USER CODE BEGIN StartReadBattery */
 	/* Infinite loop */
+	//read the battery voltage and let the user know by turning on a red LED is the voltage is low.
+	//Read the battery every 5 seconds
 	  for(;;)
 	  {
 		batteryPer = calculateBattery(CALCULATEPERCENTAGE);
-		batteryVol = calculateBattery(CALCULATEVOLTAGE);
-		if(batteryVol < 3.0)
+		if(batteryPer < 20)
 		{
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, SET);
 		}
@@ -447,6 +449,7 @@ void StartRadioReceiveTask(void *argument)
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
 
+//calculate the battery percentage or voltage
 float calculateBattery(uint8_t whatCalculation)
 {
 	float result = -1.0;

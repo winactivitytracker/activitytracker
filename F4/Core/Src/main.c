@@ -115,6 +115,7 @@ int main(void)
 	SSD1306_Init();
 	SSD1306_Clear();
 	SSD1306_UpdateScreen();
+	//initialize the SD card and mount it so it can be used
 	initSdCard();
 	__HAL_UART_ENABLE_IT(&huart1, UART_FLAG_RXNE);
 
