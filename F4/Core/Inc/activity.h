@@ -46,6 +46,8 @@ void RadioToBuffer(unsigned int id, unsigned int hours, unsigned int minutes, un
 #define BUFF_SECONDS 	2
 #define BUFF_DATA 	3
 #define BUFF_RESET	-1
+#define STEP_LIMIT 	-3800
+#define STEP_RELEASE	-2000
 
 #endif /* INC_ACTIVITY_H_ */
 
