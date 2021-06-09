@@ -64,6 +64,8 @@ void GPS_UART_CallBack(){
 	static int i = 0;
 	if(GPS.rxTmp != '\n' && GPS.rxIndex < sizeof(GPS.rxBuffer)-2)
 	{
+		//skip the double occurences of indexes
+		//if a index is NULL make it 0
 		if(i % 2)
 		{
 			if(GPS.rxBuffer[GPS.rxIndex - 1]== ',' && GPS.rxTmp == ',') {  // check n-1 and n chr's for two ',,'

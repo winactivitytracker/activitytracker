@@ -125,6 +125,7 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
 
 /* USER CODE BEGIN 1 */
 
+//interrupt callback for the ADC and set the value
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
 	ADCValue = HAL_ADC_GetValue(&hadc1);

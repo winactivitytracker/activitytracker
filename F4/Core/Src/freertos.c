@@ -53,6 +53,7 @@
 
 #define CALCULATEPERCENTAGE 0
 #define CALCULATEVOLTAGE 1
+#define printSize 10
 
 /* USER CODE END PD */
 
@@ -197,6 +198,7 @@ void StartDefaultTask(void *argument)
 	/* Infinite loop */
 	for(;;)
 	{
+		//this task was left here because if we changed it weird things started to happen
 		osDelay(1);
 	}
   /* USER CODE END StartDefaultTask */
@@ -215,13 +217,15 @@ void StartDrawing(void *argument)
 	  /* Infinite loop */
 	  for(;;)
 	  {
-		char numbers[10];
+		char numbers[printSize];
 		char *currentTime;
 
+		//battery percentage
 		SSD1306_GotoXY (0,0);
 		sprintf(numbers, "batt: %.0f", batteryPer);
 		SSD1306_Puts (numbers, &Font_7x10, 1);
 
+		// active Daily minutes
 		SSD1306_GotoXY (80,0);
 		SSD1306_Puts ("ADM:", &Font_7x10, 1);
 
@@ -229,6 +233,7 @@ void StartDrawing(void *argument)
 		sprintf(numbers, "%d", CurrentActivity.activeDailyMinutes);
 		SSD1306_Puts(numbers, &Font_7x10, 1);
 
+		//total daily Steps
 		SSD1306_GotoXY (80,20);
 		SSD1306_Puts ("TDS:", &Font_7x10, 1);
 
@@ -236,17 +241,19 @@ void StartDrawing(void *argument)
 		sprintf(numbers, "%d", CurrentActivity.totalDailySteps);
 		SSD1306_Puts(numbers, &Font_7x10, 1);
 
+		//Current speed in kmph
 		SSD1306_GotoXY (0, 25);
 		sprintf(numbers, "%.2f", GPS.speed_km);
 		SSD1306_Puts(numbers, &Font_11x18, 1);
 		SSD1306_GotoXY (50,31);
 		SSD1306_Puts ("km/u", &Font_7x10, 1);
 
+		//print the last active minute
 		SSD1306_GotoXY (0,10);
-		//SSD1306_Puts(getActivity(), &Font_7x10, 1);
 		SSD1306_Puts(activityToString(CurrentActivity.lastActiveMinute), &Font_7x10, 1);
 		SSD1306_Puts("          ",&Font_7x10, 1);
 
+		//the Activity length
 		SSD1306_GotoXY (80,10);
 		SSD1306_Puts ("AL:", &Font_7x10, 1);
 
@@ -254,6 +261,7 @@ void StartDrawing(void *argument)
 		sprintf(numbers, "%d", CurrentActivity.length);
 		SSD1306_Puts(numbers, &Font_7x10, 1);
 
+		//the current CET time
 		currentTime = getTime();
 		SSD1306_GotoXY (0, 45);
 		SSD1306_Puts(currentTime, &Font_7x10, 1);
@@ -282,8 +290,10 @@ void StartActivityTask(void *argument)
 	  /* Infinite loop */
 	  for(;;)
 	  {
+		  //get current activity
 		  getActivity();
 
+		  //put current activity in the total activity
 		  ActivityTotal();
 
 		  osDelay(100);
@@ -302,11 +312,12 @@ void StartReadBattery(void *argument)
 {
   /* USER CODE BEGIN StartReadBattery */
 	/* Infinite loop */
+	//read the battery voltage and let the user know by turning on a red LED is the voltage is low.
+	//Read the battery every 5 seconds
 	  for(;;)
 	  {
 		batteryPer = calculateBattery(CALCULATEPERCENTAGE);
-		batteryVol = calculateBattery(CALCULATEVOLTAGE);
-		if(batteryVol < 3.0)
+		if(batteryPer < 20)
 		{
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, SET);
 		}
@@ -445,6 +456,7 @@ void StartRadioReceiveTask(void *argument)
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
 
+//calculate the battery percentage or voltage
 float calculateBattery(uint8_t whatCalculation)
 {
 	float result = -1.0;
