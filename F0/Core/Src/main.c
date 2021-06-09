@@ -64,6 +64,9 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 
 void alohaWait();
+void sendGyroZ();
+void sendAccelFull();
+bool askTime();
 
 /* USER CODE END PFP */
 
@@ -276,6 +279,7 @@ int main(void)
   MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
 
+  //init the IMU and set it to its max values
 	MPU6050Init();
 	MPUSetAccel(MPU_A16G);
 	MPUSetGyro(MPU_G2000G);
@@ -289,6 +293,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	while (1)
 	{
+		//ask the time, and keep asking the time until you you have the time
 		if(!hasTime)
 		{
 			if(askTime())
@@ -296,6 +301,7 @@ int main(void)
 				hasTime = true;
 			}
 		}
+		//once you have the time constantly send the gyro data
 		else
 		{
 			sendGyroZ();
