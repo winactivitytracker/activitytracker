@@ -19,7 +19,7 @@
 Activity_T CurrentActivity;
 extern GPS_t GPS;
 
-int16_t RTCMPUData[2][20][4];    //[which F0][buffer amount][0=hours,1=minutes,2=seconds,3=data]
+int16_t RTCMPUData[SELECT][BUFF_SIZE][DATA_ORDER];    //[which F0][buffer amount][0=hours,1=minutes,2=seconds,3=data]
 uint8_t steps;
 uint8_t prevSteps;
 uint8_t buffer0Pointer = 0;
@@ -226,36 +226,41 @@ void ActivityTotal()
 //this function will clear the data and move the pointer
 void moveBuffFifo(uint8_t buff)
 {
-    if(buff == BUFF_LEG)    //move everything in the first buffer (leg buffer) one down because of invalid data
+    //move everything in the first buffer (leg buffer) one down because of invalid data
+    if(buff == BUFF_LEG)
     {
         //set data to -1 so the buffer knows that location is not in use
-        for(uint8_t moveData = 0; moveData < 4; moveData++)
+        for(uint8_t moveData = 0; moveData < DATA_ORDER; moveData++)
         {
-            RTCMPUData[BUFF_LEG][buffer0Pointer][moveData] = -1;
+	    //reset data
+            RTCMPUData[BUFF_LEG][buffer0Pointer][moveData] = BUFF_RESET;
         }
-
+	//move the pointer
         buffer0Pointer++;
     } else if (buff == BUFF_ARM)    //move everything in the second (arm buffer) one down because of invalid data
     {
         //set data to -1 so the buffer knows that location is not in use
-        for(uint8_t moveData = 0; moveData < 4; moveData++)
+        for(uint8_t moveData = 0; moveData < DATA_ORDER; moveData++)
         {
-            RTCMPUData[BUFF_ARM][buffer1Pointer][moveData] = -1;
+	    //reset data
+            RTCMPUData[BUFF_ARM][buffer1Pointer][moveData] = BUFF_RESET;
         }
-
+	//move the pointer
         buffer1Pointer++;
     } else    //move everything in the buffers one down because the data has been checked
     {
         //set data to -1 so the buffer knows that location is not in use
-        for(uint8_t moveData = 0; moveData < 4; moveData++)
+        for(uint8_t moveData = 0; moveData < DATA_ORDER; moveData++)
         {
-            RTCMPUData[BUFF_LEG][buffer0Pointer][moveData] = -1;
-            RTCMPUData[BUFF_ARM][buffer1Pointer][moveData] = -1;
+	    //reset data
+            RTCMPUData[BUFF_LEG][buffer0Pointer][moveData] = BUFF_RESET;
+            RTCMPUData[BUFF_ARM][buffer1Pointer][moveData] = BUFF_RESET;
         }
-
+	//move the pointer
         buffer0Pointer++;
         buffer1Pointer++;
     }
+    //reset the pointer because it reached the end of the buffer
     if(buffer0Pointer == BUFF_SIZE)
     {
         buffer0Pointer = 0;
@@ -266,21 +271,25 @@ void moveBuffFifo(uint8_t buff)
     }
 }
 
+//check if there is data to use for checking steps
 void dataTimeCheckFifo()
 {
-    while(RTCMPUData[BUFF_LEG][buffer0Pointer][3] != -1 && RTCMPUData[BUFF_ARM][buffer1Pointer][3] != -1)
-    {    //both buffers got data that can be checked
-        if(RTCMPUData[BUFF_LEG][buffer0Pointer][2] != RTCMPUData[BUFF_ARM][buffer1Pointer][2])
-        {    //the seconds of both data are not the same meaning one is behind/read more per second
-            if(RTCMPUData[BUFF_LEG][buffer0Pointer][2] == MAX_SECONDS && RTCMPUData[BUFF_ARM][buffer1Pointer][2] != 58)
+    //checks if both buffers have data
+    while(RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_DATA] != BUFF_RESET && RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_DATA] != BUFF_RESET)
+    {
+	//check if the seconds of the data of both buffers is equal, gives true if it isn't equal
+        if(RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_SECONDS] != RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS])
+        {
+	    //checks if which of the 2 buffers is the oldest
+            if(RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_SECONDS] == MAX_SECONDS && RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] != 58)
             {
                 //delete RTCMPUData[0] because it's 59 while RTCMPUData[1] is already in the next min
                 moveBuff(BUFF_LEG);
-            } else if (RTCMPUData[BUFF_ARM][buffer1Pointer][2] == MAX_SECONDS && RTCMPUData[BUFF_LEG][buffer0Pointer][2] != 58)
+            } else if (RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] == MAX_SECONDS && RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_SECONDS] != 58)
             {
                 //delete RTCMPUData[1] because it's 59 while RTCMPUData[0] is already in the next min
                 moveBuff(BUFF_ARM);
-            } else if (RTCMPUData[BUFF_LEG][buffer0Pointer][2] <= RTCMPUData[BUFF_ARM][buffer1Pointer][2])
+            } else if (RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_SECONDS] <= RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS])
             {
                 //delete RTCMPUData[0] because it's an older value then RTCMPUData[1]
                 moveBuff(BUFF_LEG);
