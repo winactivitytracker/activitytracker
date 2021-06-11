@@ -333,7 +333,8 @@ void step(int16_t *legData[BUFF_DATA], int16_t *armData[BUFF_DATA])
     int16_t armData3 = 3 * *armData[BUFF_DATA];
 
     //checks if the data is actually a step
-    if((*legData[BUFF_DATA] + armData3) < STEP_LIMIT && !stepBlock)
+    //if((*legData[BUFF_DATA] + armData3) < STEP_LIMIT && !stepBlock)
+    if((*legData[BUFF_DATA] + armData[BUFF_DATA]) < STEP_LIMIT && !stepBlock)
     {
         //add 1 to the counter
         steps++;

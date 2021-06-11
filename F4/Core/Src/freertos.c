@@ -82,14 +82,14 @@ const osThreadAttr_t defaultTask_attributes = {
 osThreadId_t DrawOnOledTaskHandle;
 const osThreadAttr_t DrawOnOledTask_attributes = {
   .name = "DrawOnOledTask",
-  .stack_size = 1024 * 4,
+  .stack_size = 1600 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for ActivityTask */
 osThreadId_t ActivityTaskHandle;
 const osThreadAttr_t ActivityTask_attributes = {
   .name = "ActivityTask",
-  .stack_size = 512 * 4,
+  .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for readBattery */
@@ -103,14 +103,14 @@ const osThreadAttr_t readBattery_attributes = {
 osThreadId_t rSendTaskHandle;
 const osThreadAttr_t rSendTask_attributes = {
   .name = "rSendTask",
-  .stack_size = 64 * 4,
+  .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityHigh,
 };
 /* Definitions for rReceiveTask */
 osThreadId_t rReceiveTaskHandle;
 const osThreadAttr_t rReceiveTask_attributes = {
   .name = "rReceiveTask",
-  .stack_size = 1024 * 4,
+  .stack_size = 1600 * 4,
   .priority = (osPriority_t) osPriorityRealtime,
 };
 
@@ -407,7 +407,10 @@ void StartRadioReceiveTask(void *argument)
 						&gyroZ
 				);
 
-				RadioToBuffer(id, hours, minutes, seconds, gyroZ);
+
+					RadioToBuffer(0, hours, minutes, seconds, gyroZ);
+					RadioToBuffer(1, hours, minutes, seconds, gyroZ);
+
 
 
 				doAck = true;
