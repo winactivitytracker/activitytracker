@@ -27,6 +27,7 @@ bool stepBlock = false;
 
 void getActivity()
 {
+
 		if(0 < GPS.speed_km && GPS.speed_km < 2.5 && prevSteps < 35)
 		{
 			CurrentActivity.currentActivity = noMovement;	//nomovement
