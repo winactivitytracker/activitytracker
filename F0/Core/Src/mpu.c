@@ -1,16 +1,5 @@
 #include "mpu.h"
 
-uint8_t counter = 0;
-char* nameArray[6] = {"aX", "aY", "aZ", "gX", "gY", "gZ"};
-RTC_TimeTypeDef currTime;
-RTC_DateTypeDef currDate;
-
-uint8_t currentAccelScale, currentGyroScale;
-int16_t MPUData[6];
-uint8_t orientationLeg[2];
-int16_t previous;
-uint8_t forceCounter;
-
 bool MPU6050Init(void)
 {
 	uint8_t check;
@@ -27,17 +16,15 @@ bool MPU6050Init(void)
 		HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, PWR_MGMT_1_REG, 1,&data, 1, 1000);
 
 		//set the data rate at 1Khz
-		data = 0x07;
+		data = SAMPLERATE1KHZ;
 		HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, SMPLRT_DIV_REG, 1, &data, 1, 1000);
 
 		// Set accelerometer configuration in ACCEL_CONFIG Register
 		data = MPU_A2G;
-		currentAccelScale = data;
 		HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, ACCEL_CONFIG_REG, 1, &data, 1, 1000);
 
 		// Set Gyroscopic configuration in GYRO_CONFIG Register
 		data = MPU_G250G;
-		currentGyroScale = data;
 		HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, GYRO_CONFIG_REG, 1, &data, 1, 1000);
 		return true;
 	} else 
@@ -56,18 +43,10 @@ void MPU6050ReadAccel(int16_t *aXRaw, int16_t *aYRaw, int16_t *aZRaw)
 
 	HAL_I2C_Mem_Read (&hi2c1, MPU6050_ADDR, ACCEL_XOUT_H_REG, 1, RecData, 6, 1000);
 
+	//return the raw accel values
 	*aXRaw = (int16_t)(RecData[0] << 8 | RecData [1]);
 	*aYRaw = (int16_t)(RecData[2] << 8 | RecData [3]);
 	*aZRaw = (int16_t)(RecData[4] << 8 | RecData [5]);
-
-	/*** convert the RAW values into acceleration in 'g'
-	     we have to divide according to the Full scale value set in FS_SEL
-	     I have configured FS_SEL = 0. So I am dividing by 16384.0
-	     for more details check ACCEL_CONFIG Register              ****/
-
-	//Ax = Accel_X_RAW/16384.0;
-	//Ay = Accel_Y_RAW/16384.0;
-	//Az = Accel_Z_RAW/16384.0;
 }
 
 //read the gyro data from the IMU
@@ -79,18 +58,10 @@ void MPU6050ReadGyro(int16_t *gXRaw, int16_t *gYRaw, int16_t *gZRaw)
 
 	HAL_I2C_Mem_Read (&hi2c1, MPU6050_ADDR, GYRO_XOUT_H_REG, 1, RecData, 6, 1000);
 
+	//return the raw gyro values
 	*gXRaw = (int16_t)(RecData[0] << 8 | RecData [1]);
 	*gYRaw = (int16_t)(RecData[2] << 8 | RecData [3]);
 	*gZRaw = (int16_t)(RecData[4] << 8 | RecData [5]);
-
-	/*** convert the RAW values into dps (�/s)
-	     we have to divide according to the Full scale value set in FS_SEL
-	     I have configured FS_SEL = 0. So I am dividing by 131.0
-	     for more details check GYRO_CONFIG Register              ****/
-
-	//Gx = Gyro_X_RAW/131.0;
-	//Gy = Gyro_Y_RAW/131.0;
-	//Gz = Gyro_Z_RAW/131.0;
 }
 
 //read both the accelero and the gyro
@@ -101,121 +72,38 @@ void MPUReadAll(int16_t *aXRaw, int16_t *aYRaw, int16_t *aZRaw, int16_t *gXRaw, 
 }
 
 //set the max acceleration rate
-void MPUSetAccel(uint8_t acceleration)
+uint8_t MPUSetAccel(uint8_t acceleration)
 {
-
-	currentAccelScale = acceleration;
-	HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, ACCEL_CONFIG_REG, 1, &acceleration, 1, 1000);
+	uint8_t localAccel;
+	if(acceleration == MPU_A2G || acceleration == MPU_A4G || acceleration == MPU_A8G || acceleration == MPU_A16G)
+	{
+		HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, ACCEL_CONFIG_REG, 1, &acceleration, 1, 1000);
+		localAccel = acceleration;
+	} else
+	{
+		HAL_I2C_Mem_Read(&hi2c1, MPU6050_ADDR, ACCEL_CONFIG_REG, 1, localAccel, 1, 1000);
+	}
+	return localAccel;
 }
 
 //set the max gyroscopic rate
-void MPUSetGyro(uint8_t gyroSpeed)
+uint8_t MPUSetGyro(uint8_t gyroSpeed)
 {
-	currentGyroScale = gyroSpeed;
-	HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, GYRO_CONFIG_REG, 1, &gyroSpeed, 1, 1000);
-}
-
-//check the orientation of the board
-void MPUOrientation(uint8_t *orientationAxis, uint8_t *orientationNegative)
-{
-	uint16_t highestData = 0;
-	uint8_t negative = 0;
-	uint8_t forceCounter = 0;
-	int16_t axisData[6];
-
-	MPU6050ReadAccel(&axisData[0], &axisData[1], &axisData[2]);
-
-	while(forceCounter < 3)
+	uint8_t localGyro;
+	if(gyroSpeed == MPU_G250G || gyroSpeed == MPU_G500G || gyroSpeed == MPU_G1000G || gyroSpeed == MPU_G2000G)
 	{
-		if(axisData[forceCounter] < 0)
-		{
-			axisData[forceCounter] = axisData[forceCounter]*-1;
-			negative = 1;
-		}else
-		{
-			negative = 0;
-		}
-		if(highestData < axisData[forceCounter])
-		{
-			highestData = axisData[forceCounter];
-			*orientationAxis = forceCounter;
-			*orientationNegative = negative;
-		}
-		forceCounter++;
-	}
-}
-
-void getMPUData()
-{
-	HAL_RTC_GetTime(&hrtc, &currTime, RTC_FORMAT_BIN);
-	HAL_RTC_GetDate(&hrtc, &currDate, RTC_FORMAT_BIN);
-	//MPUReadAll(&MPURTCData[currTime.Seconds][counter][0], &MPURTCData[currTime.Seconds][counter][1], &MPURTCData[currTime.Seconds][counter][2], &MPURTCData[currTime.Seconds][counter][3], &MPURTCData[currTime.Seconds][counter][4], &MPURTCData[currTime.Seconds][counter][5]);
-}
-
-void stap()
-{
-	//	uint8_t forCounter = 0;
-	//	char numbers[6];
-
-	int16_t data[3];
-
-	MPU6050ReadAccel(&data[0], &data[1], &data[2]);
-
-	/*
-	sprintf(numbers, "%d", data[0]);
-	HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, "_", sizeof("_"), HAL_MAX_DELAY);
-	sprintf(numbers, "%d", data[1]);
-	HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, "_", sizeof("_"), HAL_MAX_DELAY);
-	sprintf(numbers, "%d", data[2]);
-	HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, "_", sizeof("_"), HAL_MAX_DELAY);
-	 */
-
-	if(orientationLeg[1] == 0)
+		HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, GYRO_CONFIG_REG, 1, &gyroSpeed, 1, 1000);
+		localGyro = gyroSpeed;
+	} else
 	{
-		if(data[orientationLeg[0]] > (previous + 2000))
-		{
-			HAL_UART_Transmit(&huart1, "STAP", sizeof("STAP"), HAL_MAX_DELAY);
-		}
+		HAL_I2C_Mem_Read(&hi2c1, MPU6050_ADDR, GYRO_CONFIG_REG, 1, localGyro, 1, 1000);
 	}
-	else
-	{
-		if(data[orientationLeg[0]] < (previous - 2000))
-		{
-			HAL_UART_Transmit(&huart1, "STAP", sizeof("STAP"), HAL_MAX_DELAY);
-		}
-	}
-
-	previous = data[orientationLeg[0]];
-	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_2);
-	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+	return localGyro;
 }
 
 void MPUToUsartInit()
 {
-	MPUOrientation(&orientationLeg[0], &orientationLeg[1]);
-
-	if(orientationLeg[1] == 1)
-	{
-		HAL_UART_Transmit(&huart1, "-", sizeof("-"), HAL_MAX_DELAY);
-	}
-
-	if(orientationLeg[0] == 0)
-	{
-		HAL_UART_Transmit(&huart1, "X", sizeof("X"), HAL_MAX_DELAY);
-	}
-	else if(orientationLeg[0] == 1)
-	{
-		HAL_UART_Transmit(&huart1, "Y", sizeof("Y"), HAL_MAX_DELAY);
-	}
-	else
-	{
-		HAL_UART_Transmit(&huart1, "Z", sizeof("Z"), HAL_MAX_DELAY);
-	}
-
-	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+	char* nameArray[6] = {"aX", "aY", "aZ", "gX", "gY", "gZ"};
 
 	for(uint8_t i = 0; i < 3; i++)
 	{
@@ -233,11 +121,11 @@ void MPUToUsartInit()
 
 void MPUToUsartLoop()
 {
+	int16_t MPUData[6];
 	char numberss[6];
+	uint8_t forceCounter = 0;
 	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_2);
-	stap();
 	MPUReadAll(&MPUData[0], &MPUData[1], &MPUData[2], &MPUData[3], &MPUData[4], &MPUData[5]);
-	forceCounter = 0;
 
 	while(forceCounter < 6)
 	{

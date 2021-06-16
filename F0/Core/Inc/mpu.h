@@ -11,6 +11,7 @@
 #define MPU6050_ADDR 0xD0
 
 #define SMPLRT_DIV_REG 0x19
+#define SAMPLERATE1KHZ 0x07
 #define GYRO_CONFIG_REG 0x1B
 #define ACCEL_CONFIG_REG 0x1C
 #define ACCEL_XOUT_H_REG 0x3B
@@ -28,18 +29,13 @@
 #define MPU_G1000G	0x10 // 00010000
 #define MPU_G2000G	0x18 // 00011000
 
-extern uint8_t currentAccelScale, currentGyroScale;
-extern int16_t MPUData[6];
-extern uint8_t orientationLeg[2];
-extern int16_t previous;
-extern uint8_t forceCounter;
-
 bool MPU6050Init(void);
 void MPU6050ReadAccel(int16_t *aXRaw, int16_t *aYRaw, int16_t *aZRaw);
 void MPU6050ReadGyro(int16_t *gXRaw, int16_t *gYRaw, int16_t *gZRaw);
 void MPUReadAll(int16_t *aXRaw, int16_t *aYRaw, int16_t *aZRaw, int16_t *gXRaw, int16_t *gYRaw, int16_t *gZRaw);
-void MPUSetAccel(uint8_t acceleration);
-void MPUSetGyro(uint8_t gyroSpeed);
-void MPUOrientation(uint8_t *orientationAxis, uint8_t *orientationNegative);
+uint8_t MPUSetAccel(uint8_t acceleration);
+uint8_t MPUSetGyro(uint8_t gyroSpeed);
+void MPUToUsartInit();
+void MPUToUsartLoop();
 
 #endif //__MPU_H_
