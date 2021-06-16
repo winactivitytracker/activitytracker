@@ -74,14 +74,11 @@ void MPUReadAll(int16_t *aXRaw, int16_t *aYRaw, int16_t *aZRaw, int16_t *gXRaw, 
 //set the max acceleration rate
 uint8_t MPUSetAccel(uint8_t acceleration)
 {
-	uint8_t localAccel;
+	static uint8_t localAccel = 0;
 	if(acceleration == MPU_A2G || acceleration == MPU_A4G || acceleration == MPU_A8G || acceleration == MPU_A16G)
 	{
 		HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, ACCEL_CONFIG_REG, 1, &acceleration, 1, 1000);
 		localAccel = acceleration;
-	} else
-	{
-		HAL_I2C_Mem_Read(&hi2c1, MPU6050_ADDR, ACCEL_CONFIG_REG, 1, localAccel, 1, 1000);
 	}
 	return localAccel;
 }
@@ -89,14 +86,11 @@ uint8_t MPUSetAccel(uint8_t acceleration)
 //set the max gyroscopic rate
 uint8_t MPUSetGyro(uint8_t gyroSpeed)
 {
-	uint8_t localGyro;
+	static uint8_t localGyro = 0;
 	if(gyroSpeed == MPU_G250G || gyroSpeed == MPU_G500G || gyroSpeed == MPU_G1000G || gyroSpeed == MPU_G2000G)
 	{
 		HAL_I2C_Mem_Write(&hi2c1, MPU6050_ADDR, GYRO_CONFIG_REG, 1, &gyroSpeed, 1, 1000);
 		localGyro = gyroSpeed;
-	} else
-	{
-		HAL_I2C_Mem_Read(&hi2c1, MPU6050_ADDR, GYRO_CONFIG_REG, 1, localGyro, 1, 1000);
 	}
 	return localGyro;
 }
