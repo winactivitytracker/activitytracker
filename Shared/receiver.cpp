@@ -1,10 +1,3 @@
-/*
- * receiver.cpp
- *
- *  Created on: 20 May 2021
- *      Author: arteeh
- */
-
 #include "receiver.h"
 
 // Turn on the timer to start listening for messages

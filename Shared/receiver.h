@@ -1,12 +1,5 @@
-/*
- * receiver.h
- *
- *  Created on: 20 May 2021
- *      Author: arteeh
- */
-
-#ifndef SRC_RECEIVER_H_
-#define SRC_RECEIVER_H_
+#ifndef RECEIVER_H
+#define RECEIVER_H
 
 using namespace std;
 
@@ -15,6 +8,9 @@ using namespace std;
 #include <string>
 #include "tim.h"
 #include "main.h"
+
+// Normally 0, set to 1 for unit tests
+#define TEST_RECEIVER 1
 
 #define START_HIGH		0
 #define START_LOW		1
@@ -36,15 +32,28 @@ using namespace std;
 
 class receiver
 {
+
 private:
 
+#ifndef TEST_RECEIVER
 	deque<string> messages;
 	deque<bitset<8>> buffer;
 	uint16_t bitPointer;
 	void clearBuffer();
 	void addToBuffer(bool bit);
+#endif
 
 public:
+
+	// These should normally be private and for internal use only.
+	// We set them to public to unit test the specific components of the radio code
+#ifdef TEST_RECEIVER
+	deque<string> messages;
+	deque<bitset<8>> buffer;
+	int16_t bitPointer;
+	void clearBuffer();
+	void addToBuffer(bool bit);
+#endif
 
 	void enable();
 	void disable();
@@ -55,4 +64,4 @@ public:
 
 };
 
-#endif /* SRC_RECEIVER_H_ */
+#endif // RECEIVER_H

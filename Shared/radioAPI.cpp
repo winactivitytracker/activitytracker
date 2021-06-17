@@ -7,25 +7,21 @@ using namespace std;
 
 #include "transmitter.h"
 #include "receiver.h"
+#include "radioTest.h"
 #include "radioAPI.h"
 
 transmitter t;
 receiver r;
+radioTest rt;
 
 // Transmitter class public functions
 
 void transmitterSend(char * message)
 {
-	// Stop listening
-	r.disable();
-
 	// Convert C char pointer to C++ string
 	string messageString(message);
 
 	t.send(messageString);
-
-	// Start listening again
-	r.enable();
 }
 
 void transmitterSendBlocking(char * message)
@@ -55,24 +51,24 @@ void transmitterSendAck()
 
 void transmitterTick()
 {
-	return t.tick();
+	t.tick();
 }
 
 // Receiver class public functions
 
 void receiverEnable()
 {
-	return r.enable();
+	r.enable();
 }
 
 void receiverDisable()
 {
-	return r.disable();
+	r.disable();
 }
 
 bool receiverCheckMessage()
 {
-	return r.checkMessage();
+	r.checkMessage();
 }
 
 // Get a message from the message queue.
@@ -97,5 +93,22 @@ bool receiverWaitForAck(uint16_t milliseconds)
 
 void receiverTick()
 {
-	return r.tick();
+	r.tick();
+}
+
+// radioTest class functions
+
+void radioTestAll()
+{
+	rt.testAll();
+}
+
+void radioTestTransmitter()
+{
+	rt.testTransmitter();
+}
+
+void radioTestReceiver()
+{
+	rt.testReceiver();
 }

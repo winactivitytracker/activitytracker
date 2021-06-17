@@ -1,10 +1,3 @@
-/*
- * transmitter.cpp
- *
- *  Created on: 20 May 2021
- *      Author: arteeh
- */
-
 #include "transmitter.h"
 
 void transmitter::enable()
