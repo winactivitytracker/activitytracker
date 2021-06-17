@@ -13,6 +13,9 @@
 #include "rtc.h"
 #include "mpu.h"
 #include "test.h"
+#include "radioAPI.h"
+
+
 
 void testAll()
 {
@@ -20,6 +23,7 @@ void testAll()
 	testRTC();
 }
 
+#if TEST_MPU
 void testMPU()
 {
 	setCorrectMPU();
@@ -27,18 +31,20 @@ void testMPU()
 	testGyro();
 	testAccel();
 }
-
+#endif
 void testRadio()
 {
 
 }
-
+#if TEST_RTC
 void testRTC()
 {
 	setCorrectTime();
 	setIncorrectTime();
 }
+#endif
 
+#if TEST_MPU
 void setCorrectMPU()
 {
 	//Arrange
@@ -242,7 +248,9 @@ void testAccel()
 	}
 	printTestResult("MPU", "MPU accel test", result);
 }
+#endif
 
+#if TEST_RTC
 void setCorrectTime()
 {
 	RTC_TimeTypeDef sTime;
@@ -366,6 +374,7 @@ void setIncorrectTime()
 	}
 	printTestResult("RTC", "RTC set incorrect time", result);
 }
+#endif
 
 void printTestResult(char* testObject, char* currentTest, char* result)
 {
@@ -385,8 +394,6 @@ void printTestResult(char* testObject, char* currentTest, char* result)
 	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart1, "----------------------", sizeof("----------------------"), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
-
-	HAL_Delay(500);
 }
 
 void printWrongData(char shouldBe[90], char isCurrent[60])
@@ -397,6 +404,4 @@ void printWrongData(char shouldBe[90], char isCurrent[60])
 	HAL_UART_Transmit(&huart1, "Data should be: ", sizeof("Data should be: "), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart1, shouldBe, sizeof(shouldBe), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
-
-	HAL_Delay(500);
 }

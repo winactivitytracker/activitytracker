@@ -28,6 +28,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "radioAPI.h"
 #include "test.h"
 
 /* USER CODE END Includes */
@@ -40,7 +41,6 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-#define TEST 1
 
 /* USER CODE END PD */
 
@@ -116,11 +116,18 @@ int main(void)
 	// Start listening for messages
 	receiverEnable();
 
-	#ifdef TEST
-	HAL_UART_Transmit(&huart1, "TESTING", sizeof("TESTING"), HAL_MAX_DELAY);
+	#if TEST_MPU
+	HAL_UART_Transmit(&huart1, "TESTING MPU", sizeof("TESTING MPU"), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
-	HAL_Delay(100);
-	testAll();
+	testMPU();
+	#elif TEST_RTC
+	HAL_UART_Transmit(&huart1, "TESTING RTC", sizeof("TESTING RTC"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+	testRTC();
+	#elif TEST_RADIO
+	HAL_UART_Transmit(&huart1, "TESTING RADIO", sizeof("TESTING RADIO"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+	radioTestAll();
 	#endif
 
   /* USER CODE END 2 */
@@ -129,7 +136,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	while (1)
 	{
-		#ifndef TEST
+		#if !TEST
 		//ask the time, and keep asking the time until you you have the time
 		if(!hasTime)
 		{

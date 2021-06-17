@@ -1,3 +1,7 @@
+#include "main.h"
+
+#if TEST_RADIO
+
 #include <radioTest.h>
 
 // Print a result string to USART
@@ -115,11 +119,11 @@ void radioTest::transmitterFillBuffer1String()
 	// Assert
 	if(actual.front() == expected.front())
 	{
-		result == 'PASS: "a" is in the buffer';
+		result = 'PASS: "a" is in the buffer';
 	}
 	else
 	{
-		result == 'FAIL: "a" is not in the buffer';
+		result = 'FAIL: "a" is not in the buffer';
 	}
 
 	printResult("fillBuffer with one string in the queue", expected.front().to_string(), actual.front().to_string(), result);
@@ -132,3 +136,4 @@ void radioTest::transmitterFillBuffer1String()
 // API function tests
 
 
+#endif

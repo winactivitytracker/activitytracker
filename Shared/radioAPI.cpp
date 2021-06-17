@@ -97,7 +97,7 @@ void receiverTick()
 }
 
 // radioTest class functions
-
+#if TEST_RADIO
 void radioTestAll()
 {
 	rt.testAll();
@@ -112,3 +112,4 @@ void radioTestReceiver()
 {
 	rt.testReceiver();
 }
+#endif
