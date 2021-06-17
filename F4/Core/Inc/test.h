@@ -19,5 +19,8 @@ void setBuffer1Late();
 void setBuffer0Late();
 void setBuffer1LateInPreviousMinute();
 void setBuffer0LateInPreviousMinute();
+void setBuffer1Late30SecInPreviousMinute();
+void setBuffer0Late30SecInPreviousMinute();
+void setBufferStepWorthy();
 
 #endif /* INC_TEST_H_ */

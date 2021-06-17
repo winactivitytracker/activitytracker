@@ -334,7 +334,7 @@ void step(int16_t legData[4], int16_t armData[4])
 
     //checks if the data is actually a step
     //if((*legData[BUFF_DATA] + armData3) < STEP_LIMIT && !stepBlock)
-    if((legData[BUFF_DATA] + armData[BUFF_DATA]) < STEP_LIMIT && !stepBlock)
+    if((legData[BUFF_DATA] + armData3) < STEP_LIMIT && !stepBlock)
     {
         //add 1 to the counter
         steps++;

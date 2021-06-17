@@ -153,10 +153,10 @@ void testGyro()
 	//Assert
 	if(gyroTest[0] > (int16_t)MINACCELORGYRO && gyroTest[0] < (int16_t)MAXACCELORGYRO)
 	{
-		result = "gyro data is within max allowable limits";
+		result = "gyro X data is within max allowable limits";
 	} else
 	{
-		result = "gyro data is out of allowable limits";
+		result = "gyro X data is out of allowable limits";
 		sprintf(shouldBe, "%s %d %s %d", "between", MINACCELORGYRO, "and", MAXACCELORGYRO);
 		HAL_Delay(20);
 		sprintf(isCurrent, "%d", gyroTest[0]);
@@ -166,10 +166,10 @@ void testGyro()
 
 	if(gyroTest[1] > (int16_t)MINACCELORGYRO && gyroTest[1] < (int16_t)MAXACCELORGYRO)
 	{
-		result = "gyro data is within max allowable limits";
+		result = "gyro Y data is within max allowable limits";
 	} else
 	{
-		result = "gyro data is out of allowable limits";
+		result = "gyro Y data is out of allowable limits";
 		sprintf(shouldBe, "%s-%d-%s-%d", "between", MINACCELORGYRO, "and", MAXACCELORGYRO);
 		HAL_Delay(20);
 		sprintf(isCurrent, "%d", gyroTest[1]);
@@ -179,10 +179,10 @@ void testGyro()
 
 	if(gyroTest[2] > (int16_t)MINACCELORGYRO && gyroTest[2] < (int16_t)MAXACCELORGYRO)
 	{
-		result = "gyro data is within max allowable limits";
+		result = "gyro Z data is within max allowable limits";
 	} else
 	{
-		result = "gyro data is out of allowable limits";
+		result = "gyro Z data is out of allowable limits";
 		sprintf(shouldBe, "%s %d %s %d", "between", MINACCELORGYRO, "and", MAXACCELORGYRO);
 		HAL_Delay(20);
 		sprintf(isCurrent, "%d", gyroTest[2]);
@@ -211,10 +211,10 @@ void testAccel()
 	//Assert
 	if(accelTest[0] > (int16_t)MINACCELORGYRO && accelTest[0] < (int16_t)MAXACCELORGYRO)
 	{
-		result = "accel data is within max allowable limits";
+		result = "accel X data is within max allowable limits";
 	} else
 	{
-		result = "accel data is out of allowable limits";
+		result = "accel X data is out of allowable limits";
 		sprintf(shouldBe, "%s %d %s %d", "between", MINACCELORGYRO, "and", MAXACCELORGYRO);
 		HAL_Delay(20);
 		sprintf(isCurrent, "%d", accelTest[0]);
@@ -224,10 +224,10 @@ void testAccel()
 
 	if(accelTest[1] > (int16_t)MINACCELORGYRO && accelTest[1] < (int16_t)MAXACCELORGYRO)
 	{
-		result = "accel data is within max allowable limits";
+		result = "accel Y data is within max allowable limits";
 	} else
 	{
-		result = "accel data is out of allowable limits";
+		result = "accel Y data is out of allowable limits";
 		sprintf(shouldBe, "%s-%d-%s-%d", "between", MINACCELORGYRO, "and", MAXACCELORGYRO);
 		HAL_Delay(20);
 		sprintf(isCurrent, "%d", accelTest[1]);
@@ -237,10 +237,10 @@ void testAccel()
 
 	if(accelTest[2] > (int16_t)MINACCELORGYRO && accelTest[2] < (int16_t)MAXACCELORGYRO)
 	{
-		result = "accel data is within max allowable limits";
+		result = "accel Z data is within max allowable limits";
 	} else
 	{
-		result = "accel data is out of allowable limits";
+		result = "accel Z data is out of allowable limits";
 		sprintf(shouldBe, "%s %d %s %d", "between", MINACCELORGYRO, "and", MAXACCELORGYRO);
 		HAL_Delay(20);
 		sprintf(isCurrent, "%d", accelTest[2]);
