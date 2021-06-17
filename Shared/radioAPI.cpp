@@ -10,13 +10,14 @@ using namespace std;
 
 #if TEST_RADIO == 1
 #include "radioTest.h"
+radioTest rt;
 #endif
 
 #include "radioAPI.h"
 
 transmitter t;
 receiver r;
-radioTest rt;
+
 
 // Transmitter class public functions
 
