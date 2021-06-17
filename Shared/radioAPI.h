@@ -26,8 +26,12 @@ void receiverPopMessage(char *str);
 bool receiverWaitForAck(uint16_t milliseconds);
 void receiverTick();
 
+#if TEST_RADIO == 1
+
 // Test class functions
 void radioTestAll();
+
+#endif // TEST_RADIO == 1
 
 #ifdef __cplusplus
 }

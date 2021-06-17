@@ -130,7 +130,9 @@ int main(void)
 
 	//DOTESTS
 
+	#if TEST_RADIO == 1
 	radioTestAll();
+	#endif
 
 	while(1);
 

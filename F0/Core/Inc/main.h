@@ -49,7 +49,7 @@ extern "C" {
 #define TEST			1
 #define TEST_MPU		0
 #define TEST_RTC 		0
-#define TEST_RADIO 		1
+#define TEST_RADIO 		0
 #define DO_NOT_ENCRYPT	0
 
 /* USER CODE END Includes */

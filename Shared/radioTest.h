@@ -1,3 +1,5 @@
+#if TEST_RADIO == 1
+
 #ifndef RADIOTEST_H
 #define RADIOTEST_H
 
@@ -41,3 +43,5 @@ public:
 
 
 #endif // RADIOTEST_H
+
+#endif // TEST_RADIO == 1

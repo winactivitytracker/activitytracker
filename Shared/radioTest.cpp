@@ -1,3 +1,5 @@
+#if TEST_RADIO == 1
+
 #include "radioTest.h"
 #include "main.h"
 
@@ -55,8 +57,8 @@ void radioTest::testAll(transmitter t, receiver r)
 // Test all transmitter functions
 void radioTest::testTransmitter(transmitter t)
 {
-	transmitterFillBufferEmpty(t);
-	transmitterFillBufferString(t);
+	//transmitterFillBufferEmpty(t);
+	//transmitterFillBufferString(t);
 }
 
 // Test all receiver functions
@@ -131,3 +133,5 @@ void radioTest::transmitterFillBufferString(transmitter t)
 
 // API function tests
 
+
+#endif // TEST_RADIO == 1
