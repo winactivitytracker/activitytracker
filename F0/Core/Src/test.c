@@ -24,6 +24,8 @@ void testMPU()
 {
 	setCorrectMPU();
 	setIncorrectMPU();
+	testGyro();
+	testAccel();
 }
 
 void testRadio()
@@ -42,7 +44,15 @@ void setCorrectMPU()
 	//Arrange
 	uint8_t setAccel = MPU_A8G, setGyro = MPU_G1000G;
 	uint8_t accelTest, gyroTest;
-	char shouldBe[30], isCurrent[30];
+	char shouldBe[90], isCurrent[60];
+	for(uint8_t i = 0; i < 90; i++)
+	{
+		if(i < 60)
+		{
+			isCurrent[i] = (char)0;
+		}
+		shouldBe[i] = (char)0;
+	}
 	char* result = "";
 	//Act
 	accelTest = MPUSetAccel(setAccel);
@@ -78,7 +88,15 @@ void setIncorrectMPU()
 	//Arrange
 	uint8_t setAccel = 50, setGyro = 50;
 	uint8_t accelTest, gyroTest;
-	char shouldBe[30], isCurrent[30];
+	char shouldBe[90], isCurrent[60];
+	for(uint8_t i = 0; i < 90; i++)
+	{
+		if(i < 60)
+		{
+			isCurrent[i] = (char)0;
+		}
+		shouldBe[i] = (char)0;
+	}
 	char* result = "";
 	//Act
 	accelTest = MPUSetAccel(setAccel);
@@ -109,11 +127,82 @@ void setIncorrectMPU()
 	printTestResult("MPU", "MPU gyro set incorrect data", result);
 }
 
+void testGyro()
+{
+	//make sure the board is stationary on the table before running this test
+	//Arrange
+	int16_t gyroTest[3] = {0,0,0};
+	char shouldBe[90], isCurrent[60];
+	for(uint8_t i = 0; i < 90; i++)
+	{
+		if(i < 60)
+		{
+			isCurrent[i] = (char)0;
+		}
+		shouldBe[i] = (char)0;
+	}
+	char* result = "";
+	//Act
+	MPU6050ReadGyro(&gyroTest[0], &gyroTest[1], &gyroTest[2]);
+	//Assert
+	if(gyroTest[0] > (int16_t)MINACCELORGYRO && gyroTest[0] < (int16_t)MAXACCELORGYRO)
+	{
+		result = "gyro data is within max allowable limits";
+	} else
+	{
+		result = "gyro data is out of allowable limits";
+		sprintf(shouldBe, "%s %d %s %d", "between", MINACCELORGYRO, "and", MAXACCELORGYRO);
+		HAL_Delay(20);
+		sprintf(isCurrent, "%d", gyroTest[0]);
+		printWrongData(shouldBe, isCurrent);
+	}
+	printTestResult("MPU", "MPU gyro test", result);
+
+	if(gyroTest[1] > (int16_t)MINACCELORGYRO && gyroTest[1] < (int16_t)MAXACCELORGYRO)
+	{
+		result = "gyro data is within max allowable limits";
+	} else
+	{
+		result = "gyro data is out of allowable limits";
+		sprintf(shouldBe, "%s-%d-%s-%d", "between", MINACCELORGYRO, "and", MAXACCELORGYRO);
+		HAL_Delay(20);
+		sprintf(isCurrent, "%d", gyroTest[1]);
+		printWrongData(shouldBe, isCurrent);
+	}
+	printTestResult("MPU", "MPU gyro test", result);
+
+	if(gyroTest[2] > (int16_t)MINACCELORGYRO && gyroTest[2] < (int16_t)MAXACCELORGYRO)
+	{
+		result = "gyro data is within max allowable limits";
+	} else
+	{
+		result = "gyro data is out of allowable limits";
+		sprintf(shouldBe, "%s %d %s %d", "between", MINACCELORGYRO, "and", MAXACCELORGYRO);
+		HAL_Delay(20);
+		sprintf(isCurrent, "%d", gyroTest[2]);
+		printWrongData(shouldBe, isCurrent);
+	}
+	printTestResult("MPU", "MPU gyro test", result);
+}
+
+void testAccel()
+{
+
+}
+
 void setCorrectTime()
 {
 	RTC_TimeTypeDef sTime;
 	RTC_DateTypeDef sDate;	//this isn't used but should be called for correct updates.
-	char shouldBe[30], isCurrent[30];
+	char shouldBe[90], isCurrent[60];
+	for(uint8_t i = 0; i < 90; i++)
+	{
+		if(i < 60)
+		{
+			isCurrent[i] = (char)0;
+		}
+		shouldBe[i] = (char)0;
+	}
 	char* result = "";
 	//Arrange
 	uint8_t RTCTestData[3] = {12, 12, 12};
@@ -167,7 +256,15 @@ void setIncorrectTime()
 {
 	RTC_TimeTypeDef sTime;
 	RTC_DateTypeDef sDate;	//this isn't used but should be called for correct updates.
-	char shouldBe[30], isCurrent[30];
+	char shouldBe[90], isCurrent[60];
+	for(uint8_t i = 0; i < 90; i++)
+	{
+		if(i < 60)
+		{
+			isCurrent[i] = (char)0;
+		}
+		shouldBe[i] = (char)0;
+	}
 	char* result = "";
 	//Arrange
 	uint8_t RTCTestData[3] = {200, 200, 200};
@@ -219,9 +316,9 @@ void setIncorrectTime()
 
 void printTestResult(char* testObject, char* currentTest, char* result)
 {
-	char localOject[30] = "";
-	char localTest[30] = "";
-	char localResult[30] = "";
+	char localOject[60] = "";
+	char localTest[60] = "";
+	char localResult[60] = "";
 	sprintf(localOject, "%s", testObject);
 	sprintf(localTest, "%s", currentTest);
 	sprintf(localResult, "%s", result);
@@ -233,11 +330,13 @@ void printTestResult(char* testObject, char* currentTest, char* result)
 	HAL_UART_Transmit(&huart1, "The result of this test is: ", sizeof("The result of this test is: "), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart1, localResult, sizeof(localResult), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, "----------------------", sizeof("----------------------"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
 
 	HAL_Delay(500);
 }
 
-void printWrongData(char shouldBe[30], char isCurrent[30])
+void printWrongData(char shouldBe[90], char isCurrent[60])
 {
 	HAL_UART_Transmit(&huart1, "Data is currently: ", sizeof("Data is currently: "), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart1, isCurrent, sizeof(isCurrent), HAL_MAX_DELAY);
