@@ -116,17 +116,17 @@ void MPUToUsartInit()
 void MPUToUsartLoop()
 {
 	int16_t MPUData[6];
-	char numberss[6];
-	uint8_t forceCounter = 0;
+	char numbers[6];
+	uint8_t counter = 0;
 	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_2);
 	MPUReadAll(&MPUData[0], &MPUData[1], &MPUData[2], &MPUData[3], &MPUData[4], &MPUData[5]);
 
-	while(forceCounter < 6)
+	while(counter < 6)
 	{
-		sprintf(numberss, "%d", MPUData[forceCounter]);
-		HAL_UART_Transmit(&huart1, numberss, sizeof(numberss), HAL_MAX_DELAY);
+		sprintf(numbers, "%d", MPUData[counter]);
+		HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
 		HAL_UART_Transmit(&huart1, "\t", sizeof("\t"), HAL_MAX_DELAY);
-		forceCounter++;
+		counter++;
 	}
 
 	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
