@@ -56,8 +56,8 @@ void radioTest::testAll()
 // Test all transmitter functions
 void radioTest::testTransmitter()
 {
-	transmitterFillBufferEmpty();
-	transmitterFillBuffer1String();
+	//transmitterFillBufferEmpty();
+	//transmitterFillBufferString();
 }
 
 // Test all receiver functions
@@ -71,6 +71,8 @@ void radioTest::testAPI()
 {
 
 }
+
+
 
 // Transmitter class tests
 
@@ -101,7 +103,7 @@ void radioTest::transmitterFillBufferEmpty()
 	printResult("fillBuffer with an empty queue", expected, actual, result);
 }
 
-void radioTest::transmitterFillBuffer1String()
+void radioTest::transmitterFillBufferString()
 {
 	// Arrange
 	bitset<8> a("a");			// "a" (01100001) bitset object
@@ -119,11 +121,11 @@ void radioTest::transmitterFillBuffer1String()
 	// Assert
 	if(actual.front() == expected.front())
 	{
-		result = 'PASS: "a" is in the buffer';
+		result = "PASS: a is in the buffer";
 	}
 	else
 	{
-		result = 'FAIL: "a" is not in the buffer';
+		result = "FAIL: a is not in the buffer";
 	}
 
 	printResult("fillBuffer with one string in the queue", expected.front().to_string(), actual.front().to_string(), result);
@@ -134,6 +136,7 @@ void radioTest::transmitterFillBuffer1String()
 
 
 // API function tests
+
 
 
 #endif

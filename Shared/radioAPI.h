@@ -10,6 +10,7 @@ extern "C"
 #endif
 
 #include <stdbool.h>
+#include "main.h"
 
 // Transmitter class public functions
 void transmitterSend(char * message);

@@ -23,14 +23,12 @@ public:
 
 	// Transmitter class tests
 	void transmitterFillBufferEmpty();
-	void transmitterFillBuffer1String();
-	void transmitterFillBuffer2String();
+	void transmitterFillBufferString();
 
 	// Receiver class tests
 
 
 	// API function tests
-
 
 };
 
