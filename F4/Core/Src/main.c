@@ -129,6 +129,9 @@ int main(void)
 	#ifdef TEST
 
 	//DOTESTS
+
+	radioTestAll();
+
 	while(1);
 
 	#endif

@@ -336,13 +336,7 @@ void printTestResult(char* testObject, char* currentTest, char* result)
 //	HAL_UART_Transmit(&huart1, "The result of this test is: ", sizeof("The result of this test is: "), HAL_MAX_DELAY);
 //	HAL_UART_Transmit(&huart1, localResult, sizeof(localResult), HAL_MAX_DELAY);
 //	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
-	
-	char localOject[30] = "";
-	char localTest[30] = "";
-	char localResult[30] = "";
-	sprintf(localOject, "%s", testObject);
-	sprintf(localTest, "%s", currentTest);
-	sprintf(localResult, "%s", result);
+
 	writeFile("test", "This is the test of ");
 	writeFile("test", localOject);
 	writeFile("test", " and the current test is ");

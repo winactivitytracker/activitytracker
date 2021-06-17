@@ -2,8 +2,13 @@
 #define RADIOTEST_H
 
 #include "usart.h"
-#include "transmitter.h"
-#include "receiver.h"
+#include "radioAPI.h"
+
+#include <string>
+#include <bitset>
+#include <deque>
+
+using namespace std;
 
 class radioTest
 {
@@ -31,5 +36,6 @@ public:
 	// API function tests
 
 };
+
 
 #endif // RADIOTEST_H
