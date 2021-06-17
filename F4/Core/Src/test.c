@@ -6,7 +6,7 @@
  */
 
 #include "main.h"
-#include "activity.h
+#include "activity.h"
 #include "test.h"
 
 void testAll()
