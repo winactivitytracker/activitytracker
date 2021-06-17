@@ -65,7 +65,6 @@ void setEmptyBuffers()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	printTestResult("Activity", "Activity set empty buffers", result);
 	
 	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
@@ -74,7 +73,6 @@ void setEmptyBuffers()
 	{
 		result = "buffer 1 = incorrect";
 	}
-	printTestResult("Activity", "Activity set empty buffers", result);
 }
 
 //TEST2
@@ -101,7 +99,6 @@ void setBuffer0()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	printTestResult("Activity", "Activity set buffer leg", result);
 	
 	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
@@ -110,7 +107,6 @@ void setBuffer0()
 	{
 		result = "buffer 1 = incorrect";
 	}
-	printTestResult("Activity", "Activity set buffer leg", result);
 }
 
 //TEST3
@@ -137,7 +133,6 @@ void setBuffer1()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	printTestResult("Activity", "Activity set buffer arm", result);
 	
 	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == 1 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == 1)
 	{
@@ -146,7 +141,6 @@ void setBuffer1()
 	{
 		result = "buffer 1 = incorrect";
 	}
-	printTestResult("Activity", "Activity set buffer arm", result);
 }
 
 //TEST4
@@ -173,7 +167,6 @@ void setBufferBoth()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	printTestResult("Activity", "Activity set both buffers", result);
 	
 	if((oldBuffer1Pointer+1) == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
@@ -182,7 +175,6 @@ void setBufferBoth()
 	{
 		result = "buffer 1 = incorrect";
 	}
-	printTestResult("Activity", "Activity set both buffers", result);
 }
 
 //TEST5
@@ -209,7 +201,6 @@ void setBuffer1Late()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	printTestResult("Activity", "Activity set both buffers, arm buffer is late", result);
 	
 	if((oldBuffer1Pointer+1) == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
@@ -218,7 +209,6 @@ void setBuffer1Late()
 	{
 		result = "buffer 1 = incorrect";
 	}
-	printTestResult("Activity", "Activity set both buffers, arm buffer is late", result);
 }
 
 //TEST6
@@ -245,7 +235,6 @@ void setBuffer0Late()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	printTestResult("Activity", "Activity set both buffers, leg buffer is late", result);
 	
 	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == -200 &&  RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == 1 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == 2)
 	{
@@ -254,7 +243,6 @@ void setBuffer0Late()
 	{
 		result = "buffer 1 = incorrect";
 	}
-	printTestResult("Activity", "Activity set both buffers, leg buffer is late", result);
 }
 
 //TEST7
@@ -282,7 +270,6 @@ void setBuffer1LateInPreviousMinute()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	printTestResult("Activity", "Activity set both buffers, arm buffer is late and still in the previous minute", result);
 	
 	if((oldBuffer1Pointer+1) == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
@@ -291,7 +278,6 @@ void setBuffer1LateInPreviousMinute()
 	{
 		result = "buffer 1 = incorrect";
 	}
-	printTestResult("Activity", "Activity set both buffers, arm buffer is late and still in the previous minute", result);
 }
 
 //TEST8
@@ -318,7 +304,6 @@ void setBuffer0LateInPreviousMinute()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	printTestResult("Activity", "Activity set both buffers, leg buffer is late and still in the previous minute", result);
 	
 	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == 2 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == 0)
 	{
@@ -327,33 +312,5 @@ void setBuffer0LateInPreviousMinute()
 	{
 		result = "buffer 1 = incorrect";
 	}
-	printTestResult("Activity", "Activity set both buffers, leg buffer is late and still in the previous minute", result);
-}
-
-void printTestResult(char* testObject, char* currentTest, char* result)
-{
-//	char localOject[30] = "";
-//	char localTest[30] = "";
-//	char localResult[30] = "";
-//	sprintf(localOject, "%s", testObject);
-//	sprintf(localTest, "%s", currentTest);
-//	sprintf(localResult, "%s", result);
-//	HAL_UART_Transmit(&huart1, "This is the test of ", sizeof("This is the test of "), HAL_MAX_DELAY);
-//	HAL_UART_Transmit(&huart1, localOject, sizeof(localOject), HAL_MAX_DELAY);
-//	HAL_UART_Transmit(&huart1, " and the current test is ", sizeof(" and the current test = "), HAL_MAX_DELAY);
-//	HAL_UART_Transmit(&huart1, localTest, sizeof(localTest), HAL_MAX_DELAY);
-//	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
-//	HAL_UART_Transmit(&huart1, "The result of this test is: ", sizeof("The result of this test is: "), HAL_MAX_DELAY);
-//	HAL_UART_Transmit(&huart1, localResult, sizeof(localResult), HAL_MAX_DELAY);
-//	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
-
-//	writeFile("test", "This is the test of ");
-//	writeFile("test", localOject);
-//	writeFile("test", " and the current test is ");
-//	writeFile("test", localTest);
-//	writeFile("test", "\n");
-//	writeFile("test", "The result of this test is: ");
-//	writeFile("test", localResult);
-//	writeFile("test", "\n");
 }
 

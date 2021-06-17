@@ -19,6 +19,5 @@ void setBuffer1Late();
 void setBuffer0Late();
 void setBuffer1LateInPreviousMinute();
 void setBuffer0LateInPreviousMinute();
-void printTestResult(char* testObject, char* currentTest, char* result);
 
 #endif /* INC_TEST_H_ */
