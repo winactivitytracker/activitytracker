@@ -8,6 +8,8 @@
 #ifndef INC_ACTIVITY_H_
 #define INC_ACTIVITY_H_
 
+#include <stdbool.h>
+
 typedef struct{
 	uint8_t		length;
 	uint8_t		activeDailyMinutes;
@@ -48,6 +50,9 @@ void RadioToBuffer(unsigned int id, unsigned int hours, unsigned int minutes, un
 #define BUFF_RESET	-1
 #define STEP_LIMIT 	-3800
 #define STEP_RELEASE	-2000
+
+
+
 
 #endif /* INC_ACTIVITY_H_ */
 

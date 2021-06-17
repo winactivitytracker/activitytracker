@@ -187,7 +187,60 @@ void testGyro()
 
 void testAccel()
 {
+	//make sure the board is stationary on the table before running this test
+	//Arrange
+	int16_t accelTest[3] = {0,0,0};
+	char shouldBe[90], isCurrent[60];
+	for(uint8_t i = 0; i < 90; i++)
+	{
+		if(i < 60)
+		{
+			isCurrent[i] = (char)0;
+		}
+		shouldBe[i] = (char)0;
+	}
+	char* result = "";
+	//Act
+	MPU6050ReadGyro(&accelTest[0], &accelTest[1], &accelTest[2]);
+	//Assert
+	if(accelTest[0] > (int16_t)MINACCELORGYRO && accelTest[0] < (int16_t)MAXACCELORGYRO)
+	{
+		result = "accel data is within max allowable limits";
+	} else
+	{
+		result = "accel data is out of allowable limits";
+		sprintf(shouldBe, "%s %d %s %d", "between", MINACCELORGYRO, "and", MAXACCELORGYRO);
+		HAL_Delay(20);
+		sprintf(isCurrent, "%d", accelTest[0]);
+		printWrongData(shouldBe, isCurrent);
+	}
+	printTestResult("MPU", "MPU accel test", result);
 
+	if(accelTest[1] > (int16_t)MINACCELORGYRO && accelTest[1] < (int16_t)MAXACCELORGYRO)
+	{
+		result = "accel data is within max allowable limits";
+	} else
+	{
+		result = "accel data is out of allowable limits";
+		sprintf(shouldBe, "%s-%d-%s-%d", "between", MINACCELORGYRO, "and", MAXACCELORGYRO);
+		HAL_Delay(20);
+		sprintf(isCurrent, "%d", accelTest[1]);
+		printWrongData(shouldBe, isCurrent);
+	}
+	printTestResult("MPU", "MPU accel test", result);
+
+	if(accelTest[2] > (int16_t)MINACCELORGYRO && accelTest[2] < (int16_t)MAXACCELORGYRO)
+	{
+		result = "accel data is within max allowable limits";
+	} else
+	{
+		result = "accel data is out of allowable limits";
+		sprintf(shouldBe, "%s %d %s %d", "between", MINACCELORGYRO, "and", MAXACCELORGYRO);
+		HAL_Delay(20);
+		sprintf(isCurrent, "%d", accelTest[2]);
+		printWrongData(shouldBe, isCurrent);
+	}
+	printTestResult("MPU", "MPU accel test", result);
 }
 
 void setCorrectTime()

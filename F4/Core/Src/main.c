@@ -45,6 +45,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+#define TEST 1
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -122,6 +125,13 @@ int main(void)
 	// Enable the ADC interrupt for measuring battery
 	__HAL_ADC_ENABLE_IT(&hadc1, ADC_FLAG_EOC);
 	HAL_ADC_Start_IT(&hadc1);
+
+	#ifdef TEST
+
+	//DOTESTS
+	while(1);
+
+	#endif
 
   /* USER CODE END 2 */
 
