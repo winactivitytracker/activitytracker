@@ -1,12 +1,5 @@
-/*
- * transmitter.h
- *
- *  Created on: 20 May 2021
- *      Author: arteeh
- */
-
-#ifndef SRC_TRANSMITTER_H_
-#define SRC_TRANSMITTER_H_
+#ifndef TRANSMITTER_H
+#define TRANSMITTER_H
 
 using namespace std;
 
@@ -15,6 +8,9 @@ using namespace std;
 #include <string>
 #include "tim.h"
 #include "main.h"
+
+// Normally 0, set to 1 for unit tests
+#define TEST_TRANSMITTER 1
 
 #define NO_NEW_BITS		2
 
@@ -33,8 +29,10 @@ using namespace std;
 
 class transmitter
 {
+
 private:
 
+#ifndef TEST_TRANSMITTER
 	bool messageSent = false;
 	deque<string> messages;
 	deque<bitset<8>> buffer;
@@ -44,15 +42,29 @@ private:
 	void fillBuffer();
 	uint8_t getNextBit();
 	void pin(uint8_t high);
+#endif
 
 public:
+
+	// These should normally be private and for internal use only.
+	// We set them to public to unit test the specific components of the radio code
+#ifdef TEST_TRANSMITTER
+	bool messageSent = false;
+	deque<string> messages;
+	deque<bitset<8>> buffer;
+	uint8_t bitPointer;
+	void enable();
+	void disable();
+	void fillBuffer();
+	uint8_t getNextBit();
+	void pin(uint8_t high);
+#endif
 
 	void send(string message);
 	void sendBlocking(string message);
 	void sendAck();
-
 	void tick();
 
 };
 
-#endif /* SRC_TRANSMITTER_H_ */
+#endif // TRANSMITTER_H
