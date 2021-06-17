@@ -35,6 +35,8 @@
 #include "fonts.h"
 #include "gps.h"
 #include "sdCard.h"
+#include "test.h"
+#include "activity.h"
 
 /* USER CODE END Includes */
 
@@ -119,15 +121,26 @@ int main(void)
 	SSD1306_Clear();
 	SSD1306_UpdateScreen();
 	//initialize the SD card and mount it so it can be used
-	initSdCard();
+	if(initSdCard())
+	{
+		HAL_GPIO_WritePin(GPIOB,LED_GREEN_Pin , SET);
+		HAL_Delay(500);
+		HAL_GPIO_WritePin(GPIOB,LED_GREEN_Pin , RESET);
+	} else
+	{
+		HAL_GPIO_WritePin(GPIOB,LED_RED_Pin , SET);
+	}
 	__HAL_UART_ENABLE_IT(&huart1, UART_FLAG_RXNE);
 
 	// Enable the ADC interrupt for measuring battery
 	__HAL_ADC_ENABLE_IT(&hadc1, ADC_FLAG_EOC);
 	HAL_ADC_Start_IT(&hadc1);
 
-	#ifdef TEST
+	dataTimeCheckFifo();
 
+	#ifdef TEST
+	testAll();
+	HAL_GPIO_WritePin(GPIOB,LED_GREEN_Pin , SET);
 	//DOTESTS
 	while(1);
 
@@ -187,8 +200,8 @@ void SystemClock_Config(void)
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
