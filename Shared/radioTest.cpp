@@ -1,5 +1,4 @@
 #include "radioTest.h"
-#include "radioObjects.h"
 #include "main.h"
 
 /*
@@ -46,22 +45,22 @@ void radioTest::printResult(string test, bool expected, bool actual, string resu
 // Utility functions
 
 // Test transmitter, receiver and API functions
-void radioTest::testAll()
+void radioTest::testAll(transmitter t, receiver r)
 {
-	testTransmitter();
-	testReceiver();
+	testTransmitter(t);
+	testReceiver(r);
 	testAPI();
 }
 
 // Test all transmitter functions
-void radioTest::testTransmitter()
+void radioTest::testTransmitter(transmitter t)
 {
-	transmitterFillBufferEmpty();
-	transmitterFillBufferString();
+	transmitterFillBufferEmpty(t);
+	transmitterFillBufferString(t);
 }
 
 // Test all receiver functions
-void radioTest::testReceiver()
+void radioTest::testReceiver(receiver r)
 {
 
 }
@@ -75,7 +74,7 @@ void radioTest::testAPI()
 // Transmitter class tests
 
 // call fillBuffer when the message queue is empty
-void radioTest::transmitterFillBufferEmpty()
+void radioTest::transmitterFillBufferEmpty(transmitter t)
 {
 	// Arrange
 	bool expected = true;
@@ -99,7 +98,7 @@ void radioTest::transmitterFillBufferEmpty()
 	//printResult("fillBuffer with an empty queue", expected, actual, result);
 }
 
-void radioTest::transmitterFillBufferString()
+void radioTest::transmitterFillBufferString(transmitter t)
 {
 	// Arrange
 	bitset<8> a("a");				// "a" (01100001) bitset object

@@ -12,10 +12,10 @@ using namespace std;
 #include "radioTest.h"
 #endif
 
-#include "radioObjects.h"
-
 #include "radioAPI.h"
 
+transmitter t;
+receiver r;
 radioTest rt;
 
 // Transmitter class public functions
@@ -104,7 +104,7 @@ void receiverTick()
 
 void radioTestAll()
 {
-	rt.testAll();
+	rt.testAll(t,r);
 }
 
 #endif

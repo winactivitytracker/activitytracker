@@ -2,6 +2,8 @@
 #define RADIOTEST_H
 
 #include "usart.h"
+#include "transmitter.h"
+#include "receiver.h"
 #include "radioAPI.h"
 
 #include <string>
@@ -21,14 +23,14 @@ private:
 public:
 
 	// Utility functions
-	void testAll();
-	void testTransmitter();
-	void testReceiver();
+	void testAll(transmitter t, receiver r);
+	void testTransmitter(transmitter t);
+	void testReceiver(receiver r);
 	void testAPI();
 
 	// Transmitter class tests
-	void transmitterFillBufferEmpty();
-	void transmitterFillBufferString();
+	void transmitterFillBufferEmpty(transmitter t);
+	void transmitterFillBufferString(transmitter t);
 
 	// Receiver class tests
 
