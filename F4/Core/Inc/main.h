@@ -40,6 +40,9 @@ extern "C" {
 //sd card
 #define SD_SPI_HANDLE hspi1
 
+#define TEST 1
+#define TEST_RADIO 1
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

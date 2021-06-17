@@ -4,6 +4,13 @@
 #include "usart.h"
 #include "transmitter.h"
 #include "receiver.h"
+#include "radioAPI.h"
+
+#include <string>
+#include <bitset>
+#include <deque>
+
+using namespace std;
 
 class radioTest
 {
@@ -16,22 +23,21 @@ private:
 public:
 
 	// Utility functions
-	void testAll();
-	void testTransmitter();
-	void testReceiver();
+	void testAll(transmitter t, receiver r);
+	void testTransmitter(transmitter t);
+	void testReceiver(receiver r);
 	void testAPI();
 
 	// Transmitter class tests
-	void transmitterFillBufferEmpty();
-	void transmitterFillBuffer1String();
-	void transmitterFillBuffer2String();
+	void transmitterFillBufferEmpty(transmitter t);
+	void transmitterFillBufferString(transmitter t);
 
 	// Receiver class tests
 
 
 	// API function tests
 
-
 };
+
 
 #endif // RADIOTEST_H

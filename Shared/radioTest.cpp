@@ -1,26 +1,24 @@
+#include "radioTest.h"
 #include "main.h"
 
-#if TEST_RADIO
-
-#include <radioTest.h>
-
-// Print a result string to USART
+/*
+// Print a result to USART
 void radioTest::printResult(string test, string expected, string actual, string result)
 {
 	HAL_UART_Transmit(&huart1, (uint8_t *)"Test: ",				sizeof("Test: "),		HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, (uint8_t *)test.c_str(),			sizeof(test),			HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)test,					sizeof(test),			HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart1, (uint8_t *)"\n",					sizeof("\n"),			HAL_MAX_DELAY);
 
 	HAL_UART_Transmit(&huart1, (uint8_t *)"Expected: ",			sizeof("Expected: "),	HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, (uint8_t *)expected.c_str(),		sizeof(expected),		HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)expected,				sizeof(expected),		HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart1, (uint8_t *)"\n",					sizeof("\n"),			HAL_MAX_DELAY);
 
 	HAL_UART_Transmit(&huart1, (uint8_t *)"Actual: ",			sizeof("Actual: "),		HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, (uint8_t *)actual.c_str(),		sizeof(actual),			HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)actual,				sizeof(actual),			HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart1, (uint8_t *)"\n",					sizeof("\n"),			HAL_MAX_DELAY);
 
 	HAL_UART_Transmit(&huart1, (uint8_t *)"Result: ",			sizeof("Result: "),		HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, (uint8_t *)result.c_str(),		sizeof(result),			HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)result,				sizeof(result),			HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart1, (uint8_t *)"\n\n",				sizeof("\n\n"),			HAL_MAX_DELAY);
 }
 
@@ -42,26 +40,27 @@ void radioTest::printResult(string test, bool expected, bool actual, string resu
 
 	printResult(test, e, a, result);
 }
+*/
 
 // Utility functions
 
 // Test transmitter, receiver and API functions
-void radioTest::testAll()
+void radioTest::testAll(transmitter t, receiver r)
 {
-	testTransmitter();
-	testReceiver();
+	testTransmitter(t);
+	testReceiver(r);
 	testAPI();
 }
 
 // Test all transmitter functions
-void radioTest::testTransmitter()
+void radioTest::testTransmitter(transmitter t)
 {
-	transmitterFillBufferEmpty();
-	transmitterFillBuffer1String();
+	transmitterFillBufferEmpty(t);
+	transmitterFillBufferString(t);
 }
 
 // Test all receiver functions
-void radioTest::testReceiver()
+void radioTest::testReceiver(receiver r)
 {
 
 }
@@ -75,14 +74,12 @@ void radioTest::testAPI()
 // Transmitter class tests
 
 // call fillBuffer when the message queue is empty
-void radioTest::transmitterFillBufferEmpty()
+void radioTest::transmitterFillBufferEmpty(transmitter t)
 {
 	// Arrange
 	bool expected = true;
 	bool actual;
 	string result;
-
-	transmitter t;
 
 	// Act
 	t.fillBuffer();
@@ -98,35 +95,34 @@ void radioTest::transmitterFillBufferEmpty()
 		result == "FAIL: Buffer is not empty";
 	}
 
-	printResult("fillBuffer with an empty queue", expected, actual, result);
+	//printResult("fillBuffer with an empty queue", expected, actual, result);
 }
 
-void radioTest::transmitterFillBuffer1String()
+void radioTest::transmitterFillBufferString(transmitter t)
 {
 	// Arrange
-	bitset<8> a("a");			// "a" (01100001) bitset object
+	bitset<8> a("a");				// "a" (01100001) bitset object
 	deque<bitset<8>> expected;
-	expected.push_front(a);		// Fill the expected buffer with "a"
+	expected.push_front(a);			// Fill the expected buffer with "a"
 	deque<bitset<8>> actual;
 	string result;
-	transmitter t;
 
 	// Act
-	t.messages.push_front("a");	// Add "a" to message queue, like send()
+	t.messages.push_front("a");		// Add "a" to message queue, like send()
 	t.fillBuffer();
 	actual = t.buffer;
 
 	// Assert
 	if(actual.front() == expected.front())
 	{
-		result = 'PASS: "a" is in the buffer';
+		result = "PASS: a is in the buffer";
 	}
 	else
 	{
-		result = 'FAIL: "a" is not in the buffer';
+		result = "FAIL: a is not in the buffer";
 	}
 
-	printResult("fillBuffer with one string in the queue", expected.front().to_string(), actual.front().to_string(), result);
+	//printResult("fillBuffer with one string in the queue", expected.front().to_string(), actual.front().to_string(), result);
 }
 
 // Receiver class tests
@@ -135,5 +131,3 @@ void radioTest::transmitterFillBuffer1String()
 
 // API function tests
 
-
-#endif

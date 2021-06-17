@@ -142,6 +142,9 @@ int main(void)
 	testAll();
 	HAL_GPIO_WritePin(GPIOB,LED_GREEN_Pin , SET);
 	//DOTESTS
+
+	radioTestAll();
+
 	while(1);
 
 	#endif

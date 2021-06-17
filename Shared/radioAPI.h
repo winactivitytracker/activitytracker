@@ -10,6 +10,7 @@ extern "C"
 #endif
 
 #include <stdbool.h>
+#include "main.h"
 
 // Transmitter class public functions
 void transmitterSend(char * message);
@@ -25,10 +26,8 @@ void receiverPopMessage(char *str);
 bool receiverWaitForAck(uint16_t milliseconds);
 void receiverTick();
 
-// radioTest class functions
+// Test class functions
 void radioTestAll();
-void radioTestTransmitter();
-void radioTestReceiver();
 
 #ifdef __cplusplus
 }

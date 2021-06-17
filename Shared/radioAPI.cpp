@@ -7,7 +7,11 @@ using namespace std;
 
 #include "transmitter.h"
 #include "receiver.h"
+
+#if TEST_RADIO == 1
 #include "radioTest.h"
+#endif
+
 #include "radioAPI.h"
 
 transmitter t;
@@ -68,7 +72,7 @@ void receiverDisable()
 
 bool receiverCheckMessage()
 {
-	r.checkMessage();
+	return r.checkMessage();
 }
 
 // Get a message from the message queue.
@@ -96,20 +100,11 @@ void receiverTick()
 	r.tick();
 }
 
-// radioTest class functions
-#if TEST_RADIO
+#if TEST_RADIO == 1
+
 void radioTestAll()
 {
-	rt.testAll();
+	rt.testAll(t,r);
 }
 
-void radioTestTransmitter()
-{
-	rt.testTransmitter();
-}
-
-void radioTestReceiver()
-{
-	rt.testReceiver();
-}
 #endif
