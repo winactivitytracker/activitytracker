@@ -11,6 +11,7 @@
 void testAll();
 void testActivity();
 void testTimeCheckFifo();
+void testActivityGeneral();
 void setEmptyBuffers();
 void setBuffer0();
 void setBuffer1();
@@ -19,14 +20,15 @@ void setBuffer1Late();
 void setBuffer0Late();
 void setBuffer1LateInPreviousMinute();
 void setBuffer0LateInPreviousMinute();
+void setBuffer1Late30SecInPreviousMinute();
+void setBuffer0Late30SecInPreviousMinute();
+void setBufferStepWorthy();
+void setBufferMultipleData();
 void ActivitySetTest();
 void activityToStringTest();
 void totalActivtyTest();
 void AcitivytLengthTest();
 void AcitivytDailyLengthTest();
-void setBuffer1Late30SecInPreviousMinute();
-void setBuffer0Late30SecInPreviousMinute();
-void setBufferStepWorthy();
 
 
 #endif /* INC_TEST_H_ */
