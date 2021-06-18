@@ -9,9 +9,6 @@ using namespace std;
 #include "tim.h"
 #include "main.h"
 
-// Normally 0, set to 1 for unit tests
-#define TEST_TRANSMITTER 1
-
 #define NO_NEW_BITS		2
 
 #define START_HIGH		0
@@ -32,7 +29,7 @@ class transmitter
 
 private:
 
-#ifndef TEST_TRANSMITTER
+#ifndef TEST_RADIO
 	bool messageSent = false;
 	deque<string> messages;
 	deque<bitset<8>> buffer;
@@ -48,7 +45,7 @@ public:
 
 	// These should normally be private and for internal use only.
 	// We set them to public to unit test the specific components of the radio code
-#ifdef TEST_TRANSMITTER
+#ifdef TEST_RADIO
 	bool messageSent = false;
 	deque<string> messages;
 	deque<bitset<8>> buffer;
