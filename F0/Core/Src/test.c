@@ -9,7 +9,7 @@
  * This file will test the functions of the project
  * You can run the tests by calling the "testAll()" function in the main.
  */
-#include "main.h"
+#include "RATmain.h"
 #include "rtc.h"
 #include "mpu.h"
 #include "test.h"
@@ -384,24 +384,24 @@ void printTestResult(char* testObject, char* currentTest, char* result)
 	sprintf(localOject, "%s", testObject);
 	sprintf(localTest, "%s", currentTest);
 	sprintf(localResult, "%s", result);
-	HAL_UART_Transmit(&huart1, "This is the test of ", sizeof("This is the test of "), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, localOject, sizeof(localOject), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, " and the current test is ", sizeof(" and the current test = "), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, localTest, sizeof(localTest), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, "The result of this test is: ", sizeof("The result of this test is: "), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, localResult, sizeof(localResult), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, "----------------------", sizeof("----------------------"), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"This is the test of ", sizeof("This is the test of "), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)localOject, sizeof(localOject), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)" and the current test is ", sizeof(" and the current test = "), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)localTest, sizeof(localTest), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"\n", sizeof("\n"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"The result of this test is: ", sizeof("The result of this test is: "), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)localResult, sizeof(localResult), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"\n", sizeof("\n"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"----------------------", sizeof("----------------------"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"\n", sizeof("\n"), HAL_MAX_DELAY);
 }
 
 void printWrongData(char shouldBe[90], char isCurrent[60])
 {
-	HAL_UART_Transmit(&huart1, "Data is currently: ", sizeof("Data is currently: "), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"Data is currently: ", sizeof("Data is currently: "), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart1, isCurrent, sizeof(isCurrent), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, "Data should be: ", sizeof("Data should be: "), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"\n", sizeof("\n"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"Data should be: ", sizeof("Data should be: "), HAL_MAX_DELAY);
 	HAL_UART_Transmit(&huart1, shouldBe, sizeof(shouldBe), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"\n", sizeof("\n"), HAL_MAX_DELAY);
 }

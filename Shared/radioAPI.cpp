@@ -15,13 +15,6 @@ radioTest rt;
 
 transmitter t;
 receiver r;
-<<<<<<< HEAD
-#if TEST_RADIO == 1
-radioTest rt;
-#endif
-=======
-
->>>>>>> 36d49780ab4084e9eb71f82970dec73d73be7aab
 
 // Transmitter class public functions
 

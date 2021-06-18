@@ -8,6 +8,9 @@ using namespace std;
 #include <string>
 #include "tim.h"
 #include "main.h"
+#if F0
+#include "RATmain.h"
+#endif
 
 // Normally 0, set to 1 for unit tests
 #define TEST_TRANSMITTER 1

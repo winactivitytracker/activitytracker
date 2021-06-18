@@ -101,14 +101,14 @@ void MPUToUsartInit()
 
 	for(uint8_t i = 0; i < 3; i++)
 	{
-		HAL_UART_Transmit(&huart1, nameArray[i], sizeof(nameArray[i]), HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart1, (uint8_t *)nameArray[i], sizeof(nameArray[i]), HAL_MAX_DELAY);
 		if(i != 5)
 		{
-			HAL_UART_Transmit(&huart1, ",", sizeof(","), HAL_MAX_DELAY);
+			HAL_UART_Transmit(&huart1, (uint8_t *)",", sizeof(","), HAL_MAX_DELAY);
 		}
 		else
 		{
-			HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+			HAL_UART_Transmit(&huart1, (uint8_t *)"\n", sizeof("\n"), HAL_MAX_DELAY);
 		}
 	}
 }
@@ -124,8 +124,8 @@ void MPUToUsartLoop()
 	while(counter < 6)
 	{
 		sprintf(numbers, "%d", MPUData[counter]);
-		HAL_UART_Transmit(&huart1, numbers, sizeof(numbers), HAL_MAX_DELAY);
-		HAL_UART_Transmit(&huart1, "\t", sizeof("\t"), HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart1, (uint8_t *)numbers, sizeof(numbers), HAL_MAX_DELAY);
+		HAL_UART_Transmit(&huart1, (uint8_t *)"\t", sizeof("\t"), HAL_MAX_DELAY);
 		counter++;
 	}
 

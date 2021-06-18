@@ -6,6 +6,9 @@
  */
 
 #include "main.h"
+#if F0
+#include "RATmain.h"
+#endif
 #include "radioHandler.h"
 #include "mpu.h"
 #include "radioAPI.h"

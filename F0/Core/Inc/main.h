@@ -32,25 +32,8 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "mpu.h"
-#include "radioAPI.h"
-#include "radioHandler.h"
-#include <string.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdlib.h>
 
-// F0 Radio timers
-#define SEND_TIMER		&htim15
-#define RECEIVE_TIMER	&htim16
-
-// 1 for wrist, 0 for ankle
-#define IDENTIFIER		0
-#define TEST			1
-#define TEST_MPU		0
-#define TEST_RTC 		1
-#define TEST_RADIO 		0
-#define DO_NOT_ENCRYPT	1
+#define F0 1
 
 /* USER CODE END Includes */
 
