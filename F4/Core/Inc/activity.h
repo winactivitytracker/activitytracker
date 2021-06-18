@@ -30,7 +30,7 @@ void CalculateActivityAverage(uint8_t lastActiveMinute);
 void getActivity();
 char* activityToString(uint8_t activity);
 void ActivityTotal();
-void step(int16_t *legData[4], int16_t *armData[4]);
+void step(int16_t legData[4], int16_t armData[4]);
 void dataTimeCheckFifo();
 void moveBuffFifo(uint8_t buff);
 void RadioToBuffer(unsigned int id, unsigned int hours, unsigned int minutes, unsigned int seconds, int gyroZ);

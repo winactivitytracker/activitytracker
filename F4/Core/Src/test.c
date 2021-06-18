@@ -8,6 +8,7 @@
 #include "main.h"
 #include "activity.h"
 #include "test.h"
+#include "sdcard.h"
 
 extern int16_t RTCMPUData[SELECT][BUFF_SIZE][DATA_ORDER];    //[which F0][buffer amount][0=hours,1=minutes,2=seconds,3=data]
 extern uint8_t steps;
@@ -20,7 +21,7 @@ extern bool stepBlock;
 
 void testAll()
 {
-
+	testActivity();
 }
 
 void testActivity()
@@ -55,6 +56,7 @@ void setEmptyBuffers()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_HOURS] = BUFF_RESET;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = BUFF_RESET;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = BUFF_RESET;
+	dataTimeCheckFifo();
 	
 	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
@@ -90,6 +92,7 @@ void setBuffer0()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_HOURS] = BUFF_RESET;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = BUFF_RESET;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = BUFF_RESET;
+	dataTimeCheckFifo();
 	
 	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == 1 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == 1)
 	{
@@ -125,6 +128,7 @@ void setBuffer1()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_HOURS] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 1;
+	dataTimeCheckFifo();
 	
 	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
@@ -160,6 +164,7 @@ void setBufferBoth()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_HOURS] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 1;
+	dataTimeCheckFifo();
 	
 	if((oldBuffer0Pointer+1) == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
@@ -195,6 +200,7 @@ void setBuffer1Late()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_HOURS] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 1;
+	dataTimeCheckFifo();
 	
 	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == 1 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == 2)
 	{
@@ -230,6 +236,7 @@ void setBuffer0Late()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_HOURS] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 2;
+	dataTimeCheckFifo();
 	
 	if((oldBuffer0Pointer+1) == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
@@ -240,7 +247,7 @@ void setBuffer0Late()
 	}
 	printTestResult("Activity", "Activity set both buffers, leg buffer is late", result);
 	
-	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == 1 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == 2)
+	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == -200 &&  RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == 1 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == 2)
 	{
 		result = "buffer 1 = correct";
 	} else
@@ -256,6 +263,7 @@ void setBuffer1LateInPreviousMinute()
 {
 	char* result;
 	uint8_t oldBuffer0Pointer = 0, oldBuffer1Pointer = 0;
+	uint8_t test;
 	buffer0Pointer = 0, buffer1Pointer = 0;
 	RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_DATA] = -200;
 	RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_HOURS] = 1;
@@ -265,6 +273,7 @@ void setBuffer1LateInPreviousMinute()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_HOURS] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 59;
+	dataTimeCheckFifo();
 	
 	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == 2 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == 0)
 	{
@@ -300,6 +309,7 @@ void setBuffer0LateInPreviousMinute()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_HOURS] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 2;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 0;
+	dataTimeCheckFifo();
 	
 	if((oldBuffer0Pointer+1) == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
@@ -322,12 +332,12 @@ void setBuffer0LateInPreviousMinute()
 
 void printTestResult(char* testObject, char* currentTest, char* result)
 {
-	char localOject[30] = "";
-	char localTest[30] = "";
-	char localResult[30] = "";
-	sprintf(localOject, "%s", testObject);
-	sprintf(localTest, "%s", currentTest);
-	sprintf(localResult, "%s", result);
+//	char localOject[30] = "";
+//	char localTest[30] = "";
+//	char localResult[30] = "";
+//	sprintf(localOject, "%s", testObject);
+//	sprintf(localTest, "%s", currentTest);
+//	sprintf(localResult, "%s", result);
 //	HAL_UART_Transmit(&huart1, "This is the test of ", sizeof("This is the test of "), HAL_MAX_DELAY);
 //	HAL_UART_Transmit(&huart1, localOject, sizeof(localOject), HAL_MAX_DELAY);
 //	HAL_UART_Transmit(&huart1, " and the current test is ", sizeof(" and the current test = "), HAL_MAX_DELAY);
@@ -337,15 +347,13 @@ void printTestResult(char* testObject, char* currentTest, char* result)
 //	HAL_UART_Transmit(&huart1, localResult, sizeof(localResult), HAL_MAX_DELAY);
 //	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
 
-	writeFile("test", "This is the test of ");
-	writeFile("test", localOject);
-	writeFile("test", " and the current test is ");
-	writeFile("test", localTest);
-	writeFile("test", "\n");
-	writeFile("test", "The result of this test is: ");
-	writeFile("test", localResult);
-	writeFile("test", "\n");
-	
-	HAL_Delay(500);
+//	writeFile("test", "This is the test of ");
+//	writeFile("test", localOject);
+//	writeFile("test", " and the current test is ");
+//	writeFile("test", localTest);
+//	writeFile("test", "\n");
+//	writeFile("test", "The result of this test is: ");
+//	writeFile("test", localResult);
+//	writeFile("test", "\n");
 }
 

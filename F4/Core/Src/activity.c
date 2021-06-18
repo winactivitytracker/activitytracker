@@ -284,30 +284,30 @@ void dataTimeCheckFifo()
             if(RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_SECONDS] == MAX_SECONDS && RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] != 58)
             {
                 //delete RTCMPUData[0] because it's 59 while RTCMPUData[1] is already in the next min
-                moveBuff(BUFF_LEG);
+                moveBuffFifo(BUFF_LEG);
             } else if (RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] == MAX_SECONDS && RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_SECONDS] != 58)
             {
                 //delete RTCMPUData[1] because it's 59 while RTCMPUData[0] is already in the next min
-                moveBuff(BUFF_ARM);
+                moveBuffFifo(BUFF_ARM);
             } else if (RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_SECONDS] <= RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS])
             {
                 //delete RTCMPUData[0] because it's an older value then RTCMPUData[1]
-                moveBuff(BUFF_LEG);
+                moveBuffFifo(BUFF_LEG);
             } else
             {
                 //delete RTCMPUData[1] because it's an older value then RTCMPUData[0]
-                moveBuff(BUFF_ARM);
+                moveBuffFifo(BUFF_ARM);
             }
         } else
         {    //the seconds of both data are the same
-            step(&RTCMPUData[BUFF_LEG][buffer0Pointer], &RTCMPUData[BUFF_ARM][buffer1Pointer]);
-            moveBuff(BUFF_ALL);
+            step(RTCMPUData[BUFF_LEG][buffer0Pointer], RTCMPUData[BUFF_ARM][buffer1Pointer]);
+            moveBuffFifo(BUFF_ALL);
         }
     }
 }
 
 //step function, counts if there was a step, should be in the while loop
-void step(int16_t *legData[BUFF_DATA], int16_t *armData[BUFF_DATA])
+void step(int16_t legData[4], int16_t armData[4])
 {
 	static float time = 0.0;
 	static int counter = 0;
@@ -330,11 +330,11 @@ void step(int16_t *legData[BUFF_DATA], int16_t *armData[BUFF_DATA])
     }
 
     //the data of the arm x3 because it is less strong
-    int16_t armData3 = 3 * *armData[BUFF_DATA];
+    int16_t armData3 = 3 * armData[BUFF_DATA];
 
     //checks if the data is actually a step
     //if((*legData[BUFF_DATA] + armData3) < STEP_LIMIT && !stepBlock)
-    if((*legData[BUFF_DATA] + armData[BUFF_DATA]) < STEP_LIMIT && !stepBlock)
+    if((legData[BUFF_DATA] + armData[BUFF_DATA]) < STEP_LIMIT && !stepBlock)
     {
         //add 1 to the counter
         steps++;
@@ -343,11 +343,11 @@ void step(int16_t *legData[BUFF_DATA], int16_t *armData[BUFF_DATA])
     }
 
     //makes sure that the step has ended before recognizing a new one
-    if((*legData[BUFF_DATA] + armData3) >= STEP_RELEASE){
+    if((legData[BUFF_DATA] + armData3) >= STEP_RELEASE){
         stepBlock = false;
     }
 
-    HAL_Delay(250);
+    //HAL_Delay(250);
 }
 
 void RadioToBuffer(unsigned int id, unsigned int hours, unsigned int minutes, unsigned int seconds, int gyroZ)
