@@ -19,5 +19,10 @@ void setBuffer1Late();
 void setBuffer0Late();
 void setBuffer1LateInPreviousMinute();
 void setBuffer0LateInPreviousMinute();
+void ActivitySetTest();
+void activityToStringTest();
+void totalActivtyTest();
+void AcitivytLengthTest();
+void AcitivytDailyLengthTest();
 
 #endif /* INC_TEST_H_ */
