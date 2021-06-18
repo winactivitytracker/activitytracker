@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
+#include <sdcard.h>
 #include "FreeRTOS.h"
 #include "task.h"
 #include "main.h"
@@ -37,7 +38,6 @@
 #include "gps.h"
 #include "usart.h"
 #include "adc.h"
-#include "sdCard.h"
 #include "activity.h"
 #include "radioAPI.h"
 

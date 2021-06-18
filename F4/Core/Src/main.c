@@ -18,6 +18,7 @@
  */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <sdcard.h>
 #include "main.h"
 #include "cmsis_os.h"
 #include "adc.h"
@@ -34,7 +35,6 @@
 #include "ssd1306.h"
 #include "fonts.h"
 #include "gps.h"
-#include "sdCard.h"
 #include "test.h"
 #include "activity.h"
 

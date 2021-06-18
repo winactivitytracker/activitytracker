@@ -5,7 +5,7 @@
  *      Author: markv
  */
 
-#include "sdCard.h"
+#include <sdcard.h>
 #include "gps.h"
 
 FATFS FatFs; 	//Fatfs handle

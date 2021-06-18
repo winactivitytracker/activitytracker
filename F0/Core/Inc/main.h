@@ -47,9 +47,9 @@ extern "C" {
 // 1 for wrist, 0 for ankle
 #define IDENTIFIER		0
 #define TEST			1
-#define TEST_MPU		0
+#define TEST_MPU		1
 #define TEST_RTC 		1
-#define TEST_RADIO 		0
+#define TEST_RADIO 		1
 #define DO_NOT_ENCRYPT	1
 
 /* USER CODE END Includes */

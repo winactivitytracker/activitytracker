@@ -4,12 +4,12 @@
  *  Created on: 28 mei 2021
  *      Author: joel-
  */
+#include <sdcard.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "gps.h"
 #include "activity.h"
-#include "sdCard.h"
 
 #define maxAcitivitySize 0Xff
 #define amountOfActivites 	5
