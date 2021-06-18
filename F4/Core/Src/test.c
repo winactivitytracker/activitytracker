@@ -47,6 +47,9 @@ void testTimeCheckFifo()
 	totalActivtyTest();
 	AcitivytLengthTest();
 	AcitivytDailyLengthTest();
+	setBuffer1Late30SecInPreviousMinute();
+	setBuffer0Late30SecInPreviousMinute();
+	setBufferStepWorthy();
 }
 
 //TEST1
@@ -65,7 +68,7 @@ void setEmptyBuffers()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = BUFF_RESET;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = BUFF_RESET;
 	dataTimeCheckFifo();
-	
+
 	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 0 = correct";
@@ -73,7 +76,7 @@ void setEmptyBuffers()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 1 = correct";
@@ -99,7 +102,7 @@ void setBuffer0()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = BUFF_RESET;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = BUFF_RESET;
 	dataTimeCheckFifo();
-	
+
 	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == 1 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == 1)
 	{
 		result = "buffer 0 = correct";
@@ -107,7 +110,7 @@ void setBuffer0()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 1 = correct";
@@ -133,7 +136,7 @@ void setBuffer1()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 1;
 	dataTimeCheckFifo();
-	
+
 	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 0 = correct";
@@ -141,7 +144,7 @@ void setBuffer1()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == 1 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == 1)
 	{
 		result = "buffer 1 = correct";
@@ -167,7 +170,7 @@ void setBufferBoth()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 1;
 	dataTimeCheckFifo();
-	
+
 	if((oldBuffer0Pointer+1) == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 0 = correct";
@@ -175,7 +178,7 @@ void setBufferBoth()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if((oldBuffer1Pointer+1) == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 1 = correct";
@@ -201,7 +204,7 @@ void setBuffer1Late()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 1;
 	dataTimeCheckFifo();
-	
+
 	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == 1 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == 2)
 	{
 		result = "buffer 0 = correct";
@@ -209,7 +212,7 @@ void setBuffer1Late()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if((oldBuffer1Pointer+1) == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 1 = correct";
@@ -235,7 +238,7 @@ void setBuffer0Late()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 2;
 	dataTimeCheckFifo();
-	
+
 	if((oldBuffer0Pointer+1) == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 0 = correct";
@@ -243,7 +246,7 @@ void setBuffer0Late()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == -200 &&  RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == 1 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == 2)
 	{
 		result = "buffer 1 = correct";
@@ -270,7 +273,7 @@ void setBuffer1LateInPreviousMinute()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 59;
 	dataTimeCheckFifo();
-	
+
 	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == 2 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == 0)
 	{
 		result = "buffer 0 = correct";
@@ -278,7 +281,7 @@ void setBuffer1LateInPreviousMinute()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if((oldBuffer1Pointer+1) == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 1 = correct";
@@ -304,7 +307,7 @@ void setBuffer0LateInPreviousMinute()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 2;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 0;
 	dataTimeCheckFifo();
-	
+
 	if((oldBuffer0Pointer+1) == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 0 = correct";
@@ -312,13 +315,123 @@ void setBuffer0LateInPreviousMinute()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == 2 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == 0)
 	{
 		result = "buffer 1 = correct";
 	} else
 	{
 		result = "buffer 1 = incorrect";
+	}
+}
+
+//TEST9
+//test what happens when there is data in both buffers but the arm buffer is 30 second behind in the previous buffer
+void setBuffer1Late30SecInPreviousMinute()
+{
+	char* result;
+	uint8_t oldBuffer0Pointer = 0, oldBuffer1Pointer = 0;
+	buffer0Pointer = 0, buffer1Pointer = 0;
+	RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_DATA] = -200;
+	RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_HOURS] = 1;
+	RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_MINUTES] = 2;
+	RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_SECONDS] = 15;
+	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_DATA] = -200;
+	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_HOURS] = 1;
+	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
+	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 45;
+	dataTimeCheckFifo();
+
+	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == 2 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == 15)
+	{
+		result = "buffer 0 = correct";
+	} else
+	{
+		result = "buffer 0 = incorrect";
+	}
+
+	if((oldBuffer1Pointer+1) == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
+	{
+		result = "buffer 1 = correct";
+	} else
+	{
+		result = "buffer 1 = incorrect";
+	}
+}
+
+//TEST10
+//test what happens when there is data in both buffers but the leg buffer is 30 second behind in the previous buffer
+void setBuffer0Late30SecInPreviousMinute()
+{
+	char* result;
+	uint8_t oldBuffer0Pointer = 0, oldBuffer1Pointer = 0;
+	buffer0Pointer = 0, buffer1Pointer = 0;
+	RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_DATA] = -200;
+	RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_HOURS] = 1;
+	RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_MINUTES] = 1;
+	RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_SECONDS] = 45;
+	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_DATA] = -200;
+	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_HOURS] = 1;
+	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 2;
+	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 15;
+	dataTimeCheckFifo();
+
+	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
+	{
+		result = "buffer 0 = correct";
+	} else
+	{
+		result = "buffer 0 = incorrect";
+	}
+
+	if((oldBuffer1Pointer+1) == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == 2 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == 15)
+	{
+		result = "buffer 1 = correct";
+	} else
+	{
+		result = "buffer 1 = incorrect";
+	}
+}
+
+//TEST11
+//test what happens when there is step worthy data in both buffers
+void setBufferStepWorthy()
+{
+	char* result;
+	uint8_t oldBuffer0Pointer = 0, oldBuffer1Pointer = 0, oldSteps = 0;
+	buffer0Pointer = 0, buffer1Pointer = 0, steps = 0;
+	RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_DATA] = -2000;
+	RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_HOURS] = 1;
+	RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_MINUTES] = 1;
+	RTCMPUData[BUFF_LEG][buffer0Pointer][BUFF_SECONDS] = 1;
+	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_DATA] = -1000;
+	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_HOURS] = 1;
+	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
+	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 1;
+	dataTimeCheckFifo();
+
+	if((oldBuffer0Pointer+1) == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
+	{
+		result = "buffer 0 = correct";
+	} else
+	{
+		result = "buffer 0 = incorrect";
+	}
+
+	if((oldBuffer1Pointer+1) == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
+	{
+		result = "buffer 1 = correct";
+	} else
+	{
+		result = "buffer 1 = incorrect";
+	}
+
+	if((oldSteps+1) == steps && stepBlock)
+	{
+		result = "step = correct";
+	} else
+	{
+		result = "step = incorrect";
 	}
 }
 
@@ -511,4 +624,3 @@ void AcitivytDailyLengthTest()
 		assert(CurrentActivity.activeDailyMinutes == 0);
 
 }
-

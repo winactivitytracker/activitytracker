@@ -18,6 +18,7 @@
  */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <sdcard.h>
 #include "main.h"
 #include "cmsis_os.h"
 #include "adc.h"
@@ -34,7 +35,6 @@
 #include "ssd1306.h"
 #include "fonts.h"
 #include "gps.h"
-#include "sdCard.h"
 #include "test.h"
 #include "activity.h"
 
@@ -143,7 +143,9 @@ int main(void)
 	HAL_GPIO_WritePin(GPIOB,LED_GREEN_Pin , SET);
 	//DOTESTS
 
+	#if TEST_RADIO == 1
 	radioTestAll();
+	#endif
 
 	while(1);
 

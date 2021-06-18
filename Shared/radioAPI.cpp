@@ -1,23 +1,22 @@
 // C API for radio and message functions.
 // This makes it possible for functions in C (like main and the interrupt handler) to call C++ code.
 
+#include "radioAPI.h"
+
 using namespace std;
 
 #include <cstring>
-
 #include "transmitter.h"
 #include "receiver.h"
-
 #if TEST_RADIO == 1
 #include "radioTest.h"
-radioTest rt;
 #endif
-
-#include "radioAPI.h"
 
 transmitter t;
 receiver r;
-
+#if TEST_RADIO == 1
+radioTest rt;
+#endif
 
 // Transmitter class public functions
 
@@ -105,7 +104,7 @@ void receiverTick()
 
 void radioTestAll()
 {
-	rt.testAll(t,r);
+	rt.testAll();
 }
 
-#endif
+#endif // TEST_RADIO == 1

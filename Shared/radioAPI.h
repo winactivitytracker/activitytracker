@@ -1,8 +1,8 @@
 // C API for radio and message functions.
 // This makes it possible for functions in C (like main and the interrupt handler) to call C++ code.
 
-#ifndef INC_RADIOAPI_H_
-#define INC_RADIOAPI_H_
+#ifndef RADIOAPI_H
+#define RADIOAPI_H
 
 #ifdef __cplusplus
 extern "C"
@@ -33,4 +33,4 @@ void radioTestAll();
 }
 #endif
 
-#endif /* INC_RADIOAPI_H_ */
+#endif // RADIOAPI_H

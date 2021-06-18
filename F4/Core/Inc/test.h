@@ -24,5 +24,9 @@ void activityToStringTest();
 void totalActivtyTest();
 void AcitivytLengthTest();
 void AcitivytDailyLengthTest();
+void setBuffer1Late30SecInPreviousMinute();
+void setBuffer0Late30SecInPreviousMinute();
+void setBufferStepWorthy();
+
 
 #endif /* INC_TEST_H_ */

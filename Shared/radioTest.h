@@ -1,6 +1,7 @@
 #ifndef RADIOTEST_H
 #define RADIOTEST_H
 
+#include "main.h"
 #include "usart.h"
 #include "transmitter.h"
 #include "receiver.h"
@@ -17,27 +18,30 @@ class radioTest
 
 private:
 
+	// Utility functions
 	void printResult(string test, string expected, string actual, string result);
-	void printResult(string test, bool expected, bool actual, string result);
 
 public:
 
 	// Utility functions
-	void testAll(transmitter t, receiver r);
-	void testTransmitter(transmitter t);
-	void testReceiver(receiver r);
+	void testAll();
+	void testTransmitter();
+	void testReceiver();
 	void testAPI();
 
 	// Transmitter class tests
-	void transmitterFillBufferEmpty(transmitter t);
-	void transmitterFillBufferString(transmitter t);
+	void transmitterFillBufferEmpty();
+	void transmitterFillBufferString();
+	void transmitterGetNextBitOnce();
+	void transmitterGetNextBitTwice();
+	void transmitterGetNextBitEmpty();
 
 	// Receiver class tests
-
+	void receiverAddToBuffer1Byte();
+	void receiverAddToBuffer2Byte();
 
 	// API function tests
 
 };
-
 
 #endif // RADIOTEST_H
