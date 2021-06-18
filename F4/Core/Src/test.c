@@ -9,6 +9,7 @@
 #include "activity.h"
 #include "test.h"
 #include "sdcard.h"
+#include "gps.h"
 
 extern int16_t RTCMPUData[SELECT][BUFF_SIZE][DATA_ORDER];    //[which F0][buffer amount][0=hours,1=minutes,2=seconds,3=data]
 extern uint8_t steps;
@@ -18,6 +19,8 @@ extern uint8_t buffer1Pointer;
 extern uint8_t buffer0TailPointer;
 extern uint8_t buffer1TailPointer;
 extern bool stepBlock;
+extern Activity_T CurrentActivity;
+extern GPS_t GPS;
 
 void testAll()
 {
@@ -39,6 +42,11 @@ void testTimeCheckFifo()
 	setBuffer0Late();
 	setBuffer1LateInPreviousMinute();
 	setBuffer0LateInPreviousMinute();
+	ActivitySetTest();
+	activityToStringTest();
+	totalActivtyTest();
+	AcitivytLengthTest();
+	AcitivytDailyLengthTest();
 	setBuffer1Late30SecInPreviousMinute();
 	setBuffer0Late30SecInPreviousMinute();
 	setBufferStepWorthy();
@@ -60,7 +68,7 @@ void setEmptyBuffers()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = BUFF_RESET;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = BUFF_RESET;
 	dataTimeCheckFifo();
-	
+
 	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 0 = correct";
@@ -68,7 +76,7 @@ void setEmptyBuffers()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 1 = correct";
@@ -94,7 +102,7 @@ void setBuffer0()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = BUFF_RESET;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = BUFF_RESET;
 	dataTimeCheckFifo();
-	
+
 	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == 1 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == 1)
 	{
 		result = "buffer 0 = correct";
@@ -102,7 +110,7 @@ void setBuffer0()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 1 = correct";
@@ -128,7 +136,7 @@ void setBuffer1()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 1;
 	dataTimeCheckFifo();
-	
+
 	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 0 = correct";
@@ -136,7 +144,7 @@ void setBuffer1()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == 1 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == 1)
 	{
 		result = "buffer 1 = correct";
@@ -162,7 +170,7 @@ void setBufferBoth()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 1;
 	dataTimeCheckFifo();
-	
+
 	if((oldBuffer0Pointer+1) == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 0 = correct";
@@ -170,7 +178,7 @@ void setBufferBoth()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if((oldBuffer1Pointer+1) == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 1 = correct";
@@ -196,7 +204,7 @@ void setBuffer1Late()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 1;
 	dataTimeCheckFifo();
-	
+
 	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == 1 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == 2)
 	{
 		result = "buffer 0 = correct";
@@ -204,7 +212,7 @@ void setBuffer1Late()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if((oldBuffer1Pointer+1) == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 1 = correct";
@@ -230,7 +238,7 @@ void setBuffer0Late()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 2;
 	dataTimeCheckFifo();
-	
+
 	if((oldBuffer0Pointer+1) == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 0 = correct";
@@ -238,7 +246,7 @@ void setBuffer0Late()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == -200 &&  RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == 1 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == 2)
 	{
 		result = "buffer 1 = correct";
@@ -265,7 +273,7 @@ void setBuffer1LateInPreviousMinute()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 1;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 59;
 	dataTimeCheckFifo();
-	
+
 	if(oldBuffer0Pointer == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == 2 && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == 0)
 	{
 		result = "buffer 0 = correct";
@@ -273,7 +281,7 @@ void setBuffer1LateInPreviousMinute()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if((oldBuffer1Pointer+1) == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 1 = correct";
@@ -299,7 +307,7 @@ void setBuffer0LateInPreviousMinute()
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_MINUTES] = 2;
 	RTCMPUData[BUFF_ARM][buffer1Pointer][BUFF_SECONDS] = 0;
 	dataTimeCheckFifo();
-	
+
 	if((oldBuffer0Pointer+1) == buffer0Pointer && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_DATA] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_MINUTES] == BUFF_RESET && RTCMPUData[BUFF_LEG][oldBuffer0Pointer][BUFF_SECONDS] == BUFF_RESET)
 	{
 		result = "buffer 0 = correct";
@@ -307,7 +315,7 @@ void setBuffer0LateInPreviousMinute()
 	{
 		result = "buffer 0 = incorrect";
 	}
-	
+
 	if(oldBuffer1Pointer == buffer1Pointer && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_DATA] == -200 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_MINUTES] == 2 && RTCMPUData[BUFF_ARM][oldBuffer1Pointer][BUFF_SECONDS] == 0)
 	{
 		result = "buffer 1 = correct";
@@ -425,4 +433,194 @@ void setBufferStepWorthy()
 	{
 		result = "step = incorrect";
 	}
+}
+
+void ActivitySetTest()
+{
+	int count = 0;
+
+	//act
+	CalculateActivityAverage(walking);
+	CalculateActivityAverage(noMovement);
+	CalculateActivityAverage(running);
+	CalculateActivityAverage(unknown);
+	CalculateActivityAverage(unknownIndoor);
+
+	//assert
+	if(CurrentActivity.activityTotal[walking] == 1)
+	{
+		count++;
+	}
+	if(CurrentActivity.activityTotal[noMovement] == 1)
+	{
+		count++;
+	}
+	if(CurrentActivity.activityTotal[running] == 1)
+	{
+		count++;
+	}
+	if(CurrentActivity.activityTotal[unknown] == 1)
+	{
+		count++;
+	}
+	if(CurrentActivity.activityTotal[unknownIndoor] == 1)
+	{
+		count++;
+	}
+
+	assert(count == 5);
+
+	//clear the buffer because its dummy data
+	for (int i = 0; i < sizeof(CurrentActivity.activityTotal); i++)
+	{
+		CurrentActivity.activityTotal[i] = 0;
+		count--;
+	}
+
+	if(CurrentActivity.activityTotal[walking] == 0)
+	{
+		count++;
+	}
+	if(CurrentActivity.activityTotal[noMovement] == 0)
+	{
+		count++;
+	}
+	if(CurrentActivity.activityTotal[running] == 0)
+	{
+		count++;
+	}
+	if(CurrentActivity.activityTotal[unknown] == 0)
+	{
+		count++;
+	}
+	if(CurrentActivity.activityTotal[unknownIndoor] == 0)
+	{
+		count++;
+	}
+
+	//check if the buffer is cleared
+	assert(count == 5);
+
+}
+
+void activityToStringTest()
+{
+
+	int count = 0;
+	//act
+	char* walkingString = activityToString(walking);
+	char* runningString = activityToString(running);
+	char* NMString = activityToString(noMovement);
+	char* unknownString = activityToString(unknown);
+	char* unknownIndoorString = activityToString(unknownIndoor);
+
+
+
+	//assert
+	if(!strcmp(walkingString, "Wandelen"))
+	{
+		count++;
+	}
+
+	if(!strcmp(runningString, "Hardlopen"))
+	{
+		count++;
+	}
+
+	if(!strcmp(NMString, "Geen beweging"))
+	{
+		count++;
+	}
+
+	if(!strcmp(unknownString, "Onbekend"))
+	{
+		count++;
+	}
+
+	if(!strcmp(unknownIndoorString, "Indoor Activiteit"))
+	{
+		count++;
+	}
+
+	assert(count == 5);
+}
+
+void totalActivtyTest()
+{
+	//act
+	//set running as the most common activity
+	for (int i = 0; i < 5; ++i) {
+		CalculateActivityAverage(walking);
+	}
+	for (int i = 0; i < 7; ++i) {
+			CalculateActivityAverage(running);
+	}
+	for (int i = 0; i < 2; ++i) {
+				CalculateActivityAverage(noMovement);
+	}
+
+	ActivityTotal();
+
+	//assert
+	//passed if running is total activity
+	assert(CurrentActivity.totalActivity == running);
+
+}
+
+void AcitivytLengthTest()
+{
+		int AL = 5;
+		//act
+		//set a activity with 5 minutes of walking
+		for (int i = 0; i < AL; ++i) {
+			CalculateActivityAverage(walking);
+		}
+
+
+		//assert
+		//passed if the current activity length is 5
+
+		assert(CurrentActivity.length == AL);
+
+		ActivityTotal();
+
+		//passed if the activity length was 5
+		assert(CurrentActivity.previousLength == AL);
+
+}
+
+void AcitivytDailyLengthTest()
+{
+		int ALW = 5;
+		int ALR = 7;
+		int ALTotal = ALW + ALR;
+		GPS.utc_time = 123500.0; //timer dummy value just for testing
+		CurrentActivity.activeDailyMinutes = 0; //set nul so the dummy values are the only used values
+		//act
+		//set a activity with 5 minutes of walking
+		for (int i = 0; i < ALW; ++i) {
+			CalculateActivityAverage(walking);
+		}
+
+		ActivityTotal();
+
+		//set a activity with 7 minutes of walking
+		for (int i = 0; i < ALR; ++i) {
+			CalculateActivityAverage(running);
+		}
+
+		ActivityTotal();
+
+		//assert
+		//passed if the total daily activy minutes are 12 (5+7)
+
+		assert(CurrentActivity.activeDailyMinutes == ALTotal);
+
+
+		//if its 12pm the timer has activeDailyminutes are reset
+		GPS.utc_time = 0;
+		getTime();
+
+		assert(CurrentActivity.activeDailyMinutes == 0);
+
 }

@@ -10,11 +10,13 @@ using namespace std;
 #include "receiver.h"
 #if TEST_RADIO == 1
 #include "radioTest.h"
-radioTest rt;
 #endif
 
 transmitter t;
 receiver r;
+#if TEST_RADIO == 1
+radioTest rt;
+#endif
 
 // Transmitter class public functions
 
@@ -102,7 +104,7 @@ void receiverTick()
 
 void radioTestAll()
 {
-	//rt.testAll(t,r);
+	rt.testAll();
 }
 
 #endif // TEST_RADIO == 1
