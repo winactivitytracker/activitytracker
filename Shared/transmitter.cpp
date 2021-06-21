@@ -14,18 +14,19 @@ void transmitter::disable()
 // and add it to the outbound buffer
 void transmitter::fillBuffer()
 {
-	// FIXME: This doesn't account for an empty queue.
-	// This means everything will break if the timer
-	// is running and there is no new message.
-	string m = messages.front();
-	messages.pop_front();
-
-	for(uint8_t i = 0; i < m.length(); i++)
+	// Don't do anything if the message queue is empty
+	if(!messages.empty())
 	{
-		bitset<8> c = m[i];
-		buffer.push_back(c);
+		string m = messages.front();
+		messages.pop_front();
+
+		for(uint8_t i = 0; i < m.length(); i++)
+		{
+			bitset<8> c = m[i];
+			buffer.push_back(c);
+		}
+		bitPointer = 0;
 	}
-	bitPointer = 0;
 }
 
 // Get the next bit to send
