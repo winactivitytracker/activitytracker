@@ -129,6 +129,6 @@ void MPUToUsartLoop()
 		counter++;
 	}
 
-	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
-	//HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"\n", sizeof("\n"), HAL_MAX_DELAY);
+	//HAL_UART_Transmit(&huart1, (uint8_t *)"\n", sizeof("\n"), HAL_MAX_DELAY);
 }

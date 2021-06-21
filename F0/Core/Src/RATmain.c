@@ -28,16 +28,16 @@ void RATmain()
 	receiverEnable();
 
 	#if TEST_MPU
-	HAL_UART_Transmit(&huart1, "TESTING MPU", sizeof("TESTING MPU"), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"TESTING MPU", sizeof("TESTING MPU"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"\n", sizeof("\n"), HAL_MAX_DELAY);
 	testMPU();
 	#elif TEST_RTC
-	HAL_UART_Transmit(&huart1, "TESTING RTC", sizeof("TESTING RTC"), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"TESTING RTC", sizeof("TESTING RTC"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"\n", sizeof("\n"), HAL_MAX_DELAY);
 	testRTC();
 	#elif TEST_RADIO
-	HAL_UART_Transmit(&huart1, "TESTING RADIO", sizeof("TESTING RADIO"), HAL_MAX_DELAY);
-	HAL_UART_Transmit(&huart1, "\n", sizeof("\n"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"TESTING RADIO", sizeof("TESTING RADIO"), HAL_MAX_DELAY);
+	HAL_UART_Transmit(&huart1, (uint8_t *)"\n", sizeof("\n"), HAL_MAX_DELAY);
 	radioTestAll();
 	#endif
 
