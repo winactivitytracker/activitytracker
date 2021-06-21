@@ -535,7 +535,7 @@ void setBufferMultipleData()
 		result = "buffer 1 = incorrect";
 	}
 
-	if((oldSteps+3) == steps)
+	if((oldSteps+1) == steps)
 	{
 		result = "step = correct";
 	} else
