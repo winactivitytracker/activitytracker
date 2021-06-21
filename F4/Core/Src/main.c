@@ -141,7 +141,6 @@ int main(void)
 	#ifdef TEST
 	testAll();
 	HAL_GPIO_WritePin(GPIOB,LED_GREEN_Pin , SET);
-	//DOTESTS
 
 	#if TEST_RADIO == 1
 	radioTestAll();

@@ -29,7 +29,6 @@ void radioTest::testAll()
 {
 	testTransmitter();
 	testReceiver();
-	testAPI();
 }
 
 // Test all transmitter functions
@@ -47,12 +46,6 @@ void radioTest::testReceiver()
 {
 	receiverAddToBuffer1Byte();
 	receiverAddToBuffer2Byte();
-}
-
-// Test API functions
-void radioTest::testAPI()
-{
-
 }
 
 // Transmitter class tests
@@ -114,42 +107,15 @@ void radioTest::transmitterFillBufferString()
 void radioTest::transmitterGetNextBitOnce()
 {
 	// Arrange
-	uint8_t expected = 0;
-	uint8_t actual;
-	string result;
-	transmitter t;
-	t.messages.push_front("a"); // "a" (01100001) starts with 0
-	t.fillBuffer();
-
-	// Act
-	actual = t.getNextBit();
-
-	// Assert
-	if(actual == expected)
-	{
-		result = "PASS: returned bit is 0";
-	}
-	else
-	{
-		result = "FAIL: returned bit is not 0";
-	}
-
-	printResult("getNextBit with 01100001 in the queue", to_string(expected), to_string(actual), result);
-}
-
-void radioTest::transmitterGetNextBitTwice()
-{
-	// Arrange
 	uint8_t expected = 1;
 	uint8_t actual;
 	string result;
 	transmitter t;
-	t.messages.push_front("~"); // "~" (01111110), get the 2nd bit
+	t.messages.push_front("a"); // "a" (01100001) starts with 1 (right to left)
 	t.fillBuffer();
 
 	// Act
-	actual = t.getNextBit(); // First bit (0)
-	actual = t.getNextBit(); // Second bit (1), overwrite the first one
+	actual = t.getNextBit();
 
 	// Assert
 	if(actual == expected)
@@ -161,7 +127,34 @@ void radioTest::transmitterGetNextBitTwice()
 		result = "FAIL: returned bit is not 1";
 	}
 
-	printResult("getNextBit twice with 01111110 in the queue", to_string(expected), to_string(actual), result);
+	printResult("getNextBit with 01100001 in the queue", to_string(expected), to_string(actual), result);
+}
+
+void radioTest::transmitterGetNextBitTwice()
+{
+	// Arrange
+	uint8_t expected = 0;
+	uint8_t actual;
+	string result;
+	transmitter t;
+	t.messages.push_front("a"); // "a" (01100001), get the 2nd bit
+	t.fillBuffer();
+
+	// Act
+	actual = t.getNextBit(); // First bit (1)
+	actual = t.getNextBit(); // Second bit (0), overwrite the first one
+
+	// Assert
+	if(actual == expected)
+	{
+		result = "PASS: returned bit is 0";
+	}
+	else
+	{
+		result = "FAIL: returned bit is not 0";
+	}
+
+	printResult("getNextBit twice with 01100001 in the queue", to_string(expected), to_string(actual), result);
 }
 
 void radioTest::transmitterGetNextBitEmpty()
@@ -201,14 +194,14 @@ void radioTest::receiverAddToBuffer1Byte()
 	receiver r;
 
 	// Act
+	r.addToBuffer(1);
+	r.addToBuffer(0);
+	r.addToBuffer(0); // Bits are received
+	r.addToBuffer(0); // from LSB to MSB
 	r.addToBuffer(0);
 	r.addToBuffer(1);
 	r.addToBuffer(1);
 	r.addToBuffer(0);
-	r.addToBuffer(0);
-	r.addToBuffer(0);
-	r.addToBuffer(0);
-	r.addToBuffer(1);
 
 	// Assert
 	actual = r.buffer.front().to_string();
@@ -235,21 +228,21 @@ void radioTest::receiverAddToBuffer2Byte()
 	receiver r;
 
 	// Act
-	r.addToBuffer(0);
-	r.addToBuffer(1);
 	r.addToBuffer(1);
 	r.addToBuffer(0);
 	r.addToBuffer(0);
 	r.addToBuffer(0);
 	r.addToBuffer(0);
 	r.addToBuffer(1);
+	r.addToBuffer(1);
+	r.addToBuffer(0);
 
 	r.addToBuffer(0);
 	r.addToBuffer(1);
-	r.addToBuffer(1);
-	r.addToBuffer(1);
-	r.addToBuffer(1);
 	r.addToBuffer(0);
+	r.addToBuffer(1);
+	r.addToBuffer(1);
+	r.addToBuffer(1);
 	r.addToBuffer(1);
 	r.addToBuffer(0);
 
@@ -270,9 +263,5 @@ void radioTest::receiverAddToBuffer2Byte()
 
 	printResult("addToBuffer 16 times: 01100001 01111010", expected, actual, result);
 }
-
-// API function tests
-
-
 
 #endif // TEST_RADIO == 1

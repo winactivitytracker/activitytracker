@@ -27,7 +27,6 @@ public:
 	void testAll();
 	void testTransmitter();
 	void testReceiver();
-	void testAPI();
 
 	// Transmitter class tests
 	void transmitterFillBufferEmpty();
@@ -39,8 +38,6 @@ public:
 	// Receiver class tests
 	void receiverAddToBuffer1Byte();
 	void receiverAddToBuffer2Byte();
-
-	// API function tests
 
 };
 
